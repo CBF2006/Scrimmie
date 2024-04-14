@@ -367,7 +367,7 @@ rule "End Control after 3 rounds":
 
 
 rule "End Hybrid/Escort if teams tie":
-    @Condition GameMode == 1
+    @Condition getCurrentGamemode() == Gamemode.ESCORT or getCurrentGamemode() == Gamemode.HYBRID
     @Condition teamScore(Team.1) == 3
     @Condition teamScore(Team.2) == 3
     
