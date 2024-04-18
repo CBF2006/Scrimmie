@@ -9,7 +9,7 @@ Rights to the Custom Game itself **belong to Blizzard** as stated in their [Cust
 ### Standard - Y2TXE
 ### Professional - A8XVJ
 
-## Connect with the Project
+## Connect with the Project:
 ### [Workshop.codes](https://workshop.codes/scrimmie)
 ### [Discord](https://discord.gg/TNtbWP4aAg)
 ### [CBF's Twitter](https://x.com/cbfow)
