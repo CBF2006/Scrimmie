@@ -1,6 +1,6 @@
 settings {
     "main": {
-        "description": "Scrimmie! v3.5 (PRE-RELEASE)\nCreated by CBF\r\n\r\nStandard Version\r\nLast tested on Patch 2.9.1.0.123307\r\r\n\r\nImport Code: Y2TXE\r\nworkshop.codes/scrimmie\r\ndiscord.gg/TNtbWP4aAg",
+        "description": "Scrimmie! v3.5.2\nCreated by CBF\r\n\r\nStandard Version\r\nLast tested on Patch 2.10.0.0.124202\r\r\n\r\nImport Code: Y2TXE\r\nworkshop.codes/scrimmie\r\ndiscord.gg/TNtbWP4aAg",
         "modeName": "Scrimmie!"
     },
     "lobby": {
@@ -9,20 +9,34 @@ settings {
         "pauseGameOnDisconnect": true
     },
     "gamemodes": {
+        "clash": {
+            "captureSpeed%": 100,
+            "enableCompetitiveRules": true
+        },
         "control": {
+            "enabled": false,
+            "enableCompetitiveRules": true,
             "scoreToWin": 3
         },
-        "escort": {},
+        "escort": {
+            "enableCompetitiveRules": true
+        },
         "flashpoint": {
+            "enabled": false,
+            "enableCompetitiveRules": true,
             "scoreToWin": 5
         },
-        "hybrid": {},
-        "push": {},
+        "hybrid": {
+            "enableCompetitiveRules": true
+        },
+        "push": {
+            "enableCompetitiveRules": true
+        },
         "general": {
-            "enableCompetitiveRules": true,
             "gamemodeStartTrigger": "immediately",
             "enableKillCam": false,
-            "roleLimit": "1Tank2Offense2Support"
+            "roleLimit": "1Tank2Offense2Support",
+            "tankPassiveHealthBonus": "alwaysEnabled"
         }
     },
     "workshop": {
@@ -367,7 +381,7 @@ rule "End Control after 3 rounds":
 
 
 rule "End Hybrid/Escort if teams tie":
-    @Condition GameMode == 1
+    @Condition getCurrentGamemode() == Gamemode.ESCORT or getCurrentGamemode() == Gamemode.HYBRID
     @Condition teamScore(Team.1) == 3
     @Condition teamScore(Team.2) == 3
     
@@ -406,90 +420,8 @@ rule "Defense Map Change Hero":
     wait(0.1)
     eventPlayer.setAllowedHeroes(getAllHeroes())
 
-
-rule "Defense Map Teleport":
-    @Event eachPlayer
-    @Condition isInSetup() == true
-    @Condition eventPlayer.isHoldingButton(Button.MELEE) == true
-    @Condition isTeamOnDefense(eventPlayer.getTeam()) == true
-    @Condition eventPlayer.isInSpawnRoom() == true
-    @Condition eventPlayer.hasSpawned() == true
-    @Condition eventPlayer.isAlive() == true
-    @Condition eventPlayer.getCurrentHero() == true
-    
-    switch getCurrentMap():
-        case Map.BLIZZ_WORLD:
-            eventPlayer.teleport(vect(-8.171, 3.824, 65.861))
-            break
-        case Map.EICHENWALDE:
-            eventPlayer.teleport(vect(13.226, 12.981, -83.655))
-            break
-        case Map.HOLLYWOOD:
-            eventPlayer.teleport(vect(-19.248, 8.007, -9.802))
-            break
-        case Map.KINGS_ROW:
-            eventPlayer.teleport(vect(-37.185, 10.346, -15.058))
-            break
-        case Map.NUMBANI:
-            eventPlayer.teleport(vect(93.044, 5.53, -22.723))
-            break
-        case Map.HANAMURA:
-            eventPlayer.teleport(vect(13.079, 1.346, -24.267))
-            break
-        case Map.HORIZON_LUNAR_COLONY:
-            eventPlayer.teleport(vect(42.356, 15.84, -79.798))
-            break
-        case Map.PARIS:
-            eventPlayer.teleport(vect(-40.379, 16.5, -14.259))
-            break
-        case Map.TEMPLE_OF_ANUBIS:
-            eventPlayer.teleport(vect(-23.909, 3.312, 46.94))
-            break
-        case Map.VOLSKAYA:
-            eventPlayer.teleport(vect(-35.545, -1.433, 73.561))
-            break
-        case Map.DORADO:
-            eventPlayer.teleport(vect(57.088, 9.241, -16.884))
-            break
-        case Map.HAVANA:
-            eventPlayer.teleport(vect(-18.059, 9.184, -70.117))
-            break
-        case Map.JUNKERTOWN:
-            eventPlayer.teleport(vect(-28.382, 14.223, -68.289))
-            break
-        case Map.RIALTO:
-            eventPlayer.teleport(vect(55.603, 2.452, -44.947))
-            break
-        case Map.ROUTE66:
-            eventPlayer.teleport(vect(33.662, 10.325, -5.514))
-            break
-        case Map.WATCHPOINT_GIBRALTAR:
-            eventPlayer.teleport(vect(32.488, 4.692, -71.941))
-            break
-        case Map.SHAMBALI_MONASTERY:
-            eventPlayer.teleport(vect(5.48, 14, 60.54))
-            break
-        case Map.PARAISO:
-            eventPlayer.teleport(vect(-34.65, 6, -13.85))
-            break
-        case Map.CIRCUIT_ROYAL:
-            eventPlayer.teleport(vect(-21.96, 11, -6.56))
-            break
-        case Map.MIDTOWN:
-            eventPlayer.teleport(vect(10.27, 3.75, 48.46))
-            break
-        case Map.BLIZZ_WORLD_WINTER:
-            eventPlayer.teleport(vect(-8.171, 3.824, 65.861))
-            break
-        case Map.EICHENWALDE_HALLOWEEN:
-            eventPlayer.teleport(vect(13.226, 12.981, -83.655))
-            break
-        case Map.HOLLYWOOD_HALLOWEEN:
-            eventPlayer.teleport(vect(-19.248, 8.007, -9.802))
-            break
-        case Map.KINGS_ROW_WINTER:
-            eventPlayer.teleport(vect(-37.185, 10.346, -15.058))
-            break
+# Adding Defender Teleports Code
+#!include "teleports.opy"
 
 
 rule "DC Value Tracking - Team 1":
@@ -621,45 +553,8 @@ def PlayerDCDvaTeam2():
             eventPlayer.setUltCharge(UltCharges[6 + eventPlayer.getSlot()])
 
 
-rule "Multi-Language: Language Strings":
-    #General HUD
-    LanguageArray[0] = ["is Not Ready", "no está Listo", "이 준비되지 않았습니다", "n’est pas prête", "は準備中です"]
-    LanguageArray[1] = ["Hold", "Mantén", "꾹 누르기", "Maintenez", "押し続け"]
-    LanguageArray[2] = ["Change hero (works only on Defense)", "Cambiar héroe (funciona sólo en defensa)", "영웅 변경 (수비에서만 가능)", "Sélection de héros (fonctionne seulement en Défense)", "ヒーローを変更する（防衛時のみ有効)"]
-    LanguageArray[3] = ["Press", "Presiona", "누르기", "Appuyez", "押し"]
-    LanguageArray[4] = ["Ready / Unready", "Listo / No Listo", "를 눌러 준비/준비해제", "Prête / Pas prête", "準備／準備のない"]
-    LanguageArray[5] = ["Add Extra", "Agregar", "을 눌러", "Ajouter", "セットアップに追加"]
-    LanguageArray[6] = ["seconds to setup", "segundos extras a la configuración", "초 추가", "seconds supplémentaires á la configuration", "秒"]
-    LanguageArray[7] = ["Scrimmie! v3.5", "Scrimmie! v3.5", "스크리미! 3.5판", "Scrimmie! v3.5", "スクリミー！　3.5版"]
-    LanguageArray[8] = ["Teleport (works only on Defense, in spawn)", "Teletransporte (funciona solo en Defensa, en el spawn)", "텔레포트 (수비 스폰지점에서만 가능)", "Téléporte (en Défense, dans le d'apparition)", "テレポート（防衛時のみ有効)"]
-    LanguageArray[9] = ["Keep holding", "Mantén presionado", "영웅 변경하기 위해", "Continuez à maintenir", "ヒーローを変更するために"]
-    LanguageArray[10] = ["is Ready", "está Listo", "이 준비되었습니다", "est prête", "は準備完了です"]
-    LanguageArray[11] = ["Change Language", "Cambiar Idioma", "언어 변경", "Changer la langue", "言語の変更"]
-    LanguageArray[12] = ["Import Code", "Importar Código", "워크샵 코드", "Importer le code", "ロード"]
-    LanguageArray[13] = ["Changed Language to English", "Cambió el idioma a español", "언어를 변경하였습니다: 한국어", "La langue est changée à français", "言語を日本語に変更しました"]
-    LanguageArray[14] = ["readied their team", "se despreparó su equipo", "가 준비를 완료했습니다", "a préparé son équipe", "はチームを準備しました"]
-    LanguageArray[15] = ["unreadied their team", "se no despreparó a su equipo", "가 준비를 해제했습니다", "n’a pas préparé son équipe", "はチームを準備しませんでした"]
-    LanguageArray[16] = ["Next Flashpoint:", "Siguiente Operación:", "다음 플래시포인트:", "Prochain Point Chaud:", "最初のフラッシュポイント："]
-    LanguageArray[17] = ["s", "s", "초", "s", "秒"]
-    LanguageArray[24] = ["to change hero", "para cambiar de héroe", "계속 꾹 누르기", "enfoncé pour changer de héros", "を押し続ける"]
-    LanguageArray[25] = ["Maximum Setup Time reached", "Tiempo máximo de configuración alcanzado", "최대 준비시간 도달", "Temps de configuration maximal atteint", "最大準備時間時到達"]
-    LanguageArray[26] = ["added", "agregó", "가", "a ajouté", "は"]
-    LanguageArray[27] = ["seconds", "segundos", "초를 추가했습니다", "secondes", "秒を追加しました"]
-    LanguageArray[28] = ["All Flashpoints played, returning to lobby", "Todos los Flashpoints jugados, regresando al vestíbulo", "모든 플래시포인트 모드가 끝나 로비로 돌아갑니다", "Tous les points chauds sont complets, renvoyant au hall", "すべてのフラッシュポイントポイントが終了しました、ロビーに戻ります"]
-    LanguageArray[29] = ["AFK", "AFK", "잠수", "AFK", "離席中"]
-    LanguageArray[30] = ["Inactive Players", "Jugadores inactivos", "잠수상태인 플레이어들", "Joueurs inactifs", "離席中のプレイヤー"]
-    LanguageArray[31] = ["One of your teammates is AFK. Confirm ready?", "Uno de tus compañeros está AFK. ¿Confirmas listo?", "당신의 팀원 한명이 잠수 상태입니다. 준비 하시겠습니까?", "Un de tes coéquipiers est AFK. Confirme prêt?", "あなたのチームメイト一人が離席中です。準備糺しますか?"]
-    LanguageArray[32] = ["You are inactive, press any button to become active", "Estás inactivo, presiona cualquier botón para activarte.", "당신은 잠수 상태입니다. 아무키를 눌러 잠수 상태를 해제하세요.", "Vous êtes inactif, appuyez sur n'importe quel bouton pour devenir actif.", "あなたは離席中です。在席すできるためにキーを何でも押してください。"]
-    LanguageArray[33] = ["Confirm Ready?", "¿Confirmas listo?", "준비 하시겠습니까?", "Confirme prêt?", "準備糺しますか?"]
-    #Current Language
-    CurrentLanguageArray[0] = ["Current Language: English", "Current Language: Spanish", "Current Language: Korean", "Current Language: French", "Current Language: Japanese"]
-    CurrentLanguageArray[1] = ["Idioma actual: inglés", "Idioma actual: español", "Idioma actual: coreano", "Idioma actual: francés", "Idioma actual: japonés"]
-    CurrentLanguageArray[2] = ["현재 언어: 영어", "현재 언어: 스페인어", "현재 언어: 한국어", "현재 언어: 프랑스어", "현재 언어: 일본어"]
-    CurrentLanguageArray[3] = ["Langue actuelle: anglais", "Langue actuelle: espagnol", "Langue actuelle: coréen", "Langue actuelle: français", "Langue actuelle: japonais"]
-    CurrentLanguageArray[4] = ["現在の言語：英語", "現在の言語：スペイン語", "現在の言語：韓国語", "現在の言語：フランス語", "現在の言語：日本語"]
-    #Flashpoint Names
-    Flashpoint_Array[0] = [["A - Market", "B - Garden", "C - Palace", "D - Temple", "E - Ruins"], ["A - Mercado", "B - Jardín", "C - Palacio", "D - Templo", "E - Ruinas"], ["A - 시장", "B - 정원", "C - 궁전", "D - 사원", "E - 폐허"], ["A - Marché", "B - Jardin", "C - Palais", "D - Temple", "E - Ruines"], ["A：マーケット", "B：ガーデン", "C：パレス", "D：テンプル", "E：ルインズ"]]
-    Flashpoint_Array[1] = [["A - Arena", "B - The Ducts", "C - Refinery", "D - Junkyard", "E - Bomb Flats"], ["A - Arena", "B - Los Conductos", "C - Refinería", "D - Depósito de chatarra", "E - Pisos Bomba"], ["A - 경기장", "B - 배관", "C - 제련소", "D - 고 철 치리장", "E - 폭탄 지대"], ["A - Arène", "B - Les conduits", "C - Raffinerie", "D - Décharge", "E - Appartements détonants"], ["A：アリーナ", "B：ダクト", "C：精錬所", "D：ジャンクヤード", "E：ボムクラフト"]]
+# Adding Language Strings
+#!include "lang.opy"
 
 
 rule "Multi-Language: Set Default Language":
@@ -680,446 +575,9 @@ rule "Multi-Language: Choose Language":
     eventPlayer.PlayerLanguage = (eventPlayer.PlayerLanguage + 1) % len(LanguageArray[0])
     smallMessage(eventPlayer, "{0}".format(LanguageArray[13][eventPlayer.PlayerLanguage]))
 
-
-rule "Logs: Initialization - Workshop Settings":
-    Logs_EnableLogGenerator = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Enable Log Generator", false, 0)
-    Logs_OutputFormat = createWorkshopSetting(enum["CSV"], "4. LogTime (PC Only)", "Output Format", 0, 1)
-    Logs_TrackKills = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Kills and Deaths", true, 2)
-    Logs_TrackOffensiveAssists = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Offensive Assists", true, 3)
-    Logs_TrackDefensiveAssists = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Defensive Assists", true, 4)
-    Logs_TrackHeroSwaps = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Hero Swaps", true, 5)
-    Logs_TrackUltimates = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Ultimates", true, 6)
-    Logs_TrackAbilities = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Abilities*", false, 7)
-    Logs_TrackDamage = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Damage*", false, 8)
-    Logs_TrackHealing = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Healing*", false, 9)
-    Logs_TrackDvaDemechs = createWorkshopSetting(bool, "4. LogTime (PC Only)", "D.Va Demechs & Remechs", true, 10)
-    Logs_TrackEchoDuplicates = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Echo Duplicates", true, 11)
-    Logs_TrackMercyRez = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Mercy Resurrects", true, 12)
-    Logs_TrackMatchStartEnd = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Match Start & End", true, 13)
-    Logs_TrackRoundStartEnd = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Round Start & End", true, 14)
-    Logs_TrackObjectiveCapture = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Objective Captures", true, 15)
-    Logs_PointCaptureProgressStep = createWorkshopSetting(float[0:100], "4. LogTime (PC Only)", "Control Point Progress Increment", 33.333, 16)
-    Logs_PayloadCaptureProgressStep = createWorkshopSetting(float[0:100], "4. LogTime (PC Only)", "Payload Progress Increment", 10, 17)
-    Logs_PlayerSummaryFrequency = createWorkshopSetting(enum["Every Round End", "Only Match End", "Off"], "4. LogTime (PC Only)", "Player Stat Summary Frequency", 0, 18)
-
-
-rule "Logs: Initialisation - Match":
-    if not Logs_EnableLogGenerator:
-        disableInspector()
-
-
-rule "Logs: Initialisation - Player":
-    @Event eachPlayer
-    
-    eventPlayer.Logs_HeroesPlayedArray = []
-
-
-rule "Logs: Match Start":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition getMatchRound() == 1
-    
-    if Logs_TrackMatchStartEnd:
-        printLog(",match_start,{0},{1}".format("{0},{1},{2}".format(Match_CurrentMatchTime, getCurrentMap(), getCurrentGamemode()), "{0},{1}".format(Team.1, Team.2)))
-
-
-rule "Logs: Round Start":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition isInSetup() == true
-    
-    Logs_CurrentControlScoringTeam = Team.ALL
-    Logs_CurrentObjectiveIndex = getCurrentObjective()
-    if Logs_TrackRoundStartEnd == true:
-        printLog(",round_start,{0},{1},{2}".format("{0},{1},{2}".format(Match_CurrentMatchTime, getMatchRound(), (Team.1 if isTeamOnOffense(Team.1) else Team.2) if getCurrentGamemode() != Gamemode.CONTROL else null), "{0},{1}".format(teamScore(Team.1), teamScore(Team.2)), "{0}".format(getCurrentObjective())))
-        waitUntil(isGameInProgress(), 99999)
-        printLog(",setup_complete,{0}".format("{0},{1},{2}".format(Match_CurrentMatchTime, getMatchRound(), getMatchTime())))
-
-
-rule "Logs: Round Complete":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackRoundStartEnd == true
-    @Condition isMatchBetweenRounds() == true
-    
-    printLog(",round_end,{0},{1},{2}".format("{0},{1},{2}".format(Match_CurrentMatchTime, getMatchRound(), (Team.1 if isTeamOnOffense(Team.1) else Team.2) if getCurrentGamemode() != Gamemode.CONTROL else null), "{0},{1}".format(teamScore(Team.1), teamScore(Team.2)), "{0},{1},{2}".format(getCurrentObjective(), "{0},{1}".format(getControlScorePercentage(Team.1), getControlScorePercentage(Team.2)), getMatchTime())))
-
-
-rule "Logs: Match Complete":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackMatchStartEnd == true
-    @Condition isMatchComplete() == true
-    
-    printLog(",match_end,{0},{1},{2}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0}".format(teamScore(Team.1)), "{0}".format(teamScore(Team.2))))
-
-
-rule "Logs: Control Point Increment":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_PointCaptureProgressStep > 0
-    @Condition isGameInProgress() == true
-    @Condition getCapturePercentage() >= Logs_PointCaptureProgress + Logs_PointCaptureProgressStep
-    
-    printLog(",point_progress,{0},{1}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1},{2}".format(getOppositeTeam(getControlScoringTeam()) if getCurrentGamemode() == Gamemode.CONTROL else Team.1 if isTeamOnOffense(Team.1) else Team.2, getCurrentObjective(), getCapturePercentage())))
-    Logs_PointCaptureProgress += Logs_PointCaptureProgressStep
-
-
-rule "Logs: Payload Increment":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_PayloadCaptureProgressStep > 0
-    @Condition isGameInProgress() == true
-    @Condition getPayloadProgressPercentage() >= Logs_PayloadCaptureProgress + Logs_PayloadCaptureProgressStep
-    
-    printLog(",payload_progress,{0},{1}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1},{2}".format(Team.1 if isTeamOnOffense(Team.1) else Team.2, getCurrentObjective(), getPayloadProgressPercentage())))
-    Logs_PayloadCaptureProgress += Logs_PayloadCaptureProgressStep
-
-
-rule "Logs: Reset Control Point Progress":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_PointCaptureProgressStep > 0
-    @Condition isGameInProgress() == true
-    @Condition getCapturePercentage() == 0
-    
-    Logs_PointCaptureProgress = 0
-
-
-rule "Logs: Reset Payload Progress":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_PayloadCaptureProgressStep > 0
-    @Condition isGameInProgress() == true
-    @Condition getPayloadProgressPercentage() == 0
-    
-    Logs_PayloadCaptureProgress = 0
-
-
-rule "Logs: Objective Updated":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackObjectiveCapture == true
-    @Condition Logs_CurrentObjectiveIndex != getCurrentObjective()
-    
-    printLog(",objective_updated,{0},{1}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1}".format(Logs_CurrentObjectiveIndex, getCurrentObjective())))
-    wait()
-    Logs_CurrentObjectiveIndex = getCurrentObjective()
-
-
-rule "Logs: Objective Captured (Non-Control)":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackObjectiveCapture == true
-    @Condition getCurrentGamemode() != Gamemode.CONTROL
-    @Condition isObjectiveComplete(Logs_CurrentObjectiveIndex) == true
-    
-    printLog(",objective_captured,{0},{1},{2}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1}".format(Team.1 if isTeamOnOffense(Team.1) else Team.2, getCurrentObjective()), "{0},{1},{2}".format(null, null, getMatchTime())))
-    Logs_CurrentObjectiveIndex = getCurrentObjective()
-
-
-rule "Logs: Objective Captured (Control)":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackObjectiveCapture == true
-    @Condition isGameInProgress() == true
-    @Condition getCurrentGamemode() == Gamemode.CONTROL
-    @Condition getControlScoringTeam() != Logs_CurrentControlScoringTeam
-    
-    printLog(",objective_captured,{0},{1},{2}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1}".format(getControlScoringTeam(), getCurrentObjective()), "{0},{1},{2}".format(getControlScorePercentage(Team.1), getControlScorePercentage(Team.2), getMatchTime())))
-    Logs_CurrentControlScoringTeam = getControlScoringTeam()
-
-
-rule "Logs: Kills":
-    @Event playerDied
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackKills == true
-    @Condition isGameInProgress() == true
-    
-    printLog(",kill,{0},{1}".format(Match_CurrentMatchTime, "{0},{1},{2}".format("{0},{1},{2}".format(attacker.getTeam(), attacker, attacker.getCurrentHero()), "{0},{1},{2}".format(victim.getTeam(), victim, victim.getCurrentHero()), "{0},{1},{2}".format("{0},{1}".format(eventAbility, eventDamage), eventWasCriticalHit, eventWasEnvironment))))
-
-
-rule "Logs: Hero Spawn/Swap":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition (Logs_TrackHeroSwaps or Logs_PlayerSummaryCount != 2) == true
-    @Condition eventPlayer.getCurrentHero() != eventPlayer.Logs_LastHero
-    @Condition isMatchComplete() == false
-    
-    if Logs_TrackHeroSwaps and eventPlayer.getCurrentHero() in getAllHeroes():
-        if eventPlayer.Logs_LastHero in getAllHeroes():
-            printLog(",hero_swap,{0},{1},{2}".format(Match_CurrentMatchTime, "{0},{1}".format(eventPlayer.getTeam(), eventPlayer), "{0},{1},{2}".format(eventPlayer.getCurrentHero(), eventPlayer.Logs_LastHero, Match_CurrentMatchTime - eventPlayer.Logs_LastHeroTime)))
-        else:
-            printLog(",hero_spawn,{0},{1},{2}".format(Match_CurrentMatchTime, "{0},{1}".format(eventPlayer.getTeam(), eventPlayer), "{0},{1},{2}".format(eventPlayer.getCurrentHero(), eventPlayer.Logs_LastHero, Match_CurrentMatchTime - eventPlayer.Logs_LastHeroTime)))
-    if not eventPlayer.getCurrentHero() in eventPlayer.Logs_HeroesPlayedArray and eventPlayer.getCurrentHero() in getAllHeroes():
-        eventPlayer.Logs_HeroesPlayedArray.append(eventPlayer.getCurrentHero())
-    if eventPlayer.getCurrentHero() in getAllHeroes() and eventPlayer.Logs_LastHero in getAllHeroes():
-        CalcHeroPlayedTime()
-    eventPlayer.Logs_LastHero = eventPlayer.getCurrentHero()
-    eventPlayer.Logs_LastHeroTime = Match_CurrentMatchTime
-
-
-def CalcHeroPlayedTime():
-    @Name "Logs: Calculate Hero Played Time (Subroutine)"
-    
-    eventPlayer.Logs_HeroesPlayedTimeArray[eventPlayer.Logs_HeroesPlayedArray.index(eventPlayer.Logs_LastHero)] += Match_CurrentMatchTime - eventPlayer.Logs_LastHeroTime
-
-
-rule "Logs: Damage":
-    @Event playerDealtDamage
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackDamage == true
-    @Condition isGameInProgress() == true
-    
-    printLog(",damage,{0},{1}".format(Match_CurrentMatchTime, "{0},{1},{2}".format("{0},{1},{2}".format(attacker.getTeam(), attacker, attacker.getCurrentHero()), "{0},{1},{2}".format(victim.getTeam(), victim, victim.getCurrentHero()), "{0},{1},{2}".format("{0},{1}".format(eventAbility, eventDamage), eventWasCriticalHit, eventWasEnvironment))))
-
-
-rule "Logs: Healing":
-    @Event playerReceivedHealing
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackHealing == true
-    @Condition isGameInProgress() == true
-    
-    printLog(",healing,{0},{1}".format(Match_CurrentMatchTime, "{0},{1},{2}".format("{0},{1},{2}".format(healer.getTeam(), healer, healer.getCurrentHero()), "{0},{1},{2}".format(healee.getTeam(), healee, healee.getCurrentHero()), "{0},{1},{2}".format(eventAbility, eventHealing, eventWasHealthPack))))
-
-
-rule "Logs: Offensive Assists":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackOffensiveAssists == true
-    @Condition eventPlayer.Logs_OffensiveAssists < eventPlayer.getStatistic(Stat.OFFENSIVE_ASSISTS)
-    @Condition isGameInProgress() == true
-    
-    printLog(",offensive_assist,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0}".format(eventPlayer.getHeroOfDuplication())))
-    eventPlayer.Logs_OffensiveAssists += 1
-    if RULE_CONDITION:
-        goto RULE_START
-
-
-rule "Logs: Defensive Assists":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackDefensiveAssists == true
-    @Condition eventPlayer.Logs_DefensiveAssists < eventPlayer.getStatistic(Stat.DEFENSIVE_ASSISTS)
-    @Condition isGameInProgress() == true
-    
-    printLog(",defensive_assist,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0}".format(eventPlayer.getHeroOfDuplication())))
-    eventPlayer.Logs_DefensiveAssists += 1
-    if RULE_CONDITION:
-        goto RULE_START
-
-
-rule "Logs: Ability 1 Used":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackAbilities == true
-    @Condition eventPlayer.isUsingAbility1() == true
-    @Condition isGameInProgress() == true
-    
-    printLog(",ability_1_used,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0}".format(eventPlayer.getHeroOfDuplication())))
-
-
-rule "Logs: Ability 2 Used":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackAbilities == true
-    @Condition eventPlayer.isUsingAbility2() == true
-    @Condition isGameInProgress() == true
-    
-    printLog(",ability_2_used,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0}".format(eventPlayer.getHeroOfDuplication())))
-
-
-rule "Logs: Ultimate Charged":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackUltimates == true
-    @Condition eventPlayer.getUltCharge() == 100
-    @Condition isGameInProgress() == true
-    
-    eventPlayer.Logs_UltimateID += 1
-    if eventPlayer.getCurrentHero() == Hero.DVA and eventPlayer.isInAlternateForm() and Logs_TrackDvaDemechs:
-        printLog(",remech_charged,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0},{1}".format(eventPlayer.getHeroOfDuplication(), eventPlayer.Logs_UltimateID)))
-    else:
-        printLog(",ultimate_charged,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0},{1}".format(eventPlayer.getHeroOfDuplication(), eventPlayer.Logs_UltimateID)))
-
-
-rule "Logs: Ultimate Used":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackUltimates == true
-    @Condition eventPlayer.isUsingUltimate() == true
-    @Condition eventPlayer.getCurrentHero() != Hero.DVA
-    @Condition isGameInProgress() == true
-    
-    printLog(",ultimate_start,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0},{1}".format(eventPlayer.getHeroOfDuplication(), eventPlayer.Logs_UltimateID)))
-    waitUntil(not eventPlayer.isUsingUltimate(), 99999)
-    printLog(",ultimate_end,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0},{1}".format(eventPlayer.getHeroOfDuplication(), eventPlayer.Logs_UltimateID)))
-
-
-rule "Logs: D.Va Remech/Self-Destruct Used":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition eventPlayer.isUsingUltimate() == true
-    @Condition eventPlayer.getCurrentHero() == Hero.DVA
-    @Condition isGameInProgress() == true
-    
-    wait(1.74)
-    if Logs_TrackDvaDemechs and not eventPlayer.isInAlternateForm():
-        printLog(",dva_remech,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0}".format(eventPlayer.Logs_UltimateID)))
-    elif Logs_TrackUltimates:
-        printLog(",ultimate_start,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0},{1}".format(eventPlayer.getHeroOfDuplication(), eventPlayer.Logs_UltimateID)))
-        waitUntil(not eventPlayer.isUsingUltimate(), 99999)
-        printLog(",ultimate_end,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0},{1}".format(eventPlayer.getHeroOfDuplication(), eventPlayer.Logs_UltimateID)))
-
-
-rule "Logs: Echo Duplicate":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackEchoDuplicates == true
-    @Condition isGameInProgress() == true
-    @Condition eventPlayer.isDuplicatingAHero() == true
-    
-    eventPlayer.Logs_DuplicateID = eventPlayer.Logs_UltimateID
-    printLog(",echo_duplicate_start,{0},{1},{2}".format(Match_CurrentMatchTime, "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0},{1}".format(eventPlayer.getHeroOfDuplication(), eventPlayer.Logs_DuplicateID)))
-    waitUntil(not eventPlayer.isDuplicatingAHero(), 99999)
-    printLog(",echo_duplicate_end,{0},{1},{2}".format(Match_CurrentMatchTime, "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), eventPlayer.Logs_DuplicateID))
-
-
-rule "Logs: Mercy Resurrect":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackMercyRez == true
-    @Condition isGameInProgress() == true
-    @Condition eventPlayer.isDead() == true
-    
-    waitUntil(eventPlayer.isAlive(), 99999)
-    wait(0.24)
-    if not eventPlayer.isInSpawnRoom() and isGameInProgress():
-        printLog(",mercy_rez,{0},{1}".format(Match_CurrentMatchTime, "{0},{1}".format("{0},{1},{2}".format(eventPlayer.getTeam(), getPlayersOnHero(Hero.MERCY, eventPlayer.getTeam()), Hero.MERCY), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()))))
-
-
-rule "Logs: Player Stat Summary":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition (Logs_PlayerSummaryFrequency == 0 or Logs_PlayerSummaryFrequency == 1 and isMatchComplete()) == true
-    @Condition isMatchBetweenRounds() == true
-    
-    CalcHeroPlayedTime()
-    eventPlayer.Logs_LastHero = eventPlayer.getCurrentHero()
-    eventPlayer.Logs_LastHeroTime = Match_CurrentMatchTime
-    for eventPlayer.Logs_CurrentHeroIterator in range(len(eventPlayer.Logs_HeroesPlayedArray)):
-        eventPlayer.Logs_CurrentHeroIterated = eventPlayer.Logs_HeroesPlayedArray[eventPlayer.Logs_CurrentHeroIterator]
-        printLog(",player_stat,{0},{1},{2}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.Logs_CurrentHeroIterated), "{0},{1}".format("{0},{1},{2}".format("{0},{1},{2}".format("{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ELIMINATIONS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.FINAL_BLOWS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DEATHS)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DAMAGE_DEALT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.BARRIER_DAMAGE_DEALT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.HERO_DAMAGE_DEALT)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.HEALING_DEALT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.HEALING_RECEIVED), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SELF_HEALING))), "{0},{1},{2}".format("{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DAMAGE_TAKEN), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DAMAGE_BLOCKED)), "{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DEFENSIVE_ASSISTS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.OFFENSIVE_ASSISTS)), "{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ULTIMATES_EARNED), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ULTIMATES_USED))), "{0},{1}".format("{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.MULTIKILL_BEST), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.MULTIKILLS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SOLO_KILLS)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.OBJECTIVE_KILLS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ENVIRONMENTAL_KILLS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ENVIRONMENTAL_DEATHS)))), "{0},{1}".format("{0},{1},{2}".format("{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.CRITICAL_HITS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.CRITICAL_HIT_ACCURACY)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_ACCURACY), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_CRITICAL_HIT_ACCURACY), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_CRITICAL_HIT_KILLS)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SHOTS_FIRED), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SHOTS_HIT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SHOTS_MISSED))), "{0},{1}".format("{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_SHOTS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_HITS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.WEAPON_ACCURACY)), eventPlayer.Logs_HeroesPlayedTimeArray[eventPlayer.Logs_CurrentHeroIterator])))))
-    Logs_PlayerSummaryCount += 1
-
-
-rule "Logs: Player Stat Summary (Flashpoint Between Captures)":
-    @Event eachPlayer
-    @Condition isMatchComplete() != true
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_PlayerSummaryFrequency == 0
-    @Condition getCurrentGamemode() == Gamemode.FLASHPOINT
-    @Condition Logs_CurrentObjectiveIndex != getCurrentObjective()
-    @Condition teamScore(Team.1) + teamScore(Team.2) >= 5 == false
-    
-    CalcHeroPlayedTime()
-    eventPlayer.Logs_LastHero = eventPlayer.getCurrentHero()
-    eventPlayer.Logs_LastHeroTime = Match_CurrentMatchTime
-    for eventPlayer.Logs_CurrentHeroIterator in range(len(eventPlayer.Logs_HeroesPlayedArray)):
-        eventPlayer.Logs_CurrentHeroIterated = eventPlayer.Logs_HeroesPlayedArray[eventPlayer.Logs_CurrentHeroIterator]
-        printLog(",player_stat,{0},{1},{2}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.Logs_CurrentHeroIterated), "{0},{1}".format("{0},{1},{2}".format("{0},{1},{2}".format("{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ELIMINATIONS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.FINAL_BLOWS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DEATHS)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DAMAGE_DEALT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.BARRIER_DAMAGE_DEALT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.HERO_DAMAGE_DEALT)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.HEALING_DEALT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.HEALING_RECEIVED), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SELF_HEALING))), "{0},{1},{2}".format("{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DAMAGE_TAKEN), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DAMAGE_BLOCKED)), "{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DEFENSIVE_ASSISTS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.OFFENSIVE_ASSISTS)), "{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ULTIMATES_EARNED), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ULTIMATES_USED))), "{0},{1}".format("{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.MULTIKILL_BEST), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.MULTIKILLS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SOLO_KILLS)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.OBJECTIVE_KILLS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ENVIRONMENTAL_KILLS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ENVIRONMENTAL_DEATHS)))), "{0},{1}".format("{0},{1},{2}".format("{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.CRITICAL_HITS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.CRITICAL_HIT_ACCURACY)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_ACCURACY), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_CRITICAL_HIT_ACCURACY), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_CRITICAL_HIT_KILLS)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SHOTS_FIRED), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SHOTS_HIT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SHOTS_MISSED))), "{0},{1}".format("{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_SHOTS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_HITS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.WEAPON_ACCURACY)), eventPlayer.Logs_HeroesPlayedTimeArray[eventPlayer.Logs_CurrentHeroIterator])))))
-    Logs_PlayerSummaryCount += 1
-
-
-rule "Player Status - Check if a player is inactive (AFK)":
-    @Event eachPlayer
-    @Condition Player_Status == true
-    @Condition isInSetup() == true
-    @Condition eventPlayer.getCurrentHero() == true
-    @Condition (eventPlayer.isMoving() == false and eventPlayer.isHoldingButton(Button.RELOAD) == false and eventPlayer.isFiringPrimaryFire() == false and eventPlayer.isFiringSecondaryFire() == false and eventPlayer.isUsingAbility1() == false and eventPlayer.isUsingAbility2() == false and eventPlayer.isHoldingButton(Button.ULTIMATE) == false and eventPlayer.isJumping() == false and eventPlayer.isCrouching() == false) == true
-    
-    wait(25, Wait.ABORT_WHEN_FALSE)
-    eventPlayer.AFK = true
-    Display_StatusHUD = true
-    eventPlayer.startForcingOutlineFor(getPlayers(eventPlayer.getTeam()), true, Color.YELLOW, OutlineVisibility.ALWAYS)
-    hudSubheader(getPlayers(Team.1 if eventPlayer.getTeam() == Team.1 else Team.2), "{0} - {1}".format(eventPlayer, "{0}{1}".format(eventPlayer.AFK_Timer, LanguageArray[17][localPlayer.PlayerLanguage])), HudPosition.LEFT, 0.4, Color.YELLOW, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
-    eventPlayer.Status_TextID = getLastCreatedText()
-    hudSubtext(eventPlayer, LanguageArray[32][eventPlayer.PlayerLanguage], HudPosition.TOP, 26, Color.YELLOW, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
-    eventPlayer.AFK_TextID = getLastCreatedText()
-    wait(1)
-    Display_StatusHUD = false
-
-
-rule "Player Status - Clear Text if a player returns (AFK)":
-    @Event eachPlayer
-    @Condition Player_Status == true
-    @Condition isInSetup() == true
-    @Condition eventPlayer.getCurrentHero() == true
-    @Condition (eventPlayer.isMoving() == true or eventPlayer.isHoldingButton(Button.RELOAD) == true or eventPlayer.isFiringPrimaryFire() or eventPlayer.isFiringSecondaryFire() or eventPlayer.isUsingAbility1() or eventPlayer.isUsingAbility2() or eventPlayer.isHoldingButton(Button.ULTIMATE) or eventPlayer.isJumping() or eventPlayer.isCrouching()) == true
-    @Condition eventPlayer.AFK == true
-    
-    eventPlayer.AFK = false
-    eventPlayer.ChangeStatusHUD = true
-    eventPlayer.stopForcingOutlineFor(getPlayers(eventPlayer.getTeam()))
-    destroyHudText(eventPlayer.Status_TextID)
-    destroyHudText(eventPlayer.AFK_TextID)
-    wait(0.1)
-    eventPlayer.ChangeStatusHUD = false
-
-
-rule "Player Status - Create Inactivity HUD":
-    @Condition Player_Status == true
-    @Condition isInSetup() == true
-    @Condition Display_StatusHUD == true
-    
-    if getPlayersInSlot(0, Team.1).AFK == true or getPlayersInSlot(1, Team.1).AFK == true or getPlayersInSlot(2, Team.1).AFK == true or getPlayersInSlot(3, Team.1).AFK == true or getPlayersInSlot(4, Team.1).AFK == true:
-        if Team1StatusHUD == false:
-            hudSubtext(getPlayers(Team.1), LanguageArray[30][localPlayer.PlayerLanguage], HudPosition.LEFT, 0.3, Color.RED, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
-            Team1StatusTextID = getLastCreatedText()
-            Team1StatusHUD = true
-    if getPlayersInSlot(0, Team.2).AFK == true or getPlayersInSlot(1, Team.2).AFK == true or getPlayersInSlot(2, Team.2).AFK == true or getPlayersInSlot(3, Team.2).AFK == true or getPlayersInSlot(4, Team.2).AFK == true:
-        if Team2StatusHUD == false:
-            hudSubtext(getPlayers(Team.2), LanguageArray[30][localPlayer.PlayerLanguage], HudPosition.LEFT, 0.3, Color.RED, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
-            Team2StatusTextID = getLastCreatedText()
-            Team2StatusHUD = true
-
-
-rule "Player Status - Clear Inactivity HUD":
-    @Condition Player_Status == true
-    @Condition isInSetup() == true
-    @Condition (getPlayersInSlot(0, Team.1).ChangeStatusHUD == true or getPlayersInSlot(1, Team.1).ChangeStatusHUD == true or getPlayersInSlot(2, Team.1).ChangeStatusHUD == true or getPlayersInSlot(3, Team.1).ChangeStatusHUD == true or getPlayersInSlot(4, Team.1).ChangeStatusHUD == true or getPlayersInSlot(0, Team.2).ChangeStatusHUD == true or getPlayersInSlot(1, Team.2).ChangeStatusHUD == true or getPlayersInSlot(2, Team.2).ChangeStatusHUD == true or getPlayersInSlot(3, Team.2).ChangeStatusHUD == true or getPlayersInSlot(4, Team.2).ChangeStatusHUD == true) == true
-    
-    if getPlayersInSlot(0, Team.1).AFK == false and getPlayersInSlot(1, Team.1).AFK == false and getPlayersInSlot(2, Team.1).AFK == false and getPlayersInSlot(3, Team.1).AFK == false and getPlayersInSlot(4, Team.1).AFK == false:
-        destroyHudText(Team1StatusTextID)
-        Team1StatusHUD = false
-    if getPlayersInSlot(0, Team.2).AFK == false and getPlayersInSlot(1, Team.2).AFK == false and getPlayersInSlot(2, Team.2).AFK == false and getPlayersInSlot(3, Team.2).AFK == false and getPlayersInSlot(4, Team.2).AFK == false:
-        destroyHudText(Team2StatusTextID)
-        Team2StatusHUD = false
-
-
-rule "Player Status - Reset Conditions as game starts":
-    @Condition isGameInProgress() == false
-    @Condition isInSetup() == true
-    @Condition (Team1Ready == "ready" and Team2Ready == "ready" or getMatchTime() < 0.1) == true
-    
-    getAllPlayers().stopForcingOutlineFor(getAllPlayers())
-    getAllPlayers().AFK = false
-
-
-rule "Player Status - Reset Outlines when a Player joins (Swaps Teams)":
-    @Event playerJoined
-    @Condition isInSetup() == true
-    
-    getAllPlayers().stopForcingOutlineFor(eventPlayer)
-
-
-rule "Player Status - Remove HUD if a player leaves":
-    @Event playerLeft
-    
-    eventPlayer.ChangeStatusHUD = true
-    wait(0.1)
-    eventPlayer.ChangeStatusHUD = false
-
-
-rule "Player Status - Track how long a player has been AFK":
-    @Event eachPlayer
-    @Condition eventPlayer.AFK == true
-    
-    eventPlayer.AFK_Timer = 25
-    while eventPlayer.AFK == true:
-        eventPlayer.AFK_Timer = eventPlayer.AFK_Timer + 1
-        wait(1)
-    if eventPlayer.AFK == false:
-        eventPlayer.AFK_Timer = 25
+   
+# Adding Player Status Rules
+#!include "PlayerStatus.opy"
 
 
 rule "Display Next Flashpoint to Spectators":
@@ -1137,4 +595,5 @@ rule "Display Next Flashpoint to Spectators":
     wait(15)
     destroyHudText(Flashpoint_TextID)
 
-
+# Adding LogTime Rules
+#!include "logtime.opy"
