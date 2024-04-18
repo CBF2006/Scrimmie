@@ -1,6 +1,6 @@
 settings {
     "main": {
-        "description": "Scrimmie! v3.5 (PRE-RELEASE)\nCreated by CBF\r\n\r\nStandard Version\r\nLast tested on Patch 2.9.1.0.123307\r\r\n\r\nImport Code: Y2TXE\r\nworkshop.codes/scrimmie\r\ndiscord.gg/TNtbWP4aAg",
+        "description": "Scrimmie! v3.5.2\nCreated by CBF\r\n\r\nStandard Version\r\nLast tested on Patch 2.10.0.0.124202\r\r\n\r\nImport Code: Y2TXE\r\nworkshop.codes/scrimmie\r\ndiscord.gg/TNtbWP4aAg",
         "modeName": "Scrimmie!"
     },
     "lobby": {
@@ -9,20 +9,34 @@ settings {
         "pauseGameOnDisconnect": true
     },
     "gamemodes": {
+        "clash": {
+            "captureSpeed%": 100,
+            "enableCompetitiveRules": true
+        },
         "control": {
+            "enabled": false,
+            "enableCompetitiveRules": true,
             "scoreToWin": 3
         },
-        "escort": {},
+        "escort": {
+            "enableCompetitiveRules": true
+        },
         "flashpoint": {
+            "enabled": false,
+            "enableCompetitiveRules": true,
             "scoreToWin": 5
         },
-        "hybrid": {},
-        "push": {},
+        "hybrid": {
+            "enableCompetitiveRules": true
+        },
+        "push": {
+            "enableCompetitiveRules": true
+        },
         "general": {
-            "enableCompetitiveRules": true,
             "gamemodeStartTrigger": "immediately",
             "enableKillCam": false,
-            "roleLimit": "1Tank2Offense2Support"
+            "roleLimit": "1Tank2Offense2Support",
+            "tankPassiveHealthBonus": "alwaysEnabled"
         }
     },
     "workshop": {
