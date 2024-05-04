@@ -1,6 +1,6 @@
 settings {
     "main": {
-        "description": "Scrimmie! v3.5.3\nCreated by CBF\r\n\r\nProfessional Version\r\nLast tested on Patch 2.10.0.1.124958\r\r\n\r\nImport Code: Y2TXE\r\nworkshop.codes/scrimmie\r\ndiscord.gg/TNtbWP4aAg",
+        "description": "Scrimmie! v3.5.3\nCreated by CBF\r\n\r\nProfessional Version\r\nLast tested on Patch 2.10.0.1.124958\r\r\n\r\nImport Code: A8XVJ\r\nworkshop.codes/scrimmie\r\ndiscord.gg/TNtbWP4aAg",
         "modeName": "Scrimmie!"
     },
     "lobby": {
