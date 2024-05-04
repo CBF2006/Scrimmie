@@ -1,6 +1,6 @@
 settings {
     "main": {
-        "description": "Scrimmie! v3.5.2\nCreated by CBF\r\n\r\nStandard Version\r\nLast tested on Patch 2.10.0.0.124202\r\r\n\r\nImport Code: Y2TXE\r\nworkshop.codes/scrimmie\r\ndiscord.gg/TNtbWP4aAg",
+        "description": "Scrimmie! v3.5.3\nCreated by CBF\r\n\r\nStandard Version\r\nLast tested on Patch 2.10.0.1.124958\r\r\n\r\nImport Code: Y2TXE\r\nworkshop.codes/scrimmie\r\ndiscord.gg/TNtbWP4aAg",
         "modeName": "Scrimmie!"
     },
     "lobby": {
@@ -9,10 +9,6 @@ settings {
         "pauseGameOnDisconnect": true
     },
     "gamemodes": {
-        "clash": {
-            "captureSpeed%": 100,
-            "enableCompetitiveRules": true
-        },
         "control": {
             "enabled": false,
             "enableCompetitiveRules": true,
@@ -59,7 +55,6 @@ globalvar Scoreboard_Size 9
 globalvar MaxSetupTime 10
 globalvar ScoreModified 11
 globalvar FirstRoundDone 12
-globalvar GameMode 13
 globalvar ShouldRestore 14
 globalvar UltCharges 15
 globalvar Heroes 16
@@ -177,7 +172,7 @@ rule "Help HUD":
     #Current Language in Default Language
     hudSubheader(getAllPlayers(), CurrentLanguageArray[DefaultLanguage][localPlayer.PlayerLanguage], HudPosition.TOP, 24, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
     hudSubheader(getAllPlayers(), "workshop.codes/scrimmie", HudPosition.LEFT, 0.1, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
-    hudSubheader(getAllPlayers(), "{0}: Y2TXE".format(LanguageArray[12][localPlayer.PlayerLanguage]), HudPosition.LEFT, 0.2, Color.SKY_BLUE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
+    hudSubheader(getAllPlayers(), "{0}: Y2TXE".format(LanguageArray[12][localPlayer.PlayerLanguage]), HudPosition.LEFT, 0.2, Color.TURQUOISE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
     InfoDrawn = true
 
 
@@ -223,7 +218,6 @@ def CreateSpectatorHUD():
             hudSubheader(null, "{0}  {1} - {2}".format("{0} {1}".format(abilityIconString(getPlayersInSlot(2, Team.2).getCurrentHero(), Button.ABILITY_1) if getPlayersInSlot(2, Team.2).getAbilityCooldown(Button.ABILITY_1) == 0 else "", abilityIconString(getPlayersInSlot(2, Team.2).getCurrentHero(), Button.ABILITY_2) if getPlayersInSlot(2, Team.2).getAbilityCooldown(Button.ABILITY_2) == 0 else ""), ceil(getPlayersInSlot(2, Team.2).getStatistic(Stat.BARRIER_DAMAGE_DEALT) + getPlayersInSlot(2, Team.2).getStatistic(Stat.HERO_DAMAGE_DEALT)), "{0} - {1} - {2}".format(ceil(getPlayersInSlot(2, Team.2).getStatistic(Stat.DAMAGE_TAKEN)), getPlayersInSlot(2, Team.2).getStatistic(Stat.FINAL_BLOWS), "{0} - {1} - {2}".format(getPlayersInSlot(2, Team.2).getStatistic(Stat.DEATHS), ceil(getPlayersInSlot(2, Team.2).getStatistic(Stat.HEALING_DEALT)), "{0}   {1}".format(getPlayersInSlot(2, Team.2).getStatistic(Stat.ULTIMATES_USED), heroIcon(getPlayersInSlot(2, Team.2).getCurrentHero()))))), HudPosition.RIGHT, -3, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
             hudSubheader(null, "{0}  {1} - {2}".format("{0} {1}".format(abilityIconString(getPlayersInSlot(3, Team.2).getCurrentHero(), Button.ABILITY_1) if getPlayersInSlot(3, Team.2).getAbilityCooldown(Button.ABILITY_1) == 0 else "", abilityIconString(getPlayersInSlot(3, Team.2).getCurrentHero(), Button.ABILITY_2) if getPlayersInSlot(3, Team.2).getAbilityCooldown(Button.ABILITY_2) == 0 else ""), ceil(getPlayersInSlot(3, Team.2).getStatistic(Stat.BARRIER_DAMAGE_DEALT) + getPlayersInSlot(3, Team.2).getStatistic(Stat.HERO_DAMAGE_DEALT)), "{0} - {1} - {2}".format(ceil(getPlayersInSlot(3, Team.2).getStatistic(Stat.DAMAGE_TAKEN)), getPlayersInSlot(3, Team.2).getStatistic(Stat.FINAL_BLOWS), "{0} - {1} - {2}".format(getPlayersInSlot(3, Team.2).getStatistic(Stat.DEATHS), ceil(getPlayersInSlot(3, Team.2).getStatistic(Stat.HEALING_DEALT)), "{0}   {1}".format(getPlayersInSlot(3, Team.2).getStatistic(Stat.ULTIMATES_USED), heroIcon(getPlayersInSlot(3, Team.2).getCurrentHero()))))), HudPosition.RIGHT, -2, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
             hudSubheader(null, "{0}  {1} - {2}".format("{0} {1}".format(abilityIconString(getPlayersInSlot(4, Team.2).getCurrentHero(), Button.ABILITY_1) if getPlayersInSlot(4, Team.2).getAbilityCooldown(Button.ABILITY_1) == 0 else "", abilityIconString(getPlayersInSlot(4, Team.2).getCurrentHero(), Button.ABILITY_2) if getPlayersInSlot(4, Team.2).getAbilityCooldown(Button.ABILITY_2) == 0 else ""), ceil(getPlayersInSlot(4, Team.2).getStatistic(Stat.BARRIER_DAMAGE_DEALT) + getPlayersInSlot(4, Team.2).getStatistic(Stat.HERO_DAMAGE_DEALT)), "{0} - {1} - {2}".format(ceil(getPlayersInSlot(4, Team.2).getStatistic(Stat.DAMAGE_TAKEN)), getPlayersInSlot(4, Team.2).getStatistic(Stat.FINAL_BLOWS), "{0} - {1} - {2}".format(getPlayersInSlot(4, Team.2).getStatistic(Stat.DEATHS), ceil(getPlayersInSlot(4, Team.2).getStatistic(Stat.HEALING_DEALT)), "{0}   {1}".format(getPlayersInSlot(4, Team.2).getStatistic(Stat.ULTIMATES_USED), heroIcon(getPlayersInSlot(4, Team.2).getCurrentHero()))))), HudPosition.RIGHT, -1, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
-            #Large Scoreboard
         elif Scoreboard_Size == 0:
             #team 1
             hudSubtext(null, "DD - DT - FB - D - HD - UU", HudPosition.LEFT, 1, Color.RED, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
@@ -297,14 +291,14 @@ rule "Ready Up - Ready Confirmation On":
                 else:
                     Team1Ready = "Ready"
                     destroyHudText(eventPlayer.Confirm_Ready_TextID)
-                    smallMessage(getAllPlayers(), l"{0} {1}".format(eventPlayer, LanguageArray[14][localPlayer.PlayerLanguage]))
+                    smallMessage(getAllPlayers(), "{0} {1}".format(eventPlayer, LanguageArray[14][localPlayer.PlayerLanguage]))
                     eventPlayer.Has_Readied = false
             else:
                 Team1Ready = "Ready"
-                smallMessage(getAllPlayers(), l"{0} {1}".format(eventPlayer, LanguageArray[14][localPlayer.PlayerLanguage]))
+                smallMessage(getAllPlayers(), "{0} {1}".format(eventPlayer, LanguageArray[14][localPlayer.PlayerLanguage]))
         else:
             Team1Ready = "Not Ready"
-            smallMessage(getAllPlayers(), l"{0} {1}".format(eventPlayer, LanguageArray[15][localPlayer.PlayerLanguage]))
+            smallMessage(getAllPlayers(), "{0} {1}".format(eventPlayer, LanguageArray[15][localPlayer.PlayerLanguage]))
     elif eventPlayer.getTeam() == Team.2:
         if Team2Ready == "Not Ready":
             if getPlayersInSlot(0, eventPlayer.getTeam()).AFK == true or getPlayersInSlot(1, eventPlayer.getTeam()).AFK == true or getPlayersInSlot(2, eventPlayer.getTeam()).AFK == true or getPlayersInSlot(3, eventPlayer.getTeam()).AFK == true or getPlayersInSlot(4, eventPlayer.getTeam()).AFK == true:
@@ -316,14 +310,14 @@ rule "Ready Up - Ready Confirmation On":
                 else:
                     Team2Ready = "Ready"
                     destroyHudText(eventPlayer.Confirm_Ready_TextID)
-                    smallMessage(getAllPlayers(), l"{0} {1}".format(eventPlayer, LanguageArray[14][localPlayer.PlayerLanguage]))
+                    smallMessage(getAllPlayers(), "{0} {1}".format(eventPlayer, LanguageArray[14][localPlayer.PlayerLanguage]))
                     eventPlayer.Has_Readied = false
             else:
                 Team2Ready = "Ready"
-                smallMessage(getAllPlayers(), l"{0} {1}".format(eventPlayer, LanguageArray[14][localPlayer.PlayerLanguage]))
+                smallMessage(getAllPlayers(), "{0} {1}".format(eventPlayer, LanguageArray[14][localPlayer.PlayerLanguage]))
         else:
             Team2Ready = "Not Ready"
-            smallMessage(getAllPlayers(), l"{0} {1}".format(eventPlayer, LanguageArray[15][localPlayer.PlayerLanguage]))
+            smallMessage(getAllPlayers(), "{0} {1}".format(eventPlayer, LanguageArray[15][localPlayer.PlayerLanguage]))
 
 
 rule "Ready Up - Ready Confirmation Off":
@@ -340,17 +334,17 @@ rule "Ready Up - Ready Confirmation Off":
     if eventPlayer.getTeam() == Team.1:
         if Team1Ready == "Not Ready":
             Team1Ready = "Ready"
-            smallMessage(getAllPlayers(), l"{0} {1}".format(eventPlayer, LanguageArray[14][localPlayer.PlayerLanguage]))
+            smallMessage(getAllPlayers(), "{0} {1}".format(eventPlayer, LanguageArray[14][localPlayer.PlayerLanguage]))
         else:
             Team1Ready = "Not Ready"
-            smallMessage(getAllPlayers(), l"{0} {1}".format(eventPlayer, LanguageArray[15][localPlayer.PlayerLanguage]))
+            smallMessage(getAllPlayers(), "{0} {1}".format(eventPlayer, LanguageArray[15][localPlayer.PlayerLanguage]))
     elif eventPlayer.getTeam() == Team.2:
         if Team2Ready == "Not Ready":
             Team2Ready = "Ready"
-            smallMessage(getAllPlayers(), l"{0} {1}".format(eventPlayer, LanguageArray[14][localPlayer.PlayerLanguage]))
+            smallMessage(getAllPlayers(), "{0} {1}".format(eventPlayer, LanguageArray[14][localPlayer.PlayerLanguage]))
         else:
             Team2Ready = "Not Ready"
-            smallMessage(getAllPlayers(), l"{0} {1}".format(eventPlayer, LanguageArray[15][localPlayer.PlayerLanguage]))
+            smallMessage(getAllPlayers(), "{0} {1}".format(eventPlayer, LanguageArray[15][localPlayer.PlayerLanguage]))
 
 
 rule "First attack done":
@@ -381,7 +375,7 @@ rule "End Control after 3 rounds":
 
 
 rule "End Hybrid/Escort if teams tie":
-    @Condition getCurrentGamemode() == Gamemode.ESCORT or getCurrentGamemode() == Gamemode.HYBRID
+    @Condition (getCurrentGamemode() == Gamemode.ESCORT or getCurrentGamemode() == Gamemode.HYBRID) == true
     @Condition teamScore(Team.1) == 3
     @Condition teamScore(Team.2) == 3
     
@@ -420,7 +414,7 @@ rule "Defense Map Change Hero":
     wait(0.1)
     eventPlayer.setAllowedHeroes(getAllHeroes())
 
-# Adding Defender Teleports Code
+
 #!include "teleports.opy"
 
 
@@ -441,17 +435,17 @@ def PlayerDCInfoTeam1():
     @Name "DC Value Tracking - Team 1 Subroutine"
     
     if eventPlayer.hasSpawned():
-        if ShouldRestore[0 + eventPlayer.getSlot()] >= 0:
+        if ShouldRestore[eventPlayer.getSlot()] >= 0:
             if eventPlayer.isAlive():
-                UltCharges[0 + eventPlayer.getSlot()] = eventPlayer.getUltCharge()
-                Heroes[0 + eventPlayer.getSlot()] = eventPlayer.getCurrentHero()
-                Positions[0 + eventPlayer.getSlot()] = eventPlayer.getPosition()
-                Cooldowns1[0 + eventPlayer.getSlot()] = eventPlayer.getAbilityCooldown(Button.ABILITY_1)
-                Cooldowns2[0 + eventPlayer.getSlot()] = eventPlayer.getAbilityCooldown(Button.ABILITY_2)
-                DVaRestore[0 + eventPlayer.getSlot()] = (eventPlayer.getUltCharge() if eventPlayer.getMaxHealth() > 200 else DVaRestore[0 + eventPlayer.getSlot()]) if eventPlayer.getCurrentHero() == Hero.DVA else -1
-                ShouldRestore[0 + eventPlayer.getSlot()] = eventPlayer.getNormalizedHealth()
+                UltCharges[eventPlayer.getSlot()] = eventPlayer.getUltCharge()
+                Heroes[eventPlayer.getSlot()] = eventPlayer.getCurrentHero()
+                Positions[eventPlayer.getSlot()] = eventPlayer.getPosition()
+                Cooldowns1[eventPlayer.getSlot()] = eventPlayer.getAbilityCooldown(Button.ABILITY_1)
+                Cooldowns2[eventPlayer.getSlot()] = eventPlayer.getAbilityCooldown(Button.ABILITY_2)
+                DVaRestore[eventPlayer.getSlot()] = (eventPlayer.getUltCharge() if eventPlayer.getMaxHealth() > 200 else DVaRestore[eventPlayer.getSlot()]) if eventPlayer.getCurrentHero() == Hero.DVA else -1
+                ShouldRestore[eventPlayer.getSlot()] = eventPlayer.getNormalizedHealth()
             else:
-                ShouldRestore[0 + eventPlayer.getSlot()] = 0
+                ShouldRestore[eventPlayer.getSlot()] = 0
 
 
 rule "DC Value Tracking - Team 2":
@@ -493,18 +487,18 @@ rule "Player Reconnected - Team 1":
     
     waitUntil(eventPlayer.hasSpawned(), 10)
     wait(0.1)
-    if eventPlayer.getCurrentHero() == Heroes[0 + eventPlayer.getSlot()]:
-        eventPlayer.setUltCharge(UltCharges[0 + eventPlayer.getSlot()])
-        if ShouldRestore[0 + eventPlayer.getSlot()] > 0:
-            ShouldRestore[0 + eventPlayer.getSlot()] = 0 - (ShouldRestore[0 + eventPlayer.getSlot()])
-            eventPlayer.startForcingPosition(Positions[0 + eventPlayer.getSlot()], false)
+    if eventPlayer.getCurrentHero() == Heroes[eventPlayer.getSlot()]:
+        eventPlayer.setUltCharge(UltCharges[eventPlayer.getSlot()])
+        if ShouldRestore[eventPlayer.getSlot()] > 0:
+            ShouldRestore[eventPlayer.getSlot()] = 0 - ShouldRestore[eventPlayer.getSlot()]
+            eventPlayer.startForcingPosition(Positions[eventPlayer.getSlot()], false)
             wait(0.1)
             eventPlayer.stopForcingPosition()
             PlayerDCDvaTeam1()
-            eventPlayer.setHealth((0 - (ShouldRestore[0 + eventPlayer.getSlot()])) * eventPlayer.getMaxHealth())
-            eventPlayer.setAbilityCooldown(Button.ABILITY_1, Cooldowns1[0 + eventPlayer.getSlot()])
-            eventPlayer.setAbilityCooldown(Button.ABILITY_2, Cooldowns2[0 + eventPlayer.getSlot()])
-            ShouldRestore[0 + eventPlayer.getSlot()] = 0 - (ShouldRestore[0 + eventPlayer.getSlot()])
+            eventPlayer.setHealth((0 - ShouldRestore[eventPlayer.getSlot()]) * eventPlayer.getMaxHealth())
+            eventPlayer.setAbilityCooldown(Button.ABILITY_1, Cooldowns1[eventPlayer.getSlot()])
+            eventPlayer.setAbilityCooldown(Button.ABILITY_2, Cooldowns2[eventPlayer.getSlot()])
+            ShouldRestore[eventPlayer.getSlot()] = 0 - ShouldRestore[eventPlayer.getSlot()]
 
 
 rule "Player Reconnected - Team 2":
@@ -533,12 +527,12 @@ def PlayerDCDvaTeam1():
     @Name "Player Reconnected - Team 1 DVa"
     
     if eventPlayer.getCurrentHero() == Hero.DVA:
-        if DVaRestore[0 + eventPlayer.getSlot()] >= 0:
-            eventPlayer.setUltCharge(DVaRestore[0 + eventPlayer.getSlot()])
+        if DVaRestore[eventPlayer.getSlot()] >= 0:
+            eventPlayer.setUltCharge(DVaRestore[eventPlayer.getSlot()])
             wait(0.1)
             damage(eventPlayer, null, 1000)
             wait(1.6)
-            eventPlayer.setUltCharge(UltCharges[0 + eventPlayer.getSlot()])
+            eventPlayer.setUltCharge(UltCharges[eventPlayer.getSlot()])
 
 
 def PlayerDCDvaTeam2():
@@ -575,8 +569,8 @@ rule "Multi-Language: Choose Language":
     eventPlayer.PlayerLanguage = (eventPlayer.PlayerLanguage + 1) % len(LanguageArray[0])
     smallMessage(eventPlayer, "{0}".format(LanguageArray[13][eventPlayer.PlayerLanguage]))
 
-   
-# Adding Player Status Rules
+
+# Adding Player Status
 #!include "PlayerStatus.opy"
 
 
@@ -595,5 +589,6 @@ rule "Display Next Flashpoint to Spectators":
     wait(15)
     destroyHudText(Flashpoint_TextID)
 
-# Adding LogTime Rules
+
+# Adding LogTime
 #!include "logtime.opy"

@@ -5,7 +5,15 @@ rule "Player Status - Check if a player is inactive (AFK)":
     @Condition Player_Status == true
     @Condition isInSetup() == true
     @Condition eventPlayer.getCurrentHero() == true
-    @Condition (eventPlayer.isMoving() == false and eventPlayer.isHoldingButton(Button.RELOAD) == false and eventPlayer.isFiringPrimaryFire() == false and eventPlayer.isFiringSecondaryFire() == false and eventPlayer.isUsingAbility1() == false and eventPlayer.isUsingAbility2() == false and eventPlayer.isHoldingButton(Button.ULTIMATE) == false and eventPlayer.isJumping() == false and eventPlayer.isCrouching() == false) == true
+    @Condition eventPlayer.isMoving() == false
+    @Condition eventPlayer.isHoldingButton(Button.RELOAD) == false
+    @Condition eventPlayer.isFiringPrimaryFire() == false
+    @Condition eventPlayer.isFiringSecondaryFire() == false
+    @Condition eventPlayer.isUsingAbility1() == false
+    @Condition eventPlayer.isUsingAbility2() == false
+    @Condition eventPlayer.isHoldingButton(Button.ULTIMATE) == false
+    @Condition eventPlayer.isJumping() == false
+    @Condition eventPlayer.isCrouching() == false
     
     wait(25, Wait.ABORT_WHEN_FALSE)
     eventPlayer.AFK = true
@@ -24,7 +32,7 @@ rule "Player Status - Clear Text if a player returns (AFK)":
     @Condition Player_Status == true
     @Condition isInSetup() == true
     @Condition eventPlayer.getCurrentHero() == true
-    @Condition (eventPlayer.isMoving() == true or eventPlayer.isHoldingButton(Button.RELOAD) == true or eventPlayer.isFiringPrimaryFire() or eventPlayer.isFiringSecondaryFire() or eventPlayer.isUsingAbility1() or eventPlayer.isUsingAbility2() or eventPlayer.isHoldingButton(Button.ULTIMATE) or eventPlayer.isJumping() or eventPlayer.isCrouching()) == true
+    @Condition (eventPlayer.isMoving() or eventPlayer.isHoldingButton(Button.RELOAD) or eventPlayer.isFiringPrimaryFire() or eventPlayer.isFiringSecondaryFire() or eventPlayer.isUsingAbility1() or eventPlayer.isUsingAbility2() or eventPlayer.isHoldingButton(Button.ULTIMATE) or eventPlayer.isJumping() or eventPlayer.isCrouching()) == true
     @Condition eventPlayer.AFK == true
     
     eventPlayer.AFK = false
@@ -96,7 +104,7 @@ rule "Player Status - Track how long a player has been AFK":
     
     eventPlayer.AFK_Timer = 25
     while eventPlayer.AFK == true:
-        eventPlayer.AFK_Timer = eventPlayer.AFK_Timer + 1
+        eventPlayer.AFK_Timer += 1
         wait(1)
     if eventPlayer.AFK == false:
         eventPlayer.AFK_Timer = 25
