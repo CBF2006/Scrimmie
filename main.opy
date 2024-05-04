@@ -1,6 +1,6 @@
 settings {
     "main": {
-        "description": "Scrimmie! v3.5.3\nCreated by CBF\r\n\r\nStandard Version\r\nLast tested on Patch 2.10.0.1.124958\r\r\n\r\nImport Code: Y2TXE\r\nworkshop.codes/scrimmie\r\ndiscord.gg/TNtbWP4aAg",
+        "description": "Scrimmie! v3.5.3\nCreated by CBF\r\n\r\nProfessional Version\r\nLast tested on Patch 2.10.0.1.124958\r\r\n\r\nImport Code: Y2TXE\r\nworkshop.codes/scrimmie\r\ndiscord.gg/TNtbWP4aAg",
         "modeName": "Scrimmie!"
     },
     "lobby": {
@@ -254,7 +254,7 @@ rule "Ultimate: +Ns match time while in setup":
     @Condition eventPlayer.isHoldingButton(Button.INTERACT) == false
     @Condition eventPlayer.AddTimeCD == 0
     
-    MaxSetupTime = createWorkshopSetting(int[60:600], "1. General Settings", "Maximum Setup Time", 120, 2)
+    MaxSetupTime = createWorkshopSetting(int[60:600], "1. General Settings", "Maximum Setup Time", 300, 2)
     if getMatchTime() + MatchDelayAmount >= MaxSetupTime:
         setMatchTime(MaxSetupTime)
         smallMessage(eventPlayer, LanguageArray[25][localPlayer.PlayerLanguage])

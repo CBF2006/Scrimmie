@@ -1,7 +1,7 @@
 #!mainFile "main.opy"
 
 rule "Logs: Initialization - Workshop Settings":
-    Logs_EnableLogGenerator = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Enable Log Generator", false, 0)
+    Logs_EnableLogGenerator = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Enable Log Generator", true, 0)
     Logs_OutputFormat = createWorkshopSetting(enum["CSV"], "4. LogTime (PC Only)", "Output Format", 0, 1)
     Logs_TrackKills = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Kills and Deaths", true, 2)
     Logs_TrackOffensiveAssists = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Offensive Assists", true, 3)
