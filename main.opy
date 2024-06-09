@@ -1,6 +1,6 @@
 settings {
     "main": {
-        "description": "Scrimmie! v3.5.3\nCreated by CBF\r\n\r\nStandard Version\r\nLast tested on Patch 2.10.0.1.124958\r\r\n\r\nImport Code: Y2TXE\r\nworkshop.codes/scrimmie\r\ndiscord.gg/TNtbWP4aAg",
+        "description": "Scrimmie! v3.6\nCreated by CBF\r\n\r\nStandard Version\r\nLast tested on Patch 2.10.1.1 - 125747\r\r\n\r\nImport Code: Y2TXE\r\nworkshop.codes/scrimmie\r\ndiscord.gg/TNtbWP4aAg",
         "modeName": "Scrimmie!"
     },
     "lobby": {
@@ -556,7 +556,7 @@ rule "Multi-Language: Set Default Language":
     @Condition isInSetup() == true
     @Condition getMatchRound() == 1
     
-    DefaultLanguage = createWorkshopSetting(enum["English", "Spanish (Español)", "Korean (한국어)", "French (Français)", "Japanese (日本語)"], "1. General Settings", "Default Language", 0, 0)
+    DefaultLanguage = createWorkshopSetting(enum["English", "Spanish / Español", "Korean / 한국어", "French / Français", "Japanese / 日本語", "Chinese (Simplified) / 简体中文"], "1. General Settings", "Default Language", 0, 0)
     getAllPlayers().PlayerLanguage = DefaultLanguage
 
 
