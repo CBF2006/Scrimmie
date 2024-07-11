@@ -4,8 +4,8 @@
 
 | Version | Latest Build | Stability          |
 | ------- | ------- | ------------------ |
-| 5v5 Standard | 3.6.1   | :white_check_mark: |
-| 5v5 Professional | 3.6.1   | :white_check_mark: |
+| 5v5 Standard | 3.6.3   | :white_check_mark: |
+| 5v5 Professional | 3.6.3   | :white_check_mark: |
 | 6v6 Standard | 3.4.1   | ⚠️ |
 | 6v6 OW1 | 3.4.1   | ⚠️                |
 
