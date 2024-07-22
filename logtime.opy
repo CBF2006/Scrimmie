@@ -323,7 +323,7 @@ rule "Logs: Player Stat Summary":
 
 rule "Logs: Player Stat Summary (Flashpoint Between Captures)":
     @Event eachPlayer
-    @Condition isMatchComplete() != true
+    @Condition isMatchComplete() == false
     @Condition Logs_EnableLogGenerator == true
     @Condition Logs_PlayerSummaryFrequency == 0
     @Condition getCurrentGamemode() == Gamemode.FLASHPOINT
