@@ -21,5 +21,5 @@ rule "DEBUG - Performance Stats":
     @Condition DevMode == true
     @Condition DrawScoreboard == true
     
-    hudSubheader(getAllPlayers(), "{0}: {1}%".format("Server Load Peak", getPeakServerLoad()), HudPosition.RIGHT, 0.1, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
     hudSubheader(getAllPlayers(), "{0}: {1}%".format("Server Load Average", getAverageServerLoad()), HudPosition.RIGHT, 0.2, Color.AQUA, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
+    hudSubheader(getAllPlayers(), "{0}: {1}%".format("Server Load Peak", getPeakServerLoad()), HudPosition.RIGHT, 0.1, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
