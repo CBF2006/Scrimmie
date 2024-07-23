@@ -1,38 +1,7 @@
-settings {
-    "main": {
-        "description": "Scrimmie! v3.6.3\r\nCreated by CBF\r\n\r\nStandard Version\r\nLast tested on Patch 2.11.0.0 - 126377\r\n\r\nImport Code: Y2TXE\r\nworkshop.codes/scrimmie\r\ndiscord.gg/TNtbWP4aAg",
-        "modeName": "Scrimmie!"
-    },
-    "lobby": {
-        "allowPlayersInQueue": true,
-        "spectatorSlots": 12,
-        "pauseGameOnDisconnect": true
-    },
-    "gamemodes": {
-        "control": {
-            "enabled": false,
-            "scoreToWin": 3
-        },
-        "escort": {},
-        "flashpoint": {
-            "enabled": false,
-            "scoreToWin": 5
-        },
-        "hybrid": {},
-        "push": {},
-        "general": {
-            "enableCompetitiveRules": true,
-            "gamemodeStartTrigger": "immediately",
-            "enableKillCam": false,
-            "roleLimit": "1Tank2Offense2Support",
-            "tankPassiveHealthBonus": "alwaysEnabled"
-        }
-    },
-    "workshop": {
-        "Control Point Progress Increment": 33.3,
-        "Payload Progress Increment": 10
-    }
-}
+# Remove the "#" below once the duplicate gamemodes are removed, then go into the json file and fix it (Two gamemodes are disabled)
+# This does mean every time this is compiled you will have to fix the settings in-game
+
+# settings "settings.opy.json"
 
 #Global variables
 
@@ -408,7 +377,7 @@ rule "Defense Map Change Hero":
     eventPlayer.setAllowedHeroes(getAllHeroes())
 
 
-/*Defender Teleports*/
+# Adding Defender Teleports
 #!include "teleports.opy"
 
 
@@ -541,7 +510,7 @@ def PlayerDCDvaTeam2():
             eventPlayer.setUltCharge(UltCharges[6 + eventPlayer.getSlot()])
 
 
-/*Language Strings*/
+# Adding Language Strings
 #!include "lang.opy"
 
 
@@ -564,7 +533,7 @@ rule "Multi-Language: Choose Language":
     smallMessage(eventPlayer, "{0}".format(LanguageArray[13][eventPlayer.PlayerLanguage]))
 
 
-/*Adding Player Status*/
+# Adding Player Status
 #!include "PlayerStatus.opy"
 
 
@@ -584,7 +553,7 @@ rule "Display Next Flashpoint to Spectators":
     destroyHudText(Flashpoint_TextID)
 
 
-/*Adding LogTime*/
+# Adding LogTime
 #!include "logtime.opy"
 
 

@@ -1,0 +1,35 @@
+{
+    "main": {
+        "description": "Scrimmie! v3.6.3\r\nCreated by CBF\r\n\r\nStandard Version\r\nLast tested on Patch 2.11.0.0 - 126377\r\n\r\nImport Code: Y2TXE\r\nworkshop.codes/scrimmie\r\ndiscord.gg/TNtbWP4aAg",
+        "modeName": "Scrimmie!"
+    },
+    "lobby": {
+        "allowPlayersInQueue": true,
+        "spectatorSlots": 12,
+        "pauseGameOnDisconnect": true
+    },
+    "gamemodes": {
+        "control": {
+            "enabled": false,
+            "scoreToWin": 3
+        },
+        "escort": {},
+        "flashpoint": {
+            "enabled": false,
+            "scoreToWin": 5
+        },
+        "hybrid": {},
+        "push": {},
+        "general": {
+            "enableCompetitiveRules": true,
+            "gamemodeStartTrigger": "immediately",
+            "enableKillCam": false,
+            "roleLimit": "1Tank2Offense2Support",
+            "tankPassiveHealthBonus": "alwaysEnabled"
+        }
+    },
+    "workshop": {
+        "Control Point Progress Increment": 33.3,
+        "Payload Progress Increment": 10
+    }
+}
