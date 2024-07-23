@@ -21,5 +21,11 @@ rule "DEBUG - Performance Stats":
     @Condition DevMode == true
     @Condition DrawScoreboard == true
     
-    hudSubheader(getAllPlayers(), "{0}: {1}%".format("Server Load Average", getAverageServerLoad()), HudPosition.RIGHT, 0.1, Color.AQUA, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
-    hudSubheader(getAllPlayers(), "{0}: {1}%".format("Server Load Peak", getPeakServerLoad()), HudPosition.RIGHT, 0.2, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
+    hudSubheader(getAllPlayers(), "{0}: {1}%".format("Server Load Average", getAverageServerLoad()), HudPosition.RIGHT, 20, Color.AQUA, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
+    hudSubheader(getAllPlayers(), "{0}: {1}%".format("Server Load Peak", getPeakServerLoad()), HudPosition.RIGHT, 21, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
+
+rule "DEBUG - Autostart the Game":
+    @Condition createWorkshopSetting(bool, "Advanced Options", "Auto start after 10s", false, 2) == true
+
+    wait(10)
+    setMatchTime(5)

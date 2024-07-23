@@ -8,15 +8,15 @@ rule "Dynamic Scoreboard  - Legend":
         #Large Scoreboard
         if Scoreboard_Size == 0:
             #Team 1
-            hudSubtext(null, "DD - DT - FB - D - HD - UU", HudPosition.LEFT, 1, Color.RED, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
+            hudSubtext(null, "DD - DT - FB - D - HD - UU", HudPosition.LEFT, 1, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
             #Team 2
-            hudSubtext(null, "DD - DT - FB - D - HD - UU", HudPosition.RIGHT, 1, Color.RED, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
+            hudSubtext(null, "DD - DT - FB - D - HD - UU", HudPosition.RIGHT, 1, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
             #Small Scoreboard
         elif Scoreboard_Size == 1:
             #Team 1
-            hudSubheader(null, "DD - DT - FB - D - HD - UU", HudPosition.LEFT, 1, Color.RED, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
+            hudSubheader(null, "DD - DT - FB - D - HD - UU", HudPosition.LEFT, 1, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
             #Team 2
-            hudSubheader(null, "DD - DT - FB - D - HD - UU", HudPosition.RIGHT, 1, Color.RED, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
+            hudSubheader(null, "DD - DT - FB - D - HD - UU", HudPosition.RIGHT, 1, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
         #Group Teams
     elif ScoreboardLayout == 1:
         #Large Scoreboard
