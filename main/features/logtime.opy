@@ -1,4 +1,4 @@
-#!mainFile "main.opy"
+#!mainFile "../main.opy"
 
 rule "Logs: Initialization - Workshop Settings":
     Logs_EnableLogGenerator = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Enable Log Generator", false, 0)

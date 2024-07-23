@@ -1,6 +1,6 @@
 {
     "main": {
-        "description": "Scrimmie! v3.6.3\r\nCreated by CBF\r\n\r\nStandard Version\r\nLast tested on Patch 2.11.0.0 - 126377\r\n\r\nImport Code: Y2TXE\r\nworkshop.codes/scrimmie\r\ndiscord.gg/TNtbWP4aAg",
+        "description": "Scrimmie! v4.0a\nCreated by CBF\r\n\r\nStandard Version\r\nLast tested on Patch 2.11.0.0 - 126377\r\n\r\nImport Code: Y2TXE\r\nworkshop.codes/scrimmie\r\ndiscord.gg/TNtbWP4aAg",
         "modeName": "Scrimmie!"
     },
     "lobby": {
@@ -30,6 +30,10 @@
     },
     "workshop": {
         "Control Point Progress Increment": 33.3,
+        "Developer Mode": true,
+        "Layout": [
+            1
+        ],
         "Payload Progress Increment": 10
     }
 }
