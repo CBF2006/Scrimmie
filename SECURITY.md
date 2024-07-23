@@ -6,12 +6,33 @@
 | ------- | ------- | ------------------ |
 | 5v5 Standard | 3.6.3   | :white_check_mark: |
 | 5v5 Professional | 3.6.3   | :white_check_mark: |
-| 6v6 Standard | 3.4.1   | ⚠️ |
+| 6v6 Standard | 3.4.1   | ⚠️🔄 |
 | 6v6 OW1 | 3.4.1   | ⚠️                |
 
-🛠️ I only make updates to the most recent version, unless the live version needs to be reverted
+⚠️ Currently Scrimmie! 6v6 has not been updated for Season 10/11, which will come at a later date. Due to the April Fools bug, this may impact your experience with it until the code is updated.
 
-⚠️ Currently Scrimmie! 6v6 has not been updated for Season 10, which will come at a later date. Due to the April Fools bug, this may impact your experience with it until the code is updated.
+🔄 6v6 Support is being introduced into the standard Scrimmie! preset with v4.0. Join the Discord or follow me on Twitter @cbfow for the latest updates.
+**This will NOT include the OW1 version of Scrimmie! 6v6, which will remain its own separate version.**
+
+## Update Status
+
+| Update | Compatible Versions | Status |
+| ------- | ------- | ------ |
+| v4.0 | 5v5, 6v6 Standard | 🚧 |
+
+🚧 In Active Development
+
+⚙️ Beta Testing
+
+🛑 Development Paused, this is usually due to me taking a break
+
+⛔ Cancelled
+
+🛠️ **I only make updates to the most recent version, unless the live version needs to be reverted**
+
+
+
+
 
 ## Reporting a Vulnerability
 
