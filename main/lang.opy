@@ -9,7 +9,7 @@ rule "Multi-Language: Language Strings":
     LanguageArray[4] = ["Ready / Unready", "Listo / No Listo", "를 눌러 준비/준비해제", "Prête / Pas prête", "準備／準備のない", "已准备／未准备", "已準備／未準備"]
     LanguageArray[5] = ["Add Extra", "Agregar", "을 눌러", "Ajouter", "セットアップに追加", "增加", "增加"]
     LanguageArray[6] = ["seconds to setup", "segundos extras a la configuración", "초 추가", "seconds supplémentaires á la configuration", "秒", "秒设置时间", "秒設定時間"]
-    LanguageArray[7] = ["Scrimmie! v3.6.3", "Scrimmie! v3.6.3", "스크리미! 3.6.3판", "Scrimmie! v3.6.3", "スクリーミー！　3.6.3版", "Scrimmie! v3.6.3", "Scrimmie! v3.6.3"]
+    LanguageArray[7] = ["Scrimmie! v4.0", "Scrimmie! v4.0", "스크리미! 4.0판", "Scrimmie! v4.0", "スクリーミー！　4.0版", "Scrimmie! v4.0", "Scrimmie! v4.0"]
     LanguageArray[8] = ["Teleport (works only on Defense, in spawn)", "Teletransporte (funciona solo en Defensa, en el spawn)", "텔레포트 (수비 스폰지점에서만 가능)", "Téléporte (en Défense, dans le d'apparition)", "テレポート（防衛時のみ有効)", "传送（仅在防守方于重生点时有效）", "傳送（僅在防守方重生點時有效）"]
     LanguageArray[9] = ["Keep holding", "Mantén presionado", "영웅 변경하기 위해", "Continuez à maintenir", "ヒーローを変更するために", "继续按住", "繼續按住"]
     LanguageArray[10] = ["is Ready", "está Listo", "이 준비되었습니다", "est prête", "は準備完了です", "已准备", "已準備"]
