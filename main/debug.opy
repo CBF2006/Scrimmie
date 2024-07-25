@@ -1,8 +1,16 @@
 #!mainFile "main.opy"
 
+rule "DEBUG - Performance Stats":
+    @Condition DrawScoreboard == true
+    @Condition createWorkshopSetting(bool, "5. Advanced Options", "Display Performance Stats", false, 0)
+    
+    hudSubheader(getAllPlayers(), "{0}: {1}%".format("Server Load Average", getAverageServerLoad()), HudPosition.RIGHT, 20, Color.AQUA, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
+    hudSubheader(getAllPlayers(), "{0}: {1}%".format("Server Load Peak", getPeakServerLoad()), HudPosition.RIGHT, 21, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
+
 rule "DEBUG - Add 1 to Team 1's Score":
     @Event eachPlayer
     @Condition DevMode == true
+    @Condition createWorkshopSetting(bool, "6. Developer Options", "DEBUG - Add Score by Pressing Ultimate", false, 3)
     @Condition isGameInProgress() == true
     @Condition eventPlayer.isHoldingButton(Button.ULTIMATE) == true
     
@@ -13,19 +21,14 @@ rule "DEBUG - Set Timer to 10 seconds":
     @Event eachPlayer
     @Condition DevMode == true
     @Condition eventPlayer.isHoldingButton(Button.INTERACT) == true
+    @Condition createWorkshopSetting(bool, "6. Developer Options", "DEBUG - Set Timer to 10s by Pressing Interact", false, 4)
     
     setMatchTime(10)
 
 
-rule "DEBUG - Performance Stats":
-    @Condition DevMode == true
-    @Condition DrawScoreboard == true
-    
-    hudSubheader(getAllPlayers(), "{0}: {1}%".format("Server Load Average", getAverageServerLoad()), HudPosition.RIGHT, 20, Color.AQUA, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
-    hudSubheader(getAllPlayers(), "{0}: {1}%".format("Server Load Peak", getPeakServerLoad()), HudPosition.RIGHT, 21, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
-
 rule "DEBUG - Autostart the Game":
-    @Condition createWorkshopSetting(bool, "Advanced Options", "Auto start after 10s", false, 2) == true
+    @Condition createWorkshopSetting(bool, "6. Developer Options", "DEBUG - Auto start after 10s", false, 5) == true
 
+    smallMessage(getAllPlayers(), "Game will start in 15 seconds")
     wait(10)
     setMatchTime(5)

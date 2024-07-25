@@ -25,13 +25,13 @@ rule "Help HUD":
     @Condition InfoDrawn == false
     
     Ready_Up_System = createWorkshopSetting(bool, "3. Player Status", "Require Confirmation to Ready if a player is AFK", true, 2)
-    Player_Status = createWorkshopSetting(bool, "3. Player Status", "Toggle Player Status", true, 1)
-    Scoreboard_Size = createWorkshopSetting(enum["Large", "Small"], "2. Spectator Scoreboard", "Scoreboard Size", 0, 1)
+    Player_Status = createWorkshopSetting(bool, "3. Player Status", "Player Status", true, 1)
+    Scoreboard_Size = createWorkshopSetting(enum["Large", "Small"], "2. Spectator Scoreboard", "Size", 0, 1)
     AllowDCResume = createWorkshopSetting(bool, "1. General Settings", "Allow Disconnect Resume", true, 2)
     MatchDelayAmount = createWorkshopSetting(int[15:300], "1. General Settings", "Setup Time Interval", 60, 3)
-    ScoreboardLayout = createWorkshopSetting(enum["Separate Teams", "Combine Teams (ScrimTime)"], "2. Spectator Scoreboard", "Layout", 0, 2)
-    ScoreboardGrouping = createWorkshopSetting(enum["By Team", "By Role (INOP)"], "2. Spectator Scoreboard", "Sorting", 0, 3)
-    DevMode = createWorkshopSetting(bool, "5. Advanced Options", "Developer Mode", false, 0)
+    ScoreboardGrouping = createWorkshopSetting(enum["Separate Teams", "Combine Teams (ScrimTime)"], "2. Spectator Scoreboard", "Grouping", 0, 2)
+    ScoreboardLayout = createWorkshopSetting(enum["Scrimmie / OWL", "ScrimTime Standard"], "2. Spectator Scoreboard", "Layout", 0, 3)
+    DevMode = createWorkshopSetting(bool, "6. Developer Options", "Developer Mode", false, 0)
     Team1Ready = "Not Ready"
     Team2Ready = "Not Ready"
     #Change Hero (Defense Only)
@@ -51,9 +51,10 @@ rule "Help HUD":
     #Current Language in Default Language
     hudSubheader(getAllPlayers(), CurrentLanguageArray[DefaultLanguage][localPlayer.PlayerLanguage], HudPosition.TOP, 24, Color.LIME_GREEN, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
     #Scrimmie! Banner
-    hudSubheader(getAllPlayers(), LanguageArray[7][localPlayer.PlayerLanguage], HudPosition.LEFT, 0, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
-    hudSubheader(getAllPlayers(), "workshop.codes/scrimmie", HudPosition.LEFT, 0.1, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
-    hudSubheader(getAllPlayers(), "{0}: Y2TXE".format(LanguageArray[12][localPlayer.PlayerLanguage]), HudPosition.LEFT, 0.2, Color.AQUA, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
+    if createWorkshopSetting(bool, "5. Advanced Options", "Scrimmie Banner", true, 1) == true:
+        hudSubheader(getAllPlayers(), LanguageArray[7][localPlayer.PlayerLanguage], HudPosition.LEFT, 0, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
+        hudSubheader(getAllPlayers(), "workshop.codes/scrimmie", HudPosition.LEFT, 0.1, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
+        hudSubheader(getAllPlayers(), "{0}: Y2TXE".format(LanguageArray[12][localPlayer.PlayerLanguage]), HudPosition.LEFT, 0.2, Color.AQUA, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
     if DevMode == true:
         #Developer Mode
         hudSubtext(getAllPlayers(), "DEVELOPER MODE ENABLED", HudPosition.TOP, 25, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
@@ -202,19 +203,13 @@ rule "Ready Up - Ready Confirmation Off":
             smallMessage(getAllPlayers(), "  {0} {1}".format(eventPlayer, LanguageArray[15][localPlayer.PlayerLanguage]))
 
 
-rule "First attack done":
+rule "Force Map Completion":
+    @Condition createWorkshopSetting(bool, "5. Advanced Options", "Force Map Completion", true, 3)
     @Condition isMatchBetweenRounds() == true
     @Condition isTeamOnOffense(Team.2) == true
     @Condition ScoreModified == 0
     
     wait(10)
-    FirstRoundDone = true
-
-
-rule "Set Team Scores":
-    @Condition ScoreModified == 0
-    @Condition FirstRoundDone == true
-    
     ScoreModified = 1
     if getCurrentGamemode() == Gamemode.ESCORT or getCurrentGamemode() == Gamemode.HYBRID:
         setTeamScore(Team.2, 3)
