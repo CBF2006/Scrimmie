@@ -12,7 +12,7 @@ globalvar DefaultLanguage 8
 globalvar Scoreboard_Size 9
 globalvar MaxSetupTime 10
 globalvar ScoreModified 11
-globalvar FirstRoundDone 12
+globalvar ScoreboardSorting 12
 globalvar DrawScoreboard 13
 globalvar ShouldRestore 14
 globalvar UltCharges 15

@@ -31,6 +31,7 @@ rule "Help HUD":
     MatchDelayAmount = createWorkshopSetting(int[15:300], "1. General Settings", "Setup Time Interval", 60, 3)
     ScoreboardGrouping = createWorkshopSetting(enum["Separate Teams", "Combine Teams (ScrimTime)"], "2. Spectator Scoreboard", "Grouping", 0, 2)
     ScoreboardLayout = createWorkshopSetting(enum["Scrimmie / OWL", "ScrimTime Standard"], "2. Spectator Scoreboard", "Layout", 0, 3)
+    ScoreboardSorting = createWorkshopSetting(enum["By Slot", "By Role"], "2. Spectator Scoreboard", "Sorting", 0, 4)
     DevMode = createWorkshopSetting(bool, "6. Developer Options", "Developer Mode", false, 0)
     Team1Ready = "Not Ready"
     Team2Ready = "Not Ready"
