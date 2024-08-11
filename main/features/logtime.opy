@@ -1,36 +1,40 @@
 #!mainFile "../main.opy"
 
-rule "Logs: Initialization - Workshop Settings":
-    Logs_EnableLogGenerator = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Enable Log Generator", false, 0)
-    Logs_OutputFormat = createWorkshopSetting(enum["CSV"], "4. LogTime (PC Only)", "Output Format", 0, 1)
-    Logs_TrackKills = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Kills and Deaths", true, 2)
-    Logs_TrackOffensiveAssists = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Offensive Assists", true, 3)
-    Logs_TrackDefensiveAssists = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Defensive Assists", true, 4)
-    Logs_TrackHeroSwaps = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Hero Swaps", true, 5)
-    Logs_TrackUltimates = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Ultimates", true, 6)
-    Logs_TrackAbilities = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Abilities*", false, 7)
-    Logs_TrackDamage = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Damage*", false, 8)
-    Logs_TrackHealing = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Healing*", false, 9)
-    Logs_TrackDvaDemechs = createWorkshopSetting(bool, "4. LogTime (PC Only)", "D.Va Demechs & Remechs", true, 10)
-    Logs_TrackEchoDuplicates = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Echo Duplicates", true, 11)
-    Logs_TrackMercyRez = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Mercy Resurrects", true, 12)
-    Logs_TrackMatchStartEnd = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Match Start & End", true, 13)
-    Logs_TrackRoundStartEnd = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Round Start & End", true, 14)
-    Logs_TrackObjectiveCapture = createWorkshopSetting(bool, "4. LogTime (PC Only)", "Objective Captures", true, 15)
-    Logs_PointCaptureProgressStep = createWorkshopSetting(float[0:100], "4. LogTime (PC Only)", "Control Point Progress Increment", 33.333, 16)
-    Logs_PayloadCaptureProgressStep = createWorkshopSetting(float[0:100], "4. LogTime (PC Only)", "Payload Progress Increment", 10, 17)
-    Logs_PlayerSummaryFrequency = createWorkshopSetting(enum["Every Round End", "Only Match End", "Off"], "4. LogTime (PC Only)", "Player Stat Summary Frequency", 0, 18)
+rule "Settings: Log Options":
+    Logs_EnableLogGenerator = createWorkshopSetting(bool, "6. Log Generator", "Enable Log Generator", false, 0)
+    Logs_OutputFormat = createWorkshopSetting(enum["CSV"], "6. Log Generator", "Output Format", 0, 1)
+    Logs_TrackKills = createWorkshopSetting(bool, "6. Log Generator", "Kills and Deaths", true, 2)
+    Logs_TrackOffensiveAssists = createWorkshopSetting(bool, "6. Log Generator", "Offensive Assists", true, 3)
+    Logs_TrackDefensiveAssists = createWorkshopSetting(bool, "6. Log Generator", "Defensive Assists", true, 4)
+    Logs_TrackHeroSwaps = createWorkshopSetting(bool, "6. Log Generator", "Hero Swaps", true, 5)
+    Logs_TrackUltimates = createWorkshopSetting(bool, "6. Log Generator", "Ultimates", true, 6)
+    Logs_TrackAbilities = createWorkshopSetting(bool, "6. Log Generator", "Abilities*", false, 7)
+    Logs_TrackDamage = createWorkshopSetting(bool, "6. Log Generator", "Damage*", false, 8)
+    Logs_TrackHealing = createWorkshopSetting(bool, "6. Log Generator", "Healing*", false, 9)
+    Logs_TrackDvaDemechs = createWorkshopSetting(bool, "6. Log Generator", "D.Va Demechs & Remechs", true, 10)
+    Logs_TrackEchoDuplicates = createWorkshopSetting(bool, "6. Log Generator", "Echo Duplicates", true, 11)
+    Logs_TrackMercyRez = createWorkshopSetting(bool, "6. Log Generator", "Mercy Resurrects", true, 12)
+    Logs_TrackMatchStartEnd = createWorkshopSetting(bool, "6. Log Generator", "Match Start & End", true, 13)
+    Logs_TrackRoundStartEnd = createWorkshopSetting(bool, "6. Log Generator", "Round Start & End", true, 14)
+    Logs_TrackObjectiveCapture = createWorkshopSetting(bool, "6. Log Generator", "Objective Captures", true, 15)
+    Logs_PointCaptureProgressStep = createWorkshopSetting(float[0:100], "6. Log Generator", "Control Point Progress Increment", 33.333, 16)
+    Logs_PayloadCaptureProgressStep = createWorkshopSetting(float[0:100], "6. Log Generator", "Payload Progress Increment", 10, 17)
+    Logs_PlayerSummaryFrequency = createWorkshopSetting(enum["Every Round End", "Only Match End", "Off"], "6. Log Generator", "Player Stat Summary Frequency", 0, 18)
 
 
-rule "Logs: Initialisation - Match":
-    if not Logs_EnableLogGenerator:
-        disableInspector()
-
-
-rule "Logs: Initialisation - Player":
+rule "Initialisation: Player":
     @Event eachPlayer
     
     eventPlayer.Logs_HeroesPlayedArray = []
+
+
+rule "Logs: Update Match Time":
+    Match_CurrentMatchTime = 0
+    while true:
+        waitUntil(isGameInProgress(), 99999)
+        chase(Match_CurrentMatchTime, 99999, rate=1, ChaseReeval.NONE)
+        waitUntil(not isGameInProgress(), 99999)
+        stopChasingVariable(Match_CurrentMatchTime)
 
 
 rule "Logs: Match Start":
@@ -121,17 +125,18 @@ rule "Logs: Objective Captured (Non-Control)":
     @Condition Logs_EnableLogGenerator == true
     @Condition Logs_TrackObjectiveCapture == true
     @Condition getCurrentGamemode() != Gamemode.CONTROL
+    @Condition getCurrentGamemode() != Gamemode.FLASHPOINT
+    @Condition getCurrentGamemode() != Gamemode.PUSH
     @Condition isObjectiveComplete(Logs_CurrentObjectiveIndex) == true
     
     printLog(",objective_captured,{0},{1},{2}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1}".format(Team.1 if isTeamOnOffense(Team.1) else Team.2, getCurrentObjective()), "{0},{1},{2}".format(null, null, getMatchTime())))
-    Logs_CurrentObjectiveIndex = getCurrentObjective()
 
 
-rule "Logs: Objective Captured (Control)":
+rule "Logs: Objective Captured (Control and Flashpoint)":
     @Condition Logs_EnableLogGenerator == true
     @Condition Logs_TrackObjectiveCapture == true
     @Condition isGameInProgress() == true
-    @Condition getCurrentGamemode() == Gamemode.CONTROL
+    @Condition (getCurrentGamemode() == Gamemode.CONTROL or getCurrentGamemode() == Gamemode.FLASHPOINT) == true
     @Condition getControlScoringTeam() != Logs_CurrentControlScoringTeam
     
     printLog(",objective_captured,{0},{1},{2}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1}".format(getControlScoringTeam(), getCurrentObjective()), "{0},{1},{2}".format(getControlScorePercentage(Team.1), getControlScorePercentage(Team.2), getMatchTime())))
@@ -311,24 +316,6 @@ rule "Logs: Player Stat Summary":
     @Condition Logs_EnableLogGenerator == true
     @Condition (Logs_PlayerSummaryFrequency == 0 or Logs_PlayerSummaryFrequency == 1 and isMatchComplete()) == true
     @Condition isMatchBetweenRounds() == true
-    
-    CalcHeroPlayedTime()
-    eventPlayer.Logs_LastHero = eventPlayer.getCurrentHero()
-    eventPlayer.Logs_LastHeroTime = Match_CurrentMatchTime
-    for eventPlayer.Logs_CurrentHeroIterator in range(len(eventPlayer.Logs_HeroesPlayedArray)):
-        eventPlayer.Logs_CurrentHeroIterated = eventPlayer.Logs_HeroesPlayedArray[eventPlayer.Logs_CurrentHeroIterator]
-        printLog(",player_stat,{0},{1},{2}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.Logs_CurrentHeroIterated), "{0},{1}".format("{0},{1},{2}".format("{0},{1},{2}".format("{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ELIMINATIONS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.FINAL_BLOWS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DEATHS)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DAMAGE_DEALT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.BARRIER_DAMAGE_DEALT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.HERO_DAMAGE_DEALT)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.HEALING_DEALT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.HEALING_RECEIVED), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SELF_HEALING))), "{0},{1},{2}".format("{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DAMAGE_TAKEN), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DAMAGE_BLOCKED)), "{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DEFENSIVE_ASSISTS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.OFFENSIVE_ASSISTS)), "{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ULTIMATES_EARNED), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ULTIMATES_USED))), "{0},{1}".format("{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.MULTIKILL_BEST), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.MULTIKILLS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SOLO_KILLS)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.OBJECTIVE_KILLS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ENVIRONMENTAL_KILLS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ENVIRONMENTAL_DEATHS)))), "{0},{1}".format("{0},{1},{2}".format("{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.CRITICAL_HITS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.CRITICAL_HIT_ACCURACY)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_ACCURACY), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_CRITICAL_HIT_ACCURACY), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_CRITICAL_HIT_KILLS)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SHOTS_FIRED), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SHOTS_HIT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SHOTS_MISSED))), "{0},{1}".format("{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_SHOTS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_HITS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.WEAPON_ACCURACY)), eventPlayer.Logs_HeroesPlayedTimeArray[eventPlayer.Logs_CurrentHeroIterator])))))
-    Logs_PlayerSummaryCount += 1
-
-
-rule "Logs: Player Stat Summary (Flashpoint Between Captures)":
-    @Event eachPlayer
-    @Condition isMatchComplete() == false
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_PlayerSummaryFrequency == 0
-    @Condition getCurrentGamemode() == Gamemode.FLASHPOINT
-    @Condition Logs_CurrentObjectiveIndex != getCurrentObjective()
-    @Condition teamScore(Team.1) + teamScore(Team.2) >= 5 == false
     
     CalcHeroPlayedTime()
     eventPlayer.Logs_LastHero = eventPlayer.getCurrentHero()
