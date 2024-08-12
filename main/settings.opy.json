@@ -1,39 +1,50 @@
 {
     "main": {
-        "description": "Scrimmie! v4.0a\nCreated by CBF\r\n\r\nStandard Version\r\nLast tested on Patch 2.11.0.0 - 126377\r\n\r\nImport Code: Y2TXE\r\nworkshop.codes/scrimmie\r\ndiscord.gg/TNtbWP4aAg",
+        "description": "Scrimmie! v4.0h\nCreated by CBF\r\n\r\nStandard Version\r\nLast tested on Patch 2.11.1.1 - 128150\r\n\r\nImport Code: Y2TXE\r\nworkshop.codes/scrimmie\r\ndiscord.gg/TNtbWP4aAg",
         "modeName": "Scrimmie!"
     },
     "lobby": {
-        "allowPlayersInQueue": true,
         "spectatorSlots": 12,
         "pauseGameOnDisconnect": true
     },
     "gamemodes": {
         "control": {
-            "enabled": false,
-            "scoreToWin": 3
+            "enableCompetitiveRules": true
         },
-        "escort": {},
+        "escort": {
+            "enableCompetitiveRules": true
+        },
         "flashpoint": {
-            "enabled": false,
-            "scoreToWin": 5
+            "enableCompetitiveRules": true
         },
-        "hybrid": {},
-        "push": {},
-        "general": {
+        "hybrid": {
+            "enableCompetitiveRules": true
+        },
+        "push": {
             "enableCompetitiveRules": true,
-            "gamemodeStartTrigger": "immediately",
-            "enableKillCam": false,
-            "roleLimit": "1Tank2Offense2Support",
-            "tankPassiveHealthBonus": "alwaysEnabled"
+            "ts1PushSpeedModifier%": 100
+        },
+        "general": {
+            "roleLimit": "1Tank2Offense2Support"
         }
     },
     "workshop": {
         "Control Point Progress Increment": 33.3,
+        "DEBUG - Auto start after 10s": true,
         "Developer Mode": true,
+        "Display Performance Stats": true,
+        "Grouping": [
+            1
+        ],
         "Layout": [
             1
         ],
-        "Payload Progress Increment": 10
+        "Payload Progress Increment": 10,
+        "Size": [
+            1
+        ],
+        "Sorting": [
+            1
+        ]
     }
 }
