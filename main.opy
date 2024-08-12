@@ -1,46 +1,3 @@
-settings {
-    "main": {
-        "description": "Scrimmie! v3.6\nCreated by CBF\r\n\r\nStandard Version\r\nLast tested on Patch 2.10.1.1 - 125747\r\r\n\r\nImport Code: Y2TXE\r\nworkshop.codes/scrimmie\r\ndiscord.gg/TNtbWP4aAg",
-        "modeName": "Scrimmie!"
-    },
-    "lobby": {
-        "allowPlayersInQueue": true,
-        "spectatorSlots": 12,
-        "pauseGameOnDisconnect": true
-    },
-    "gamemodes": {
-        "control": {
-            "enabled": false,
-            "enableCompetitiveRules": true,
-            "scoreToWin": 3
-        },
-        "escort": {
-            "enableCompetitiveRules": true
-        },
-        "flashpoint": {
-            "enabled": false,
-            "enableCompetitiveRules": true,
-            "scoreToWin": 5
-        },
-        "hybrid": {
-            "enableCompetitiveRules": true
-        },
-        "push": {
-            "enableCompetitiveRules": true
-        },
-        "general": {
-            "gamemodeStartTrigger": "immediately",
-            "enableKillCam": false,
-            "roleLimit": "1Tank2Offense2Support",
-            "tankPassiveHealthBonus": "alwaysEnabled"
-        }
-    },
-    "workshop": {
-        "Control Point Progress Increment": 33.3,
-        "Payload Progress Increment": 10
-    }
-}
-
 #Global variables
 
 globalvar InfoDrawn 0
@@ -168,7 +125,7 @@ rule "Help HUD":
     #Team 2 Ready
     hudHeader(getAllPlayers(), "{0} {1}".format(Team.2, LanguageArray[10][localPlayer.PlayerLanguage] if Team2Ready == "Ready" else LanguageArray[0][localPlayer.PlayerLanguage]), HudPosition.TOP, 21, Color.GREEN if Team2Ready == "Ready" else Color.RED, HudReeval.VISIBILITY_STRING_AND_COLOR, SpecVisibility.ALWAYS)
     #Scrimmie! Banner
-    hudSubheader(getAllPlayers(), LanguageArray[7][localPlayer.PlayerLanguage], HudPosition.LEFT, 0, Color.YELLOW, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
+    hudSubheader(getAllPlayers(), LanguageArray[7][localPlayer.PlayerLanguage], HudPosition.LEFT, 0, Color.SKY_BLUE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
     #Current Language in Default Language
     hudSubheader(getAllPlayers(), CurrentLanguageArray[DefaultLanguage][localPlayer.PlayerLanguage], HudPosition.TOP, 24, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
     hudSubheader(getAllPlayers(), "workshop.codes/scrimmie", HudPosition.LEFT, 0.1, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
@@ -391,7 +348,7 @@ rule "End Flashpoint once all points have been played":
     declareTeamVictory(Team.1 if teamScore(Team.1) > teamScore(Team.2) else Team.2)
     #Flashpoint is bugged currently and you cannot manually declare a winner
     smallMessage(getAllPlayers(), LanguageArray[28][localPlayer.PlayerLanguage])
-    wait(3)
+    wait(4.5)
     returnToLobby()
 
 
@@ -415,6 +372,7 @@ rule "Defense Map Change Hero":
     eventPlayer.setAllowedHeroes(getAllHeroes())
 
 
+# Adding Defender Teleports
 #!include "teleports.opy"
 
 
@@ -547,7 +505,7 @@ def PlayerDCDvaTeam2():
             eventPlayer.setUltCharge(UltCharges[6 + eventPlayer.getSlot()])
 
 
-# Adding Language Strings
+# Adding Multi-Language Support
 #!include "lang.opy"
 
 
@@ -556,7 +514,7 @@ rule "Multi-Language: Set Default Language":
     @Condition isInSetup() == true
     @Condition getMatchRound() == 1
     
-    DefaultLanguage = createWorkshopSetting(enum["English", "Spanish / Español", "Korean / 한국어", "French / Français", "Japanese / 日本語", "Chinese (Simplified) / 简体中文"], "1. General Settings", "Default Language", 0, 0)
+    DefaultLanguage = createWorkshopSetting(enum["English", "Spanish / Español", "Korean / 한국어", "French / Français", "Japanese / 日本語", "Chinese (Simplified) / 简体中文", "Chinese (Traditional) / 繁體中文"], "1. General Settings", "Default Language", 0, 0)
     getAllPlayers().PlayerLanguage = DefaultLanguage
 
 
@@ -589,6 +547,25 @@ rule "Display Next Flashpoint to Spectators":
     wait(15)
     destroyHudText(Flashpoint_TextID)
 
-
 # Adding LogTime
 #!include "logtime.opy"
+
+
+# Debug Features
+
+# Manually disable in-game!!!!
+
+rule "DEBUG - Add 1 to Team 1's Score":
+    @Event eachPlayer
+    @Condition isGameInProgress() == true
+    @Condition eventPlayer.isHoldingButton(Button.ULTIMATE) == true
+    
+    setTeamScore(Team.1, teamScore(Team.1) + 1)
+
+
+
+rule "DEBUG - Set Timer to 10 seconds":
+    @Event eachPlayer
+    @Condition eventPlayer.isHoldingButton(Button.INTERACT) == true
+    
+    setMatchTime(10)

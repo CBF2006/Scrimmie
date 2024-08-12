@@ -22,318 +22,305 @@ rule "Logs: Initialization - Workshop Settings":
     Logs_PlayerSummaryFrequency = createWorkshopSetting(enum["Every Round End", "Only Match End", "Off"], "4. LogTime (PC Only)", "Player Stat Summary Frequency", 0, 18)
 
 
-rule "Logs: Initialisation - Match":
-    if not Logs_EnableLogGenerator:
-        disableInspector()
-
-
 rule "Logs: Initialisation - Player":
-    @Event eachPlayer
+        @Event eachPlayer
+        
+        eventPlayer.Logs_HeroesPlayedArray = []
     
-    eventPlayer.Logs_HeroesPlayedArray = []
-
-
+    
+rule "Logs: Update Match Time":
+        Match_CurrentMatchTime = 0
+        while true:
+            waitUntil(isGameInProgress(), 99999)
+            chase(Match_CurrentMatchTime, 99999, rate=1, ChaseReeval.NONE)
+            waitUntil(not isGameInProgress(), 99999)
+            stopChasingVariable(Match_CurrentMatchTime)
+    
+    
 rule "Logs: Match Start":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition getMatchRound() == 1
+        @Condition Logs_EnableLogGenerator == true
+        @Condition getMatchRound() == 1
+        
+        if Logs_TrackMatchStartEnd:
+            printLog(",match_start,{0},{1}".format("{0},{1},{2}".format(Match_CurrentMatchTime, getCurrentMap(), getCurrentGamemode()), "{0},{1}".format(Team.1, Team.2)))
     
-    if Logs_TrackMatchStartEnd:
-        printLog(",match_start,{0},{1}".format("{0},{1},{2}".format(Match_CurrentMatchTime, getCurrentMap(), getCurrentGamemode()), "{0},{1}".format(Team.1, Team.2)))
-
-
+    
 rule "Logs: Round Start":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition isInSetup() == true
+        @Condition Logs_EnableLogGenerator == true
+        @Condition isInSetup() == true
+        
+        Logs_CurrentControlScoringTeam = Team.ALL
+        Logs_CurrentObjectiveIndex = getCurrentObjective()
+        if Logs_TrackRoundStartEnd == true:
+            printLog(",round_start,{0},{1},{2}".format("{0},{1},{2}".format(Match_CurrentMatchTime, getMatchRound(), (Team.1 if isTeamOnOffense(Team.1) else Team.2) if getCurrentGamemode() != Gamemode.CONTROL else null), "{0},{1}".format(teamScore(Team.1), teamScore(Team.2)), "{0}".format(getCurrentObjective())))
+            waitUntil(isGameInProgress(), 99999)
+            printLog(",setup_complete,{0}".format("{0},{1},{2}".format(Match_CurrentMatchTime, getMatchRound(), getMatchTime())))
     
-    Logs_CurrentControlScoringTeam = Team.ALL
-    Logs_CurrentObjectiveIndex = getCurrentObjective()
-    if Logs_TrackRoundStartEnd == true:
-        printLog(",round_start,{0},{1},{2}".format("{0},{1},{2}".format(Match_CurrentMatchTime, getMatchRound(), (Team.1 if isTeamOnOffense(Team.1) else Team.2) if getCurrentGamemode() != Gamemode.CONTROL else null), "{0},{1}".format(teamScore(Team.1), teamScore(Team.2)), "{0}".format(getCurrentObjective())))
-        waitUntil(isGameInProgress(), 99999)
-        printLog(",setup_complete,{0}".format("{0},{1},{2}".format(Match_CurrentMatchTime, getMatchRound(), getMatchTime())))
-
-
+    
 rule "Logs: Round Complete":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackRoundStartEnd == true
-    @Condition isMatchBetweenRounds() == true
+        @Condition Logs_EnableLogGenerator == true
+        @Condition Logs_TrackRoundStartEnd == true
+        @Condition isMatchBetweenRounds() == true
+        
+        printLog(",round_end,{0},{1},{2}".format("{0},{1},{2}".format(Match_CurrentMatchTime, getMatchRound(), (Team.1 if isTeamOnOffense(Team.1) else Team.2) if getCurrentGamemode() != Gamemode.CONTROL else null), "{0},{1}".format(teamScore(Team.1), teamScore(Team.2)), "{0},{1},{2}".format(getCurrentObjective(), "{0},{1}".format(getControlScorePercentage(Team.1), getControlScorePercentage(Team.2)), getMatchTime())))
     
-    printLog(",round_end,{0},{1},{2}".format("{0},{1},{2}".format(Match_CurrentMatchTime, getMatchRound(), (Team.1 if isTeamOnOffense(Team.1) else Team.2) if getCurrentGamemode() != Gamemode.CONTROL else null), "{0},{1}".format(teamScore(Team.1), teamScore(Team.2)), "{0},{1},{2}".format(getCurrentObjective(), "{0},{1}".format(getControlScorePercentage(Team.1), getControlScorePercentage(Team.2)), getMatchTime())))
-
-
+    
 rule "Logs: Match Complete":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackMatchStartEnd == true
-    @Condition isMatchComplete() == true
+        @Condition Logs_EnableLogGenerator == true
+        @Condition Logs_TrackMatchStartEnd == true
+        @Condition isMatchComplete() == true
+        
+        printLog(",match_end,{0},{1},{2}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0}".format(teamScore(Team.1)), "{0}".format(teamScore(Team.2))))
     
-    printLog(",match_end,{0},{1},{2}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0}".format(teamScore(Team.1)), "{0}".format(teamScore(Team.2))))
-
-
+    
 rule "Logs: Control Point Increment":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_PointCaptureProgressStep > 0
-    @Condition isGameInProgress() == true
-    @Condition getCapturePercentage() >= Logs_PointCaptureProgress + Logs_PointCaptureProgressStep
+        @Condition Logs_EnableLogGenerator == true
+        @Condition Logs_PointCaptureProgressStep > 0
+        @Condition isGameInProgress() == true
+        @Condition getCapturePercentage() >= Logs_PointCaptureProgress + Logs_PointCaptureProgressStep
+        
+        printLog(",point_progress,{0},{1}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1},{2}".format(getOppositeTeam(getControlScoringTeam()) if getCurrentGamemode() == Gamemode.CONTROL else Team.1 if isTeamOnOffense(Team.1) else Team.2, getCurrentObjective(), getCapturePercentage())))
+        Logs_PointCaptureProgress += Logs_PointCaptureProgressStep
     
-    printLog(",point_progress,{0},{1}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1},{2}".format(getOppositeTeam(getControlScoringTeam()) if getCurrentGamemode() == Gamemode.CONTROL else Team.1 if isTeamOnOffense(Team.1) else Team.2, getCurrentObjective(), getCapturePercentage())))
-    Logs_PointCaptureProgress += Logs_PointCaptureProgressStep
-
-
+    
 rule "Logs: Payload Increment":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_PayloadCaptureProgressStep > 0
-    @Condition isGameInProgress() == true
-    @Condition getPayloadProgressPercentage() >= Logs_PayloadCaptureProgress + Logs_PayloadCaptureProgressStep
+        @Condition Logs_EnableLogGenerator == true
+        @Condition Logs_PayloadCaptureProgressStep > 0
+        @Condition isGameInProgress() == true
+        @Condition getPayloadProgressPercentage() >= Logs_PayloadCaptureProgress + Logs_PayloadCaptureProgressStep
+        
+        printLog(",payload_progress,{0},{1}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1},{2}".format(Team.1 if isTeamOnOffense(Team.1) else Team.2, getCurrentObjective(), getPayloadProgressPercentage())))
+        Logs_PayloadCaptureProgress += Logs_PayloadCaptureProgressStep
     
-    printLog(",payload_progress,{0},{1}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1},{2}".format(Team.1 if isTeamOnOffense(Team.1) else Team.2, getCurrentObjective(), getPayloadProgressPercentage())))
-    Logs_PayloadCaptureProgress += Logs_PayloadCaptureProgressStep
-
-
+    
 rule "Logs: Reset Control Point Progress":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_PointCaptureProgressStep > 0
-    @Condition isGameInProgress() == true
-    @Condition getCapturePercentage() == 0
+        @Condition Logs_EnableLogGenerator == true
+        @Condition Logs_PointCaptureProgressStep > 0
+        @Condition isGameInProgress() == true
+        @Condition getCapturePercentage() == 0
+        
+        Logs_PointCaptureProgress = 0
     
-    Logs_PointCaptureProgress = 0
-
-
+    
 rule "Logs: Reset Payload Progress":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_PayloadCaptureProgressStep > 0
-    @Condition isGameInProgress() == true
-    @Condition getPayloadProgressPercentage() == 0
+        @Condition Logs_EnableLogGenerator == true
+        @Condition Logs_PayloadCaptureProgressStep > 0
+        @Condition isGameInProgress() == true
+        @Condition getPayloadProgressPercentage() == 0
+        
+        Logs_PayloadCaptureProgress = 0
     
-    Logs_PayloadCaptureProgress = 0
-
-
+    
 rule "Logs: Objective Updated":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackObjectiveCapture == true
-    @Condition Logs_CurrentObjectiveIndex != getCurrentObjective()
+        @Condition Logs_EnableLogGenerator == true
+        @Condition Logs_TrackObjectiveCapture == true
+        @Condition Logs_CurrentObjectiveIndex != getCurrentObjective()
+        
+        printLog(",objective_updated,{0},{1}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1}".format(Logs_CurrentObjectiveIndex, getCurrentObjective())))
+        wait()
+        Logs_CurrentObjectiveIndex = getCurrentObjective()
     
-    printLog(",objective_updated,{0},{1}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1}".format(Logs_CurrentObjectiveIndex, getCurrentObjective())))
-    wait()
-    Logs_CurrentObjectiveIndex = getCurrentObjective()
-
-
+    
 rule "Logs: Objective Captured (Non-Control)":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackObjectiveCapture == true
-    @Condition getCurrentGamemode() != Gamemode.CONTROL
-    @Condition isObjectiveComplete(Logs_CurrentObjectiveIndex) == true
+        @Condition Logs_EnableLogGenerator == true
+        @Condition Logs_TrackObjectiveCapture == true
+        @Condition getCurrentGamemode() != Gamemode.CONTROL
+        @Condition getCurrentGamemode() != Gamemode.FLASHPOINT
+        @Condition getCurrentGamemode() != Gamemode.PUSH
+        @Condition isObjectiveComplete(Logs_CurrentObjectiveIndex) == true
+        
+        printLog(",objective_captured,{0},{1},{2}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1}".format(Team.1 if isTeamOnOffense(Team.1) else Team.2, getCurrentObjective()), "{0},{1},{2}".format(null, null, getMatchTime())))
     
-    printLog(",objective_captured,{0},{1},{2}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1}".format(Team.1 if isTeamOnOffense(Team.1) else Team.2, getCurrentObjective()), "{0},{1},{2}".format(null, null, getMatchTime())))
-    Logs_CurrentObjectiveIndex = getCurrentObjective()
-
-
-rule "Logs: Objective Captured (Control)":
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackObjectiveCapture == true
-    @Condition isGameInProgress() == true
-    @Condition getCurrentGamemode() == Gamemode.CONTROL
-    @Condition getControlScoringTeam() != Logs_CurrentControlScoringTeam
     
-    printLog(",objective_captured,{0},{1},{2}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1}".format(getControlScoringTeam(), getCurrentObjective()), "{0},{1},{2}".format(getControlScorePercentage(Team.1), getControlScorePercentage(Team.2), getMatchTime())))
-    Logs_CurrentControlScoringTeam = getControlScoringTeam()
-
-
+rule "Logs: Objective Captured (Control and Flashpoint)":
+        @Condition Logs_EnableLogGenerator == true
+        @Condition Logs_TrackObjectiveCapture == true
+        @Condition isGameInProgress() == true
+        @Condition (getCurrentGamemode() == Gamemode.CONTROL or getCurrentGamemode() == Gamemode.FLASHPOINT) == true
+        @Condition getControlScoringTeam() != Logs_CurrentControlScoringTeam
+        
+        printLog(",objective_captured,{0},{1},{2}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1}".format(getControlScoringTeam(), getCurrentObjective()), "{0},{1},{2}".format(getControlScorePercentage(Team.1), getControlScorePercentage(Team.2), getMatchTime())))
+        Logs_CurrentControlScoringTeam = getControlScoringTeam()
+    
+    
 rule "Logs: Kills":
-    @Event playerDied
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackKills == true
-    @Condition isGameInProgress() == true
+        @Event playerDied
+        @Condition Logs_EnableLogGenerator == true
+        @Condition Logs_TrackKills == true
+        @Condition isGameInProgress() == true
+        
+        printLog(",kill,{0},{1}".format(Match_CurrentMatchTime, "{0},{1},{2}".format("{0},{1},{2}".format(attacker.getTeam(), attacker, attacker.getCurrentHero()), "{0},{1},{2}".format(victim.getTeam(), victim, victim.getCurrentHero()), "{0},{1},{2}".format("{0},{1}".format(eventAbility, eventDamage), eventWasCriticalHit, eventWasEnvironment))))
     
-    printLog(",kill,{0},{1}".format(Match_CurrentMatchTime, "{0},{1},{2}".format("{0},{1},{2}".format(attacker.getTeam(), attacker, attacker.getCurrentHero()), "{0},{1},{2}".format(victim.getTeam(), victim, victim.getCurrentHero()), "{0},{1},{2}".format("{0},{1}".format(eventAbility, eventDamage), eventWasCriticalHit, eventWasEnvironment))))
-
-
+    
 rule "Logs: Hero Spawn/Swap":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition (Logs_TrackHeroSwaps or Logs_PlayerSummaryCount != 2) == true
-    @Condition eventPlayer.getCurrentHero() != eventPlayer.Logs_LastHero
-    @Condition isMatchComplete() == false
+        @Event eachPlayer
+        @Condition Logs_EnableLogGenerator == true
+        @Condition (Logs_TrackHeroSwaps or Logs_PlayerSummaryCount != 2) == true
+        @Condition eventPlayer.getCurrentHero() != eventPlayer.Logs_LastHero
+        @Condition isMatchComplete() == false
+        
+        if Logs_TrackHeroSwaps and eventPlayer.getCurrentHero() in getAllHeroes():
+            if eventPlayer.Logs_LastHero in getAllHeroes():
+                printLog(",hero_swap,{0},{1},{2}".format(Match_CurrentMatchTime, "{0},{1}".format(eventPlayer.getTeam(), eventPlayer), "{0},{1},{2}".format(eventPlayer.getCurrentHero(), eventPlayer.Logs_LastHero, Match_CurrentMatchTime - eventPlayer.Logs_LastHeroTime)))
+            else:
+                printLog(",hero_spawn,{0},{1},{2}".format(Match_CurrentMatchTime, "{0},{1}".format(eventPlayer.getTeam(), eventPlayer), "{0},{1},{2}".format(eventPlayer.getCurrentHero(), eventPlayer.Logs_LastHero, Match_CurrentMatchTime - eventPlayer.Logs_LastHeroTime)))
+        if not eventPlayer.getCurrentHero() in eventPlayer.Logs_HeroesPlayedArray and eventPlayer.getCurrentHero() in getAllHeroes():
+            eventPlayer.Logs_HeroesPlayedArray.append(eventPlayer.getCurrentHero())
+        if eventPlayer.getCurrentHero() in getAllHeroes() and eventPlayer.Logs_LastHero in getAllHeroes():
+            CalcHeroPlayedTime()
+        eventPlayer.Logs_LastHero = eventPlayer.getCurrentHero()
+        eventPlayer.Logs_LastHeroTime = Match_CurrentMatchTime
     
-    if Logs_TrackHeroSwaps and eventPlayer.getCurrentHero() in getAllHeroes():
-        if eventPlayer.Logs_LastHero in getAllHeroes():
-            printLog(",hero_swap,{0},{1},{2}".format(Match_CurrentMatchTime, "{0},{1}".format(eventPlayer.getTeam(), eventPlayer), "{0},{1},{2}".format(eventPlayer.getCurrentHero(), eventPlayer.Logs_LastHero, Match_CurrentMatchTime - eventPlayer.Logs_LastHeroTime)))
-        else:
-            printLog(",hero_spawn,{0},{1},{2}".format(Match_CurrentMatchTime, "{0},{1}".format(eventPlayer.getTeam(), eventPlayer), "{0},{1},{2}".format(eventPlayer.getCurrentHero(), eventPlayer.Logs_LastHero, Match_CurrentMatchTime - eventPlayer.Logs_LastHeroTime)))
-    if not eventPlayer.getCurrentHero() in eventPlayer.Logs_HeroesPlayedArray and eventPlayer.getCurrentHero() in getAllHeroes():
-        eventPlayer.Logs_HeroesPlayedArray.append(eventPlayer.getCurrentHero())
-    if eventPlayer.getCurrentHero() in getAllHeroes() and eventPlayer.Logs_LastHero in getAllHeroes():
-        CalcHeroPlayedTime()
-    eventPlayer.Logs_LastHero = eventPlayer.getCurrentHero()
-    eventPlayer.Logs_LastHeroTime = Match_CurrentMatchTime
-
-
+    
 def CalcHeroPlayedTime():
-    @Name "Logs: Calculate Hero Played Time (Subroutine)"
+        @Name "Logs: Calculate Hero Played Time (Subroutine)"
+        
+        eventPlayer.Logs_HeroesPlayedTimeArray[eventPlayer.Logs_HeroesPlayedArray.index(eventPlayer.Logs_LastHero)] += Match_CurrentMatchTime - eventPlayer.Logs_LastHeroTime
     
-    eventPlayer.Logs_HeroesPlayedTimeArray[eventPlayer.Logs_HeroesPlayedArray.index(eventPlayer.Logs_LastHero)] += Match_CurrentMatchTime - eventPlayer.Logs_LastHeroTime
-
-
+    
 rule "Logs: Damage":
-    @Event playerDealtDamage
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackDamage == true
-    @Condition isGameInProgress() == true
+        @Event playerDealtDamage
+        @Condition Logs_EnableLogGenerator == true
+        @Condition Logs_TrackDamage == true
+        @Condition isGameInProgress() == true
+        
+        printLog(",damage,{0},{1}".format(Match_CurrentMatchTime, "{0},{1},{2}".format("{0},{1},{2}".format(attacker.getTeam(), attacker, attacker.getCurrentHero()), "{0},{1},{2}".format(victim.getTeam(), victim, victim.getCurrentHero()), "{0},{1},{2}".format("{0},{1}".format(eventAbility, eventDamage), eventWasCriticalHit, eventWasEnvironment))))
     
-    printLog(",damage,{0},{1}".format(Match_CurrentMatchTime, "{0},{1},{2}".format("{0},{1},{2}".format(attacker.getTeam(), attacker, attacker.getCurrentHero()), "{0},{1},{2}".format(victim.getTeam(), victim, victim.getCurrentHero()), "{0},{1},{2}".format("{0},{1}".format(eventAbility, eventDamage), eventWasCriticalHit, eventWasEnvironment))))
-
-
+    
 rule "Logs: Healing":
-    @Event playerReceivedHealing
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackHealing == true
-    @Condition isGameInProgress() == true
+        @Event playerReceivedHealing
+        @Condition Logs_EnableLogGenerator == true
+        @Condition Logs_TrackHealing == true
+        @Condition isGameInProgress() == true
+        
+        printLog(",healing,{0},{1}".format(Match_CurrentMatchTime, "{0},{1},{2}".format("{0},{1},{2}".format(healer.getTeam(), healer, healer.getCurrentHero()), "{0},{1},{2}".format(healee.getTeam(), healee, healee.getCurrentHero()), "{0},{1},{2}".format(eventAbility, eventHealing, eventWasHealthPack))))
     
-    printLog(",healing,{0},{1}".format(Match_CurrentMatchTime, "{0},{1},{2}".format("{0},{1},{2}".format(healer.getTeam(), healer, healer.getCurrentHero()), "{0},{1},{2}".format(healee.getTeam(), healee, healee.getCurrentHero()), "{0},{1},{2}".format(eventAbility, eventHealing, eventWasHealthPack))))
-
-
+    
 rule "Logs: Offensive Assists":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackOffensiveAssists == true
-    @Condition eventPlayer.Logs_OffensiveAssists < eventPlayer.getStatistic(Stat.OFFENSIVE_ASSISTS)
-    @Condition isGameInProgress() == true
+        @Event eachPlayer
+        @Condition Logs_EnableLogGenerator == true
+        @Condition Logs_TrackOffensiveAssists == true
+        @Condition eventPlayer.Logs_OffensiveAssists < eventPlayer.getStatistic(Stat.OFFENSIVE_ASSISTS)
+        @Condition isGameInProgress() == true
+        
+        printLog(",offensive_assist,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0}".format(eventPlayer.getHeroOfDuplication())))
+        eventPlayer.Logs_OffensiveAssists += 1
+        if RULE_CONDITION:
+            goto RULE_START
     
-    printLog(",offensive_assist,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0}".format(eventPlayer.getHeroOfDuplication())))
-    eventPlayer.Logs_OffensiveAssists += 1
-    if RULE_CONDITION:
-        goto RULE_START
-
-
+    
 rule "Logs: Defensive Assists":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackDefensiveAssists == true
-    @Condition eventPlayer.Logs_DefensiveAssists < eventPlayer.getStatistic(Stat.DEFENSIVE_ASSISTS)
-    @Condition isGameInProgress() == true
+        @Event eachPlayer
+        @Condition Logs_EnableLogGenerator == true
+        @Condition Logs_TrackDefensiveAssists == true
+        @Condition eventPlayer.Logs_DefensiveAssists < eventPlayer.getStatistic(Stat.DEFENSIVE_ASSISTS)
+        @Condition isGameInProgress() == true
+        
+        printLog(",defensive_assist,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0}".format(eventPlayer.getHeroOfDuplication())))
+        eventPlayer.Logs_DefensiveAssists += 1
+        if RULE_CONDITION:
+            goto RULE_START
     
-    printLog(",defensive_assist,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0}".format(eventPlayer.getHeroOfDuplication())))
-    eventPlayer.Logs_DefensiveAssists += 1
-    if RULE_CONDITION:
-        goto RULE_START
-
-
+    
 rule "Logs: Ability 1 Used":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackAbilities == true
-    @Condition eventPlayer.isUsingAbility1() == true
-    @Condition isGameInProgress() == true
+        @Event eachPlayer
+        @Condition Logs_EnableLogGenerator == true
+        @Condition Logs_TrackAbilities == true
+        @Condition eventPlayer.isUsingAbility1() == true
+        @Condition isGameInProgress() == true
+        
+        printLog(",ability_1_used,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0}".format(eventPlayer.getHeroOfDuplication())))
     
-    printLog(",ability_1_used,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0}".format(eventPlayer.getHeroOfDuplication())))
-
-
+    
 rule "Logs: Ability 2 Used":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackAbilities == true
-    @Condition eventPlayer.isUsingAbility2() == true
-    @Condition isGameInProgress() == true
+        @Event eachPlayer
+        @Condition Logs_EnableLogGenerator == true
+        @Condition Logs_TrackAbilities == true
+        @Condition eventPlayer.isUsingAbility2() == true
+        @Condition isGameInProgress() == true
+        
+        printLog(",ability_2_used,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0}".format(eventPlayer.getHeroOfDuplication())))
     
-    printLog(",ability_2_used,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0}".format(eventPlayer.getHeroOfDuplication())))
-
-
+    
 rule "Logs: Ultimate Charged":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackUltimates == true
-    @Condition eventPlayer.getUltCharge() == 100
-    @Condition isGameInProgress() == true
+        @Event eachPlayer
+        @Condition Logs_EnableLogGenerator == true
+        @Condition Logs_TrackUltimates == true
+        @Condition eventPlayer.getUltCharge() == 100
+        @Condition isGameInProgress() == true
+        
+        eventPlayer.Logs_UltimateID += 1
+        if eventPlayer.getCurrentHero() == Hero.DVA and eventPlayer.isInAlternateForm() and Logs_TrackDvaDemechs:
+            printLog(",remech_charged,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0},{1}".format(eventPlayer.getHeroOfDuplication(), eventPlayer.Logs_UltimateID)))
+        else:
+            printLog(",ultimate_charged,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0},{1}".format(eventPlayer.getHeroOfDuplication(), eventPlayer.Logs_UltimateID)))
     
-    eventPlayer.Logs_UltimateID += 1
-    if eventPlayer.getCurrentHero() == Hero.DVA and eventPlayer.isInAlternateForm() and Logs_TrackDvaDemechs:
-        printLog(",remech_charged,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0},{1}".format(eventPlayer.getHeroOfDuplication(), eventPlayer.Logs_UltimateID)))
-    else:
-        printLog(",ultimate_charged,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0},{1}".format(eventPlayer.getHeroOfDuplication(), eventPlayer.Logs_UltimateID)))
-
-
+    
 rule "Logs: Ultimate Used":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackUltimates == true
-    @Condition eventPlayer.isUsingUltimate() == true
-    @Condition eventPlayer.getCurrentHero() != Hero.DVA
-    @Condition isGameInProgress() == true
-    
-    printLog(",ultimate_start,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0},{1}".format(eventPlayer.getHeroOfDuplication(), eventPlayer.Logs_UltimateID)))
-    waitUntil(not eventPlayer.isUsingUltimate(), 99999)
-    printLog(",ultimate_end,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0},{1}".format(eventPlayer.getHeroOfDuplication(), eventPlayer.Logs_UltimateID)))
-
-
-rule "Logs: D.Va Remech/Self-Destruct Used":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition eventPlayer.isUsingUltimate() == true
-    @Condition eventPlayer.getCurrentHero() == Hero.DVA
-    @Condition isGameInProgress() == true
-    
-    wait(1.74)
-    if Logs_TrackDvaDemechs and not eventPlayer.isInAlternateForm():
-        printLog(",dva_remech,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0}".format(eventPlayer.Logs_UltimateID)))
-    elif Logs_TrackUltimates:
+        @Event eachPlayer
+        @Condition Logs_EnableLogGenerator == true
+        @Condition Logs_TrackUltimates == true
+        @Condition eventPlayer.isUsingUltimate() == true
+        @Condition eventPlayer.getCurrentHero() != Hero.DVA
+        @Condition isGameInProgress() == true
+        
         printLog(",ultimate_start,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0},{1}".format(eventPlayer.getHeroOfDuplication(), eventPlayer.Logs_UltimateID)))
         waitUntil(not eventPlayer.isUsingUltimate(), 99999)
         printLog(",ultimate_end,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0},{1}".format(eventPlayer.getHeroOfDuplication(), eventPlayer.Logs_UltimateID)))
-
-
+    
+    
+rule "Logs: D.Va Remech/Self-Destruct Used":
+        @Event eachPlayer
+        @Condition Logs_EnableLogGenerator == true
+        @Condition eventPlayer.isUsingUltimate() == true
+        @Condition eventPlayer.getCurrentHero() == Hero.DVA
+        @Condition isGameInProgress() == true
+        
+        wait(1.74)
+        if Logs_TrackDvaDemechs and not eventPlayer.isInAlternateForm():
+            printLog(",dva_remech,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0}".format(eventPlayer.Logs_UltimateID)))
+        elif Logs_TrackUltimates:
+            printLog(",ultimate_start,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0},{1}".format(eventPlayer.getHeroOfDuplication(), eventPlayer.Logs_UltimateID)))
+            waitUntil(not eventPlayer.isUsingUltimate(), 99999)
+            printLog(",ultimate_end,{0},{1},{2}".format("{0}".format(Match_CurrentMatchTime), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0},{1}".format(eventPlayer.getHeroOfDuplication(), eventPlayer.Logs_UltimateID)))
+    
+    
 rule "Logs: Echo Duplicate":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackEchoDuplicates == true
-    @Condition isGameInProgress() == true
-    @Condition eventPlayer.isDuplicatingAHero() == true
+        @Event eachPlayer
+        @Condition Logs_EnableLogGenerator == true
+        @Condition Logs_TrackEchoDuplicates == true
+        @Condition isGameInProgress() == true
+        @Condition eventPlayer.isDuplicatingAHero() == true
+        
+        eventPlayer.Logs_DuplicateID = eventPlayer.Logs_UltimateID
+        printLog(",echo_duplicate_start,{0},{1},{2}".format(Match_CurrentMatchTime, "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0},{1}".format(eventPlayer.getHeroOfDuplication(), eventPlayer.Logs_DuplicateID)))
+        waitUntil(not eventPlayer.isDuplicatingAHero(), 99999)
+        printLog(",echo_duplicate_end,{0},{1},{2}".format(Match_CurrentMatchTime, "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), eventPlayer.Logs_DuplicateID))
     
-    eventPlayer.Logs_DuplicateID = eventPlayer.Logs_UltimateID
-    printLog(",echo_duplicate_start,{0},{1},{2}".format(Match_CurrentMatchTime, "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), "{0},{1}".format(eventPlayer.getHeroOfDuplication(), eventPlayer.Logs_DuplicateID)))
-    waitUntil(not eventPlayer.isDuplicatingAHero(), 99999)
-    printLog(",echo_duplicate_end,{0},{1},{2}".format(Match_CurrentMatchTime, "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()), eventPlayer.Logs_DuplicateID))
-
-
+    
 rule "Logs: Mercy Resurrect":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_TrackMercyRez == true
-    @Condition isGameInProgress() == true
-    @Condition eventPlayer.isDead() == true
+        @Event eachPlayer
+        @Condition Logs_EnableLogGenerator == true
+        @Condition Logs_TrackMercyRez == true
+        @Condition isGameInProgress() == true
+        @Condition eventPlayer.isDead() == true
+        
+        waitUntil(eventPlayer.isAlive(), 99999)
+        wait(0.24)
+        if not eventPlayer.isInSpawnRoom() and isGameInProgress():
+            printLog(",mercy_rez,{0},{1}".format(Match_CurrentMatchTime, "{0},{1}".format("{0},{1},{2}".format(eventPlayer.getTeam(), getPlayersOnHero(Hero.MERCY, eventPlayer.getTeam()), Hero.MERCY), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()))))
     
-    waitUntil(eventPlayer.isAlive(), 99999)
-    wait(0.24)
-    if not eventPlayer.isInSpawnRoom() and isGameInProgress():
-        printLog(",mercy_rez,{0},{1}".format(Match_CurrentMatchTime, "{0},{1}".format("{0},{1},{2}".format(eventPlayer.getTeam(), getPlayersOnHero(Hero.MERCY, eventPlayer.getTeam()), Hero.MERCY), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.getCurrentHero()))))
-
-
+    
 rule "Logs: Player Stat Summary":
-    @Event eachPlayer
-    @Condition Logs_EnableLogGenerator == true
-    @Condition (Logs_PlayerSummaryFrequency == 0 or Logs_PlayerSummaryFrequency == 1 and isMatchComplete()) == true
-    @Condition isMatchBetweenRounds() == true
-    
-    CalcHeroPlayedTime()
-    eventPlayer.Logs_LastHero = eventPlayer.getCurrentHero()
-    eventPlayer.Logs_LastHeroTime = Match_CurrentMatchTime
-    for eventPlayer.Logs_CurrentHeroIterator in range(len(eventPlayer.Logs_HeroesPlayedArray)):
-        eventPlayer.Logs_CurrentHeroIterated = eventPlayer.Logs_HeroesPlayedArray[eventPlayer.Logs_CurrentHeroIterator]
-        printLog(",player_stat,{0},{1},{2}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.Logs_CurrentHeroIterated), "{0},{1}".format("{0},{1},{2}".format("{0},{1},{2}".format("{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ELIMINATIONS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.FINAL_BLOWS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DEATHS)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DAMAGE_DEALT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.BARRIER_DAMAGE_DEALT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.HERO_DAMAGE_DEALT)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.HEALING_DEALT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.HEALING_RECEIVED), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SELF_HEALING))), "{0},{1},{2}".format("{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DAMAGE_TAKEN), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DAMAGE_BLOCKED)), "{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DEFENSIVE_ASSISTS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.OFFENSIVE_ASSISTS)), "{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ULTIMATES_EARNED), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ULTIMATES_USED))), "{0},{1}".format("{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.MULTIKILL_BEST), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.MULTIKILLS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SOLO_KILLS)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.OBJECTIVE_KILLS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ENVIRONMENTAL_KILLS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ENVIRONMENTAL_DEATHS)))), "{0},{1}".format("{0},{1},{2}".format("{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.CRITICAL_HITS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.CRITICAL_HIT_ACCURACY)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_ACCURACY), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_CRITICAL_HIT_ACCURACY), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_CRITICAL_HIT_KILLS)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SHOTS_FIRED), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SHOTS_HIT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SHOTS_MISSED))), "{0},{1}".format("{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_SHOTS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_HITS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.WEAPON_ACCURACY)), eventPlayer.Logs_HeroesPlayedTimeArray[eventPlayer.Logs_CurrentHeroIterator])))))
-    Logs_PlayerSummaryCount += 1
-
-
-rule "Logs: Player Stat Summary (Flashpoint Between Captures)":
-    @Event eachPlayer
-    @Condition isMatchComplete() == false
-    @Condition Logs_EnableLogGenerator == true
-    @Condition Logs_PlayerSummaryFrequency == 0
-    @Condition getCurrentGamemode() == Gamemode.FLASHPOINT
-    @Condition Logs_CurrentObjectiveIndex != getCurrentObjective()
-    @Condition teamScore(Team.1) + teamScore(Team.2) >= 5 == false
-    
-    CalcHeroPlayedTime()
-    eventPlayer.Logs_LastHero = eventPlayer.getCurrentHero()
-    eventPlayer.Logs_LastHeroTime = Match_CurrentMatchTime
-    for eventPlayer.Logs_CurrentHeroIterator in range(len(eventPlayer.Logs_HeroesPlayedArray)):
-        eventPlayer.Logs_CurrentHeroIterated = eventPlayer.Logs_HeroesPlayedArray[eventPlayer.Logs_CurrentHeroIterator]
-        printLog(",player_stat,{0},{1},{2}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.Logs_CurrentHeroIterated), "{0},{1}".format("{0},{1},{2}".format("{0},{1},{2}".format("{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ELIMINATIONS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.FINAL_BLOWS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DEATHS)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DAMAGE_DEALT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.BARRIER_DAMAGE_DEALT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.HERO_DAMAGE_DEALT)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.HEALING_DEALT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.HEALING_RECEIVED), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SELF_HEALING))), "{0},{1},{2}".format("{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DAMAGE_TAKEN), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DAMAGE_BLOCKED)), "{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DEFENSIVE_ASSISTS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.OFFENSIVE_ASSISTS)), "{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ULTIMATES_EARNED), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ULTIMATES_USED))), "{0},{1}".format("{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.MULTIKILL_BEST), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.MULTIKILLS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SOLO_KILLS)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.OBJECTIVE_KILLS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ENVIRONMENTAL_KILLS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ENVIRONMENTAL_DEATHS)))), "{0},{1}".format("{0},{1},{2}".format("{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.CRITICAL_HITS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.CRITICAL_HIT_ACCURACY)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_ACCURACY), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_CRITICAL_HIT_ACCURACY), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_CRITICAL_HIT_KILLS)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SHOTS_FIRED), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SHOTS_HIT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SHOTS_MISSED))), "{0},{1}".format("{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_SHOTS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_HITS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.WEAPON_ACCURACY)), eventPlayer.Logs_HeroesPlayedTimeArray[eventPlayer.Logs_CurrentHeroIterator])))))
-    Logs_PlayerSummaryCount += 1
+        @Event eachPlayer
+        @Condition Logs_EnableLogGenerator == true
+        @Condition (Logs_PlayerSummaryFrequency == 0 or Logs_PlayerSummaryFrequency == 1 and isMatchComplete()) == true
+        @Condition isMatchBetweenRounds() == true
+        
+        CalcHeroPlayedTime()
+        eventPlayer.Logs_LastHero = eventPlayer.getCurrentHero()
+        eventPlayer.Logs_LastHeroTime = Match_CurrentMatchTime
+        for eventPlayer.Logs_CurrentHeroIterator in range(len(eventPlayer.Logs_HeroesPlayedArray)):
+            eventPlayer.Logs_CurrentHeroIterated = eventPlayer.Logs_HeroesPlayedArray[eventPlayer.Logs_CurrentHeroIterator]
+            printLog(",player_stat,{0},{1},{2}".format("{0},{1}".format(Match_CurrentMatchTime, getMatchRound()), "{0},{1},{2}".format(eventPlayer.getTeam(), eventPlayer, eventPlayer.Logs_CurrentHeroIterated), "{0},{1}".format("{0},{1},{2}".format("{0},{1},{2}".format("{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ELIMINATIONS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.FINAL_BLOWS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DEATHS)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DAMAGE_DEALT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.BARRIER_DAMAGE_DEALT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.HERO_DAMAGE_DEALT)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.HEALING_DEALT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.HEALING_RECEIVED), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SELF_HEALING))), "{0},{1},{2}".format("{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DAMAGE_TAKEN), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DAMAGE_BLOCKED)), "{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.DEFENSIVE_ASSISTS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.OFFENSIVE_ASSISTS)), "{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ULTIMATES_EARNED), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ULTIMATES_USED))), "{0},{1}".format("{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.MULTIKILL_BEST), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.MULTIKILLS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SOLO_KILLS)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.OBJECTIVE_KILLS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ENVIRONMENTAL_KILLS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.ENVIRONMENTAL_DEATHS)))), "{0},{1}".format("{0},{1},{2}".format("{0},{1}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.CRITICAL_HITS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.CRITICAL_HIT_ACCURACY)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_ACCURACY), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_CRITICAL_HIT_ACCURACY), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_CRITICAL_HIT_KILLS)), "{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SHOTS_FIRED), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SHOTS_HIT), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SHOTS_MISSED))), "{0},{1}".format("{0},{1},{2}".format(eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_SHOTS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.SCOPED_HITS), eventPlayer.getHeroStatistic(eventPlayer.Logs_CurrentHeroIterated, HeroStat.WEAPON_ACCURACY)), eventPlayer.Logs_HeroesPlayedTimeArray[eventPlayer.Logs_CurrentHeroIterator])))))
+        Logs_PlayerSummaryCount += 1
