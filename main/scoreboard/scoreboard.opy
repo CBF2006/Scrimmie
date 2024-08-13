@@ -157,6 +157,8 @@ rule "Scoreboard: ScrimTime A - Create Legend":
 
     # Separate Teams
     if ScoreboardGrouping == 0:
+
+        # Large Scoreboard
         if Scoreboard_Size == 0:
             # Left Side
             hudSubtext(null, "{0} {1}".format(abilityIconString(Hero.GENJI, Button.ULTIMATE), "K • D • DD • DT • ACC • UU"), HudPosition.LEFT, 0.5, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
@@ -165,12 +167,14 @@ rule "Scoreboard: ScrimTime A - Create Legend":
             # Right Side
             hudSubtext(null, "{0} {1}".format(abilityIconString(Hero.GENJI, Button.ULTIMATE), "K • D • DD • DT • ACC • UU"), HudPosition.RIGHT, -3.5, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
             hudSubtext(null, "{0} {1}".format(abilityIconString(Hero.REINHARDT, Button.SECONDARY_FIRE), "K • D • DD • DT • DB • UU"), HudPosition.LEFT, -2.5, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
-            hudSubtext(null, "{0} {1}".format(abilityIconString(Hero.BAPTISTE, Button.ABILITY_1), "K • D • DD • DT • HD • UU"), HudPosition.RIGHT, -1.5, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
+            hudSubtext(null, "{0} {1}".format(abilityIconString(Hero.BAPTISTE, Button.ABILITY_1), "K • D • DD • DT • HD • UU"), HudPosition.RIGHT, -2.5, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
+        
+        # Small Scoreboard
         elif Scoreboard_Size == 1:
             # Left Side
             hudSubheader(null, "{0} {1}".format(abilityIconString(Hero.GENJI, Button.ULTIMATE), "K • D • DD • DT • ACC • UU"), HudPosition.LEFT, 0.5, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
             hudSubheader(null, "{0} {1}".format(abilityIconString(Hero.REINHARDT, Button.SECONDARY_FIRE), "K • D • DD • DT • DB • UU"), HudPosition.LEFT, 1.5, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
-            hudSubheader(null, "{0} {1}".format(abilityIconString(Hero.BAPTISTE, Button.ABILITY_1), "K • D • DD • DT • HD • UU"), HudPosition.LEFT, 3.5, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
+            hudSubheader(null, "{0} {1}".format(abilityIconString(Hero.BAPTISTE, Button.ABILITY_1), "K • D • DD • DT • HD • UU"), HudPosition.LEFT, 2.5, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
             # Right Side
             hudSubheader(null, "{0} {1}".format(abilityIconString(Hero.GENJI, Button.ULTIMATE), "K • D • DD • DT • ACC • UU"), HudPosition.RIGHT, -3.5, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
             hudSubheader(null, "{0} {1}".format(abilityIconString(Hero.REINHARDT, Button.SECONDARY_FIRE), "K • D • DD • DT • DB • UU"), HudPosition.RIGHT, -2.5, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
@@ -178,10 +182,14 @@ rule "Scoreboard: ScrimTime A - Create Legend":
 
     # Combine Teams
     elif ScoreboardGrouping == 1:
+
+        # Large Scoreboard
         if Scoreboard_Size == 0:
             hudSubtext(null, "{0} {1}".format(abilityIconString(Hero.GENJI, Button.ULTIMATE), "K • D • DD • DT • ACC • UU"), HudPosition.LEFT, 1, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
             hudSubtext(null, "{0} {1}".format(abilityIconString(Hero.REINHARDT, Button.SECONDARY_FIRE), "K • D • DD • DT • DB • UU"), HudPosition.LEFT, 2, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
             hudSubtext(null, "{0} {1}".format(abilityIconString(Hero.BAPTISTE, Button.ABILITY_1), "K • D • DD • DT • HD • UU"), HudPosition.LEFT, 3, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
+        
+        # Small Scoreboard
         elif Scoreboard_Size == 1:
             hudSubheader(null, "{0} {1}".format(abilityIconString(Hero.GENJI, Button.ULTIMATE), "K • D • DD • DT • ACC • UU"), HudPosition.LEFT, 1, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
             hudSubheader(null, "{0} {1}".format(abilityIconString(Hero.REINHARDT, Button.SECONDARY_FIRE), "K • D • DD • DT • DB • UU"), HudPosition.LEFT, 2, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
