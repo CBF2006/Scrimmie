@@ -71,7 +71,8 @@ rule "Game in Progress: Remove HUD, Reset variables":
     Team1Ready = "Not Ready"
     Team2Ready = "Not Ready"
     destroyAllHudTexts()
-    DrawScoreboard = true
+    if createWorkshopSetting(bool, "2. Spectator Scoreboard", "Spectator Scoreboard", true, 0) == true:
+        DrawScoreboard = true
     InfoDrawn = false
     getPlayersInSlot(0, Team.1).AFK = 0
     getPlayersInSlot(1, Team.1).AFK = 0
