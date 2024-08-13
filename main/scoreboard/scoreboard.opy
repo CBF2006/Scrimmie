@@ -236,3 +236,47 @@ rule "Scoreboard A (Standard): Create Player Entries (Small)":
     # Combine Teams
     elif ScoreboardGrouping == 1:
         hudSubheader(null, "{0} {1} • {2}".format(heroIcon(eventPlayer.getCurrentHero()), "{0} • {1} • {2}".format(eventPlayer.getStatistic(Stat.FINAL_BLOWS), eventPlayer.getStatistic(Stat.DEATHS), round(eventPlayer.getStatistic(Stat.HERO_DAMAGE_DEALT))), "{0} • {1} • {2}".format(round(eventPlayer.getStatistic(Stat.DAMAGE_TAKEN)), round(eventPlayer.getStatistic(Stat.DAMAGE_BLOCKED)) if eventPlayer.getCurrentHero() in getTankHeroes() else round(eventPlayer.getStatistic(Stat.HEALING_DEALT)) if eventPlayer.getCurrentHero() in getSupportHeroes() else "{0}%".format(round(eventPlayer.getHeroStatistic(eventPlayer.getCurrentHero(), HeroStat.WEAPON_ACCURACY) * 100)), eventPlayer.getStatistic(Stat.ULTIMATES_USED))), HudPosition.LEFT, (1 if eventPlayer.getCurrentHero() in getDamageHeroes() else 2 if eventPlayer.getCurrentHero() in getTankHeroes() else 3) + (0.1 if eventPlayer.getTeam() == Team.1 else 0.2), Color.TEAM_1 if eventPlayer.getTeam() == Team.1 else Color.TEAM_2, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.ALWAYS)
+
+/* rule "Scoreboard: Host Player Toggle Scoreboard"
+    @Event global
+    @Condition createWorkshopSetting(bool, "2. Spectator Scoreboard", "Allow Host Spectator to Toggle Scoreboard", false, 5) == true
+    @Condition DrawScoreboard == true
+    @Condition hostPlayer.isHoldingButton(Button.ULTIMATE) == true
+    @Condition hostPlayer.isHoldingButton(Button.ABILITY_1) == true
+    @Condition hostPlayer.getTeam() == Team.ALL
+
+#Global variables
+
+globalvar Text_LanguageTextArray 6
+globalvar Colour_TextTypeA 11
+globalvar Scoreboard_EnableScoreboard 34
+globalvar Scoreboard_AllowHideScoreboard 36
+globalvar Scoreboard_HideScoreboardID 37
+
+
+#Player variables
+
+playervar Text_PlayerLanguage 0
+
+
+rule "Scoreboard: Host Spectator Toggle":
+    @Condition Scoreboard_EnableScoreboard == true
+    @Condition Scoreboard_AllowHideScoreboard == true
+    @Condition isGameInProgress() == true
+    @Condition hostPlayer.isHoldingButton(Button.ULTIMATE) == true
+    @Condition hostPlayer.isHoldingButton(Button.ABILITY_1) == true
+    @Condition hostPlayer.getTeam() == Team.ALL
+    
+    if Scoreboard_HideScoreboardID == null:
+        #Host Toggled Scoreboard Off
+        smallMessage(getAllPlayers(), Text_LanguageTextArray[36][localPlayer.Text_PlayerLanguage])
+        hudSubtext(null, " \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", HudPosition.LEFT, 0, Colour_TextTypeA, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
+        Scoreboard_HideScoreboardID = getLastCreatedText()
+    else:
+        #Host Toggled Scoreboard On
+        smallMessage(getAllPlayers(), Text_LanguageTextArray[35][localPlayer.Text_PlayerLanguage])
+        destroyHudText(Scoreboard_HideScoreboardID)
+        Scoreboard_HideScoreboardID = null
+*/
+
+
