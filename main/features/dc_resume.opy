@@ -47,18 +47,18 @@ def PlayerDCInfoTeam2():
     @Name "DC Value Tracking - Team 2 Subroutine"
     
     if eventPlayer.hasSpawned():
-        if ShouldRestore[5 + eventPlayer.getSlot()] >= 0:
+        if ShouldRestore[getNumberOfSlots(Team.1) + eventPlayer.getSlot()] >= 0:
             if eventPlayer.isAlive():
-                UltCharges[5 + eventPlayer.getSlot()] = eventPlayer.getUltCharge()
-                Heroes[5 + eventPlayer.getSlot()] = eventPlayer.getCurrentHero()
-                Positions[5 + eventPlayer.getSlot()] = eventPlayer.getPosition()
-                Cooldowns1[5 + eventPlayer.getSlot()] = eventPlayer.getAbilityCooldown(Button.ABILITY_1)
-                Cooldowns2[5 + eventPlayer.getSlot()] = eventPlayer.getAbilityCooldown(Button.ABILITY_2)
-                DVaRestore[5 + eventPlayer.getSlot()] = eventPlayer.getMaxHealth()
-                DVaRestore[5 + eventPlayer.getSlot()] = (eventPlayer.getUltCharge() if eventPlayer.getMaxHealth() > 200 else DVaRestore[5 + eventPlayer.getSlot()]) if eventPlayer.getCurrentHero() == Hero.DVA else -1
-                ShouldRestore[5 + eventPlayer.getSlot()] = eventPlayer.getNormalizedHealth()
+                UltCharges[getNumberOfSlots(Team.1) + eventPlayer.getSlot()] = eventPlayer.getUltCharge()
+                Heroes[getNumberOfSlots(Team.1) + eventPlayer.getSlot()] = eventPlayer.getCurrentHero()
+                Positions[getNumberOfSlots(Team.1) + eventPlayer.getSlot()] = eventPlayer.getPosition()
+                Cooldowns1[getNumberOfSlots(Team.1) + eventPlayer.getSlot()] = eventPlayer.getAbilityCooldown(Button.ABILITY_1)
+                Cooldowns2[getNumberOfSlots(Team.1) + eventPlayer.getSlot()] = eventPlayer.getAbilityCooldown(Button.ABILITY_2)
+                DVaRestore[getNumberOfSlots(Team.1) + eventPlayer.getSlot()] = eventPlayer.getMaxHealth()
+                DVaRestore[getNumberOfSlots(Team.1) + eventPlayer.getSlot()] = (eventPlayer.getUltCharge() if eventPlayer.getMaxHealth() > 200 else DVaRestore[getNumberOfSlots(Team.1) + eventPlayer.getSlot()]) if eventPlayer.getCurrentHero() == Hero.DVA else -1
+                ShouldRestore[getNumberOfSlots(Team.1) + eventPlayer.getSlot()] = eventPlayer.getNormalizedHealth()
             else:
-                ShouldRestore[5 + eventPlayer.getSlot()] = 0
+                ShouldRestore[getNumberOfSlots(Team.1) + eventPlayer.getSlot()] = 0
 
 
 rule "Player Reconnected - Team 1":
