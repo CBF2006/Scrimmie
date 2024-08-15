@@ -239,7 +239,7 @@ rule "Scoreboard A (Standard): Create Player Entries (Small)":
 
 rule "Scoreboard: Host Player Toggle Scoreboard":
     @Event global
-    @Condition createWorkshopSetting(bool, "2. Spectator Scoreboard", "Allow Host Spectator to Toggle Scoreboard", false, 5) == true
+    @Condition createWorkshopSetting(bool, "5. Spectator Scoreboard", "Allow Host Spectator to Toggle Scoreboard", false, 5) == true
     @Condition DrawScoreboard == true
     @Condition hostPlayer.isHoldingButton(Button.ULTIMATE) == true
     @Condition hostPlayer.isHoldingButton(Button.ABILITY_1) == true

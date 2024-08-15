@@ -14,6 +14,7 @@
 
 rule "Remove Assembling Heroes":
     @Condition isAssemblingHeroes() == true
+    @Condition createWorkshopSetting(bool, "2. Setup Phase", "Remove Assemble Heroes Phase", true, 0)
     
     setMatchTime(0)
     wait(5)
@@ -24,35 +25,39 @@ rule "Help HUD":
     @Condition isGameInProgress() == false
     @Condition InfoDrawn == false
     
-    Ready_Up_System = createWorkshopSetting(bool, "3. Player Status", "Require Confirmation to Ready if a player is AFK", true, 2)
-    Player_Status = createWorkshopSetting(bool, "3. Player Status", "Player Status", true, 1)
-    Scoreboard_Size = createWorkshopSetting(enum["Large", "Small"], "2. Spectator Scoreboard", "Size", 0, 1)
+    Ready_Up_System = createWorkshopSetting(bool, "6. Player Status", "Toggle Ready Confirmation", true, 1)
+    Player_Status = createWorkshopSetting(bool, "6. Player Status", "Toggle Player Status", true, 0)
+    Scoreboard_Size = createWorkshopSetting(enum["Large", "Small"], "5. Spectator Scoreboard", "Size", 0, 1)
     AllowDCResume = createWorkshopSetting(bool, "1. General Settings", "Allow Disconnect Resume", true, 2)
-    MatchDelayAmount = createWorkshopSetting(int[15:300], "1. General Settings", "Setup Time Interval", 60, 3)
-    ScoreboardGrouping = createWorkshopSetting(enum["Separate Teams", "Combine Teams (ScrimTime)"], "2. Spectator Scoreboard", "Grouping", 0, 2)
-    ScoreboardLayout = createWorkshopSetting(enum["Scrimmie / OWL", "ScrimTime Standard"], "2. Spectator Scoreboard", "Layout", 0, 3)
-    ScoreboardSorting = createWorkshopSetting(enum["By Slot", "By Role"], "2. Spectator Scoreboard", "Sorting", 0, 4)
-    DevMode = createWorkshopSetting(bool, "6. Developer Options", "Developer Mode", false, 0)
+    MatchDelayAmount = createWorkshopSetting(int[15:300], "2. Setup Phase", "Setup Time Added", 60, 2)
+    ScoreboardGrouping = createWorkshopSetting(enum["Separate Teams", "Combine Teams"], "5. Spectator Scoreboard", "Grouping", 0, 2)
+    ScoreboardLayout = createWorkshopSetting(enum["Scrimmie / OWL", "ScrimTime Standard"], "5. Spectator Scoreboard", "Layout", 0, 3)
+    ScoreboardSorting = createWorkshopSetting(enum["By Slot", "By Role"], "5. Spectator Scoreboard", "Sorting", 0, 4)
+    DevMode = createWorkshopSetting(bool, "9. Developer Options", "Developer Mode", false, 0)
     Team1Ready = "Not Ready"
     Team2Ready = "Not Ready"
-    #Change Hero (Defense Only)
-    hudSubheader(getAllPlayers(), "{0} {1}: {2}".format(LanguageArray[1][localPlayer.PlayerLanguage], buttonString(Button.RELOAD), LanguageArray[2][localPlayer.PlayerLanguage]), HudPosition.RIGHT, 26, Color.YELLOW, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
-    #Ready Up
-    hudSubheader(getAllPlayers(), "{0} {1}: {2}".format(LanguageArray[3][localPlayer.PlayerLanguage], "{0} + {1}".format(buttonString(Button.CROUCH), buttonString(Button.INTERACT)), LanguageArray[4][localPlayer.PlayerLanguage]), HudPosition.RIGHT, 23, Color.AQUA, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
-    #Add Time
-    hudSubheader(getAllPlayers(), "{0}: {1}".format("{0} {1}".format(LanguageArray[3][localPlayer.PlayerLanguage], buttonString(Button.ULTIMATE)), "{0} {1} {2}".format(LanguageArray[5][localPlayer.PlayerLanguage], MatchDelayAmount, LanguageArray[6][localPlayer.PlayerLanguage])), HudPosition.RIGHT, 24, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
-    #Defender Teleport
-    hudSubheader(getAllPlayers(), "{0} {1}: {2}".format(LanguageArray[3][localPlayer.PlayerLanguage], buttonString(Button.MELEE), LanguageArray[8][localPlayer.PlayerLanguage]), HudPosition.RIGHT, 26, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
-    #Change Language
-    hudSubheader(getAllPlayers(), "{0} {1}: {2}".format(LanguageArray[3][localPlayer.PlayerLanguage], "{0} + {1}".format(buttonString(Button.INTERACT), buttonString(Button.RELOAD)), LanguageArray[11][localPlayer.PlayerLanguage]), HudPosition.RIGHT, 27, Color.LIME_GREEN, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
-    #Team 1 Ready
-    hudHeader(getAllPlayers(), "{0} {1}".format(Team.1, LanguageArray[10][localPlayer.PlayerLanguage] if Team1Ready == "Ready" else LanguageArray[0][localPlayer.PlayerLanguage]), HudPosition.TOP, 20, Color.GREEN if Team1Ready == "Ready" else Color.RED, HudReeval.VISIBILITY_STRING_AND_COLOR, SpecVisibility.ALWAYS)
-    #Team 2 Ready
-    hudHeader(getAllPlayers(), "{0} {1}".format(Team.2, LanguageArray[10][localPlayer.PlayerLanguage] if Team2Ready == "Ready" else LanguageArray[0][localPlayer.PlayerLanguage]), HudPosition.TOP, 21, Color.GREEN if Team2Ready == "Ready" else Color.RED, HudReeval.VISIBILITY_STRING_AND_COLOR, SpecVisibility.ALWAYS)
-    #Current Language in Default Language
-    hudSubheader(getAllPlayers(), CurrentLanguageArray[DefaultLanguage][localPlayer.PlayerLanguage], HudPosition.TOP, 24, Color.LIME_GREEN, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
+    
+    if createWorkshopSetting(bool, "3. Help HUD", "Show Controls", true, 1):
+        #Change Hero (Defense Only)
+        hudSubheader(getAllPlayers(), "{0} {1}: {2}".format(LanguageArray[1][localPlayer.PlayerLanguage], buttonString(Button.RELOAD), LanguageArray[2][localPlayer.PlayerLanguage]), HudPosition.RIGHT, 26, Color.YELLOW, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
+        #Ready Up
+        hudSubheader(getAllPlayers(), "{0} {1}: {2}".format(LanguageArray[3][localPlayer.PlayerLanguage], "{0} + {1}".format(buttonString(Button.CROUCH), buttonString(Button.INTERACT)), LanguageArray[4][localPlayer.PlayerLanguage]), HudPosition.RIGHT, 23, Color.AQUA, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
+        #Add Time
+        hudSubheader(getAllPlayers(), "{0}: {1}".format("{0} {1}".format(LanguageArray[3][localPlayer.PlayerLanguage], buttonString(Button.ULTIMATE)), "{0} {1} {2}".format(LanguageArray[5][localPlayer.PlayerLanguage], MatchDelayAmount, LanguageArray[6][localPlayer.PlayerLanguage])), HudPosition.RIGHT, 24, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
+        #Defender Teleport
+        hudSubheader(getAllPlayers(), "{0} {1}: {2}".format(LanguageArray[3][localPlayer.PlayerLanguage], buttonString(Button.MELEE), LanguageArray[8][localPlayer.PlayerLanguage]), HudPosition.RIGHT, 26, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
+        #Change Language
+        hudSubheader(getAllPlayers(), "{0} {1}: {2}".format(LanguageArray[3][localPlayer.PlayerLanguage], "{0} + {1}".format(buttonString(Button.INTERACT), buttonString(Button.RELOAD)), LanguageArray[11][localPlayer.PlayerLanguage]), HudPosition.RIGHT, 27, Color.LIME_GREEN, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
+        #Team 1 Ready
+        hudHeader(getAllPlayers(), "{0} {1}".format(Team.1, LanguageArray[10][localPlayer.PlayerLanguage] if Team1Ready == "Ready" else LanguageArray[0][localPlayer.PlayerLanguage]), HudPosition.TOP, 20, Color.GREEN if Team1Ready == "Ready" else Color.RED, HudReeval.VISIBILITY_STRING_AND_COLOR, SpecVisibility.ALWAYS)
+        #Team 2 Ready
+        hudHeader(getAllPlayers(), "{0} {1}".format(Team.2, LanguageArray[10][localPlayer.PlayerLanguage] if Team2Ready == "Ready" else LanguageArray[0][localPlayer.PlayerLanguage]), HudPosition.TOP, 21, Color.GREEN if Team2Ready == "Ready" else Color.RED, HudReeval.VISIBILITY_STRING_AND_COLOR, SpecVisibility.ALWAYS)
+    if createWorkshopSetting(bool, "3. Help HUD", "Show Current Language", true, 2):
+        #Current Language in Default Language
+        hudSubheader(getAllPlayers(), CurrentLanguageArray[DefaultLanguage][localPlayer.PlayerLanguage], HudPosition.TOP, 24, Color.LIME_GREEN, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
+    
     #Scrimmie! Banner
-    if createWorkshopSetting(bool, "5. Advanced Options", "Scrimmie Banner", true, 1) == true:
+    if createWorkshopSetting(bool, "3. Help HUD", "Show Scrimmie Banner", true, 0) == true:
         hudSubheader(getAllPlayers(), LanguageArray[7][localPlayer.PlayerLanguage], HudPosition.LEFT, 0, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
         hudSubheader(getAllPlayers(), "workshop.codes/scrimmie", HudPosition.LEFT, 0.1, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
         hudSubheader(getAllPlayers(), "{0}: Y2TXE".format(LanguageArray[12][localPlayer.PlayerLanguage]), HudPosition.LEFT, 0.2, Color.AQUA, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
@@ -71,7 +76,7 @@ rule "Game in Progress: Remove HUD, Reset variables":
     Team1Ready = "Not Ready"
     Team2Ready = "Not Ready"
     destroyAllHudTexts()
-    if createWorkshopSetting(bool, "2. Spectator Scoreboard", "Spectator Scoreboard", true, 0) == true:
+    if createWorkshopSetting(bool, "5. Spectator Scoreboard", "Toggle Spectator Scoreboard", true, 0) == true:
         DrawScoreboard = true
     InfoDrawn = false
     getPlayersInSlot(0, Team.1).AFK = 0
@@ -106,7 +111,7 @@ rule "Ultimate: +Ns match time while in setup":
     @Condition eventPlayer.isHoldingButton(Button.INTERACT) == false
     @Condition eventPlayer.AddTimeCD == 0
     
-    MaxSetupTime = createWorkshopSetting(int[60:600], "1. General Settings", "Maximum Setup Time", 120, 2)
+    MaxSetupTime = createWorkshopSetting(int[60:600], "2. Setup Phase", "Maximum Setup Time", 120, 1)
     if getMatchTime() + MatchDelayAmount >= MaxSetupTime:
         setMatchTime(MaxSetupTime)
         smallMessage(eventPlayer, "  {0}".format(LanguageArray[25][localPlayer.PlayerLanguage]))
@@ -206,7 +211,7 @@ rule "Ready Up - Ready Confirmation Off":
 
 
 rule "Force Map Completion":
-    @Condition createWorkshopSetting(bool, "5. Advanced Options", "Force Map Completion", true, 3)
+    @Condition createWorkshopSetting(bool, "4. Map Completion", "Force Map Completion", true, 0)
     @Condition isMatchBetweenRounds() == true
     @Condition isTeamOnOffense(Team.2) == true
     @Condition ScoreModified == 0
@@ -222,6 +227,7 @@ rule "Force Map Completion":
 rule "End Control after 3 rounds":
     @Condition getCurrentGamemode() == Gamemode.CONTROL
     @Condition teamScore(Team.1) + teamScore(Team.2) == 3
+    @Condition createWorkshopSetting(bool, "4. Map Completion", "End Control After 3 Rounds", true, 1)
     
     declareTeamVictory(Team.1 if teamScore(Team.1) > teamScore(Team.2) else Team.2)
 
@@ -230,7 +236,8 @@ rule "End Hybrid/Escort if teams tie":
     @Condition (getCurrentGamemode() == Gamemode.ESCORT or getCurrentGamemode() == Gamemode.HYBRID) == true
     @Condition teamScore(Team.1) == 3
     @Condition teamScore(Team.2) == 3
-    
+    @Condition createWorkshopSetting(bool, "4. Map Completion", "End Hybrid/Escort if Both Teams Complete", true, 2)
+
     declareDraw()
 
 
@@ -238,7 +245,7 @@ rule "End Flashpoint once all points have been played":
     @Condition isGameInProgress() == true
     @Condition getCurrentGamemode() == Gamemode.FLASHPOINT
     #There are 5 Flashpoints, so this condition is met once all Flashpoints have been played
-    @Condition teamScore(Team.1) + teamScore(Team.2) == 5
+    @Condition teamScore(Team.1) + teamScore(Team.2) == createWorkshopSetting(int[1:10], "4. Map Completion", "Total Score to End Flashpoint", 5, 3)
     
     declareTeamVictory(Team.1 if teamScore(Team.1) > teamScore(Team.2) else Team.2)
     #Flashpoint is bugged currently and you cannot manually declare a winner
@@ -256,6 +263,7 @@ rule "Defense Map Change Hero":
     @Condition eventPlayer.isAlive() == true
     @Condition eventPlayer.getCurrentHero() == true
     @Condition getMatchTime() >= 1
+    @Condition createWorkshopSetting(bool, "2. Setup Phase", "Defenders Easy Change Hero", true, 4)
     
     wait(0.2, Wait.ABORT_WHEN_FALSE)
     smallMessage(eventPlayer, "  {0} {1} {2}".format(LanguageArray[9][localPlayer.PlayerLanguage], buttonString(Button.RELOAD), LanguageArray[24][localPlayer.PlayerLanguage]))
@@ -294,14 +302,14 @@ rule "Multi-Language: Choose Language":
     @Condition isInSetup() == true
     @Condition eventPlayer.isHoldingButton(Button.INTERACT) == true
     @Condition eventPlayer.isHoldingButton(Button.RELOAD) == true
+    @Condition createWorkshopSetting(bool, "1. General Settings", "Allow Players to Switch Language", true, 1)
     
     eventPlayer.PlayerLanguage = (eventPlayer.PlayerLanguage + 1) % len(LanguageArray[0])
     smallMessage(eventPlayer, "{0}".format(LanguageArray[13][eventPlayer.PlayerLanguage]))
 
 
+# Adding Player Status
 #!include "player_status/status_check.opy"
-
-
 #!include "player_status/hud.opy"
 
 

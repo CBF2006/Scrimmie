@@ -1,4 +1,4 @@
-#!mainFile "main.opy"
+#!mainFile "../main.opy"
 
 rule "Defense Map Teleport":
     @Event eachPlayer
@@ -9,6 +9,7 @@ rule "Defense Map Teleport":
     @Condition eventPlayer.hasSpawned() == true
     @Condition eventPlayer.isAlive() == true
     @Condition eventPlayer.getCurrentHero() == true
+    @Condition createWorkshopSetting(bool, "2. Setup Phase", "Allow Defenders to Teleport to Objective", true, 3)
     
     switch getCurrentMap():
         case Map.BLIZZ_WORLD:
