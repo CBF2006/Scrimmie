@@ -1,6 +1,6 @@
 #!mainFile "../main.opy"
 
-rule "DC Value Tracking - Team 1":
+rule "[features/dc_resume.opy] DC Value Tracking - Team 1":
     @Event eachPlayer
     @Team 1
     @Condition isGameInProgress() == true
@@ -14,7 +14,7 @@ rule "DC Value Tracking - Team 1":
 
 
 def PlayerDCInfoTeam1():
-    @Name "DC Value Tracking - Team 1 Subroutine"
+    @Name "[features/dc_resume.opy] DC Value Tracking - Team 1 Subroutine"
     
     if eventPlayer.hasSpawned():
         if ShouldRestore[eventPlayer.getSlot()] >= 0:
@@ -30,7 +30,7 @@ def PlayerDCInfoTeam1():
                 ShouldRestore[eventPlayer.getSlot()] = 0
 
 
-rule "DC Value Tracking - Team 2":
+rule "[features/dc_resume.opy] DC Value Tracking - Team 2":
     @Event eachPlayer
     @Team 2
     @Condition isGameInProgress() == true
@@ -44,7 +44,7 @@ rule "DC Value Tracking - Team 2":
 
 
 def PlayerDCInfoTeam2():
-    @Name "DC Value Tracking - Team 2 Subroutine"
+    @Name "[features/dc_resume.opy] DC Value Tracking - Team 2 Subroutine"
     
     if eventPlayer.hasSpawned():
         if ShouldRestore[getNumberOfSlots(Team.1) + eventPlayer.getSlot()] >= 0:
@@ -61,7 +61,7 @@ def PlayerDCInfoTeam2():
                 ShouldRestore[getNumberOfSlots(Team.1) + eventPlayer.getSlot()] = 0
 
 
-rule "Player Reconnected - Team 1":
+rule "[features/dc_resume.opy] Player Reconnected - Team 1":
     @Event playerJoined
     @Team 1
     @Condition isGameInProgress() == true
@@ -83,7 +83,7 @@ rule "Player Reconnected - Team 1":
             ShouldRestore[eventPlayer.getSlot()] = 0 - ShouldRestore[eventPlayer.getSlot()]
 
 
-rule "Player Reconnected - Team 2":
+rule "[features/dc_resume.opy] Player Reconnected - Team 2":
     @Event playerJoined
     @Team 2
     @Condition isGameInProgress() == true
@@ -106,7 +106,7 @@ rule "Player Reconnected - Team 2":
 
 
 def PlayerDCDvaTeam1():
-    @Name "Player Reconnected - Team 1 DVa"
+    @Name "[features/dc_resume.opy] Player Reconnected - Team 1 DVa"
     
     if eventPlayer.getCurrentHero() == Hero.DVA:
         if DVaRestore[eventPlayer.getSlot()] >= 0:
@@ -118,7 +118,7 @@ def PlayerDCDvaTeam1():
 
 
 def PlayerDCDvaTeam2():
-    @Name "Player Reconnected - Team 2 DVa"
+    @Name "[features/dc_resume.opy] Player Reconnected - Team 2 DVa"
     
     if eventPlayer.getCurrentHero() == Hero.DVA:
         if DVaRestore[getNumberOfSlots(Team.1) + eventPlayer.getSlot()] >= 0:

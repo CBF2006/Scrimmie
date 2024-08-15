@@ -101,3 +101,20 @@ subroutine PlayerDCDvaTeam2 4
 
 # LogTime
 subroutine CalcHeroPlayedTime 5
+
+
+# Set variables initial state
+rule "[variables.opy] Set Global Variables":
+    # Workshop Settings
+    AllowDCResume = createWorkshopSetting(bool, "1. General Settings", "Allow Disconnect Resume", true, 2)
+    MatchDelayAmount = createWorkshopSetting(int[15:300], "2. Setup Phase", "Setup Time Added", 60, 2)
+    Scoreboard_Size = createWorkshopSetting(enum["Large", "Small"], "5. Spectator Scoreboard", "Size", 0, 1)
+    ScoreboardGrouping = createWorkshopSetting(enum["Separate Teams", "Combine Teams"], "5. Spectator Scoreboard", "Grouping", 0, 2)
+    ScoreboardLayout = createWorkshopSetting(enum["Scrimmie / OWL", "ScrimTime Standard"], "5. Spectator Scoreboard", "Layout", 0, 3)
+    ScoreboardSorting = createWorkshopSetting(enum["By Slot", "By Role"], "5. Spectator Scoreboard", "Sorting", 0, 4)
+    Ready_Up_System = createWorkshopSetting(bool, "6. Player Status", "Toggle Ready Confirmation", true, 1)
+    Player_Status = createWorkshopSetting(bool, "6. Player Status", "Toggle Player Status", true, 0)
+    DevMode = createWorkshopSetting(bool, "9. Developer Options", "Developer Mode", false, 0)
+    # Set Teams to "Not Ready"
+    Team1Ready = "Not Ready"
+    Team2Ready = "Not Ready"

@@ -1,7 +1,7 @@
 #!mainFile "../main.opy"
 
 # HUD Creation & Destruction
-rule "Player Status - Create Inactivity HUD":
+rule "[player_status/hud.opy] Player Status - Create Inactivity HUD":
     @Condition Player_Status == true
     @Condition isInSetup() == true
     @Condition Display_StatusHUD == true
@@ -18,7 +18,7 @@ rule "Player Status - Create Inactivity HUD":
             Team2StatusHUD = true
 
 
-rule "Player Status - Clear Inactivity HUD":
+rule "[player_status/hud.opy] Player Status - Clear Inactivity HUD":
     @Condition Player_Status == true
     @Condition isInSetup() == true
     @Condition (getPlayersInSlot(0, Team.1).ChangeStatusHUD == true or getPlayersInSlot(1, Team.1).ChangeStatusHUD == true or getPlayersInSlot(2, Team.1).ChangeStatusHUD == true or getPlayersInSlot(3, Team.1).ChangeStatusHUD == true or getPlayersInSlot(4, Team.1).ChangeStatusHUD == true or getPlayersInSlot(0, Team.2).ChangeStatusHUD == true or getPlayersInSlot(1, Team.2).ChangeStatusHUD == true or getPlayersInSlot(2, Team.2).ChangeStatusHUD == true or getPlayersInSlot(3, Team.2).ChangeStatusHUD == true or getPlayersInSlot(4, Team.2).ChangeStatusHUD == true) == true
@@ -31,7 +31,7 @@ rule "Player Status - Clear Inactivity HUD":
         Team2StatusHUD = false
 
 
-rule "Player Status - Remove HUD if a player leaves":
+rule "[player_status/hud.opy] Player Status - Remove HUD if a player leaves":
     @Event playerLeft
     
     eventPlayer.ChangeStatusHUD = true
@@ -40,7 +40,7 @@ rule "Player Status - Remove HUD if a player leaves":
 
 
 # Variable Tracking
-rule "Player Status - Track how long a player has been AFK":
+rule "[player_status/hud.opy] Player Status - Track how long a player has been AFK":
     @Event eachPlayer
     @Condition eventPlayer.AFK == true
     
@@ -50,6 +50,3 @@ rule "Player Status - Track how long a player has been AFK":
         wait(1)
     if eventPlayer.AFK == false:
         eventPlayer.AFK_Timer = 25
-
-
-

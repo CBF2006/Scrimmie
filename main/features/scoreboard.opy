@@ -1,6 +1,6 @@
 #!mainFile "../main.opy"
 
-rule "Scoreboard: Scrimmie / OWL - Create Legend":
+rule "[features/scoreboard.opy] Scoreboard: Scrimmie / OWL - Create Legend":
     @Condition DrawScoreboard == true
     @Condition ScoreboardLayout == 0
     
@@ -65,7 +65,7 @@ rule "Scoreboard: Scrimmie / OWL - Create Legend":
 
 
 
-rule "Scoreboard: Scrimmie / OWL - Separate Teams (Large)":
+rule "[features/scoreboard.opy] Scoreboard: Scrimmie / OWL - Separate Teams (Large)":
     @Event eachPlayer
     @Condition DrawScoreboard == true
     @Condition ScoreboardLayout == 0
@@ -86,7 +86,7 @@ rule "Scoreboard: Scrimmie / OWL - Separate Teams (Large)":
         if eventPlayer.getTeam() == Team.2:
             hudSubtext(null, "{0}  {1} - {2}".format(heroIcon(eventPlayer.getCurrentHero()), ceil(eventPlayer.getStatistic(Stat.BARRIER_DAMAGE_DEALT) + eventPlayer.getStatistic(Stat.HERO_DAMAGE_DEALT)), "{0} - {1} - {2}".format(ceil(eventPlayer.getStatistic(Stat.DAMAGE_TAKEN)), eventPlayer.getStatistic(Stat.FINAL_BLOWS), "{0} - {1} - {2}".format(eventPlayer.getStatistic(Stat.DEATHS), ceil(eventPlayer.getStatistic(Stat.HEALING_DEALT)), "{0}  {1} {2}".format(eventPlayer.getStatistic(Stat.ULTIMATES_USED), abilityIconString(eventPlayer.getCurrentHero(), Button.ABILITY_2) if eventPlayer.getAbilityCooldown(Button.ABILITY_2) == 0 else "", abilityIconString(eventPlayer.getCurrentHero(), Button.ABILITY_1) if eventPlayer.getAbilityCooldown(Button.ABILITY_1) == 0 else "")))), HudPosition.RIGHT, 2 + (-3 if eventPlayer.getCurrentHero() in getDamageHeroes() else -2 if eventPlayer.getCurrentHero() in getTankHeroes() else -1), Color.TEAM_2, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
 
-rule "Scoreboard: Scrimmie / OWL - Separate Teams (Small)":
+rule "[features/scoreboard.opy] Scoreboard: Scrimmie / OWL - Separate Teams (Small)":
     @Event eachPlayer
     @Condition DrawScoreboard == true
     @Condition ScoreboardLayout == 0
@@ -110,7 +110,7 @@ rule "Scoreboard: Scrimmie / OWL - Separate Teams (Small)":
 
     # DPS = -3, Tank = -2, else -1
             
-rule "Scoreboard: Scrimmie / OWL - Combine Teams (Large)":
+rule "[features/scoreboard.opy] Scoreboard: Scrimmie / OWL - Combine Teams (Large)":
     @Event eachPlayer
     @Condition DrawScoreboard == true
     @Condition ScoreboardLayout == 0
@@ -128,7 +128,7 @@ rule "Scoreboard: Scrimmie / OWL - Combine Teams (Large)":
     elif ScoreboardSorting == 1:
         hudSubtext(null, "{0}  {1} - {2}".format(heroIcon(eventPlayer.getCurrentHero()), ceil(eventPlayer.getStatistic(Stat.BARRIER_DAMAGE_DEALT) + eventPlayer.getStatistic(Stat.HERO_DAMAGE_DEALT)), "{0} - {1} - {2}".format(ceil(eventPlayer.getStatistic(Stat.DAMAGE_TAKEN)), eventPlayer.getStatistic(Stat.FINAL_BLOWS), "{0} - {1} - {2}".format(eventPlayer.getStatistic(Stat.DEATHS), ceil(eventPlayer.getStatistic(Stat.HEALING_DEALT)), "{0}  {1} {2}".format(eventPlayer.getStatistic(Stat.ULTIMATES_USED), abilityIconString(eventPlayer.getCurrentHero(), Button.ABILITY_2) if eventPlayer.getAbilityCooldown(Button.ABILITY_2) == 0 else "", abilityIconString(eventPlayer.getCurrentHero(), Button.ABILITY_1) if eventPlayer.getAbilityCooldown(Button.ABILITY_1) == 0 else "")))), HudPosition.LEFT, 2 + (1 if eventPlayer.getCurrentHero() in getDamageHeroes() else 2 if eventPlayer.getCurrentHero() in getTankHeroes() else 3), Color.TEAM_1 if eventPlayer.getTeam() == Team.1 else Color.TEAM_2, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
         
-rule "Scoreboard: Scrimmie / OWL - Combine Teams (Small)":
+rule "[features/scoreboard.opy] Scoreboard: Scrimmie / OWL - Combine Teams (Small)":
     @Event eachPlayer
     @Condition DrawScoreboard == true
     @Condition ScoreboardLayout == 0
@@ -148,7 +148,7 @@ rule "Scoreboard: Scrimmie / OWL - Combine Teams (Small)":
 
 # ScrimTime A
 
-rule "Scoreboard: ScrimTime A - Create Legend":
+rule "[features/scoreboard.opy] Scoreboard: ScrimTime A - Create Legend":
     @Condition isGameInProgress() == true
     @Condition DrawScoreboard == true
     @Condition ScoreboardLayout == 1
@@ -196,7 +196,7 @@ rule "Scoreboard: ScrimTime A - Create Legend":
             hudSubheader(null, "{0} {1}".format(abilityIconString(Hero.BAPTISTE, Button.ABILITY_1), "K • D • DD • DT • HD • UU"), HudPosition.LEFT, 3, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
 
 
-rule "Scoreboard A (Standard): Create Player Entries (Large)":
+rule "[features/scoreboard.opy] Scoreboard: ScrimTime A (Large)":
     @Event eachPlayer
     @Condition isGameInProgress() == true
     @Condition DrawScoreboard == true
@@ -217,7 +217,7 @@ rule "Scoreboard A (Standard): Create Player Entries (Large)":
         hudSubtext(null, "{0} {1} • {2}".format(heroIcon(eventPlayer.getCurrentHero()), "{0} • {1} • {2}".format(eventPlayer.getStatistic(Stat.FINAL_BLOWS), eventPlayer.getStatistic(Stat.DEATHS), round(eventPlayer.getStatistic(Stat.HERO_DAMAGE_DEALT))), "{0} • {1} • {2}".format(round(eventPlayer.getStatistic(Stat.DAMAGE_TAKEN)), round(eventPlayer.getStatistic(Stat.DAMAGE_BLOCKED)) if eventPlayer.getCurrentHero() in getTankHeroes() else round(eventPlayer.getStatistic(Stat.HEALING_DEALT)) if eventPlayer.getCurrentHero() in getSupportHeroes() else "{0}%".format(round(eventPlayer.getHeroStatistic(eventPlayer.getCurrentHero(), HeroStat.WEAPON_ACCURACY) * 100)), eventPlayer.getStatistic(Stat.ULTIMATES_USED))), HudPosition.LEFT, (1 if eventPlayer.getCurrentHero() in getDamageHeroes() else 2 if eventPlayer.getCurrentHero() in getTankHeroes() else 3) + (0.1 if eventPlayer.getTeam() == Team.1 else 0.2), Color.TEAM_1 if eventPlayer.getTeam() == Team.1 else Color.TEAM_2, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.ALWAYS)
     
 
-rule "Scoreboard A (Standard): Create Player Entries (Small)":
+rule "[features/scoreboard.opy] Scoreboard: ScrimTime A (Small)":
     @Event eachPlayer
     @Condition isGameInProgress() == true
     @Condition DrawScoreboard == true
@@ -237,7 +237,7 @@ rule "Scoreboard A (Standard): Create Player Entries (Small)":
     elif ScoreboardGrouping == 1:
         hudSubheader(null, "{0} {1} • {2}".format(heroIcon(eventPlayer.getCurrentHero()), "{0} • {1} • {2}".format(eventPlayer.getStatistic(Stat.FINAL_BLOWS), eventPlayer.getStatistic(Stat.DEATHS), round(eventPlayer.getStatistic(Stat.HERO_DAMAGE_DEALT))), "{0} • {1} • {2}".format(round(eventPlayer.getStatistic(Stat.DAMAGE_TAKEN)), round(eventPlayer.getStatistic(Stat.DAMAGE_BLOCKED)) if eventPlayer.getCurrentHero() in getTankHeroes() else round(eventPlayer.getStatistic(Stat.HEALING_DEALT)) if eventPlayer.getCurrentHero() in getSupportHeroes() else "{0}%".format(round(eventPlayer.getHeroStatistic(eventPlayer.getCurrentHero(), HeroStat.WEAPON_ACCURACY) * 100)), eventPlayer.getStatistic(Stat.ULTIMATES_USED))), HudPosition.LEFT, (1 if eventPlayer.getCurrentHero() in getDamageHeroes() else 2 if eventPlayer.getCurrentHero() in getTankHeroes() else 3) + (0.1 if eventPlayer.getTeam() == Team.1 else 0.2), Color.TEAM_1 if eventPlayer.getTeam() == Team.1 else Color.TEAM_2, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.ALWAYS)
 
-rule "Scoreboard: Host Player Toggle Scoreboard":
+rule "[features/scoreboard.opy] Scoreboard: Host Player Toggle Scoreboard":
     @Event global
     @Condition createWorkshopSetting(bool, "5. Spectator Scoreboard", "Allow Host Spectator to Toggle Scoreboard", false, 5) == true
     @Condition DrawScoreboard == true

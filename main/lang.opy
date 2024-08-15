@@ -1,6 +1,6 @@
 #!mainFile "main.opy"
 
-rule "Multi-Language: Language Strings":
+rule "[lang.opy] Multi-Language: Language Strings":
     #General HUD
     LanguageArray[0] = ["is Not Ready", "no está Listo", "이 준비되지 않았습니다", "n’est pas prête", "は準備中です", "尚未准备", "尚未準備"]
     LanguageArray[1] = ["Hold", "Mantén", "꾹 누르기", "Maintenez", "押し続け", "按住", "按住"]

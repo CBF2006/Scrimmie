@@ -1,6 +1,6 @@
 #!mainFile "../main.opy"
 
-rule "Defense Map Teleport":
+rule "[features/teleports.opy] Defense Map Teleport":
     @Event eachPlayer
     @Condition isInSetup() == true
     @Condition eventPlayer.isHoldingButton(Button.MELEE) == true

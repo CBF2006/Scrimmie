@@ -8,11 +8,7 @@
 #!include "variables.opy"
 
 
-# Adding Spectator Scoreboard
-#!include "scoreboard/scoreboard.opy"
-
-
-rule "Remove Assembling Heroes":
+rule "[main.opy] Remove Assembling Heroes":
     @Condition isAssemblingHeroes() == true
     @Condition createWorkshopSetting(bool, "2. Setup Phase", "Remove Assemble Heroes Phase", true, 0)
     
@@ -21,55 +17,11 @@ rule "Remove Assembling Heroes":
     setMatchTime(50)
 
 
-rule "Help HUD":
-    @Condition isGameInProgress() == false
-    @Condition InfoDrawn == false
-    
-    Ready_Up_System = createWorkshopSetting(bool, "6. Player Status", "Toggle Ready Confirmation", true, 1)
-    Player_Status = createWorkshopSetting(bool, "6. Player Status", "Toggle Player Status", true, 0)
-    Scoreboard_Size = createWorkshopSetting(enum["Large", "Small"], "5. Spectator Scoreboard", "Size", 0, 1)
-    AllowDCResume = createWorkshopSetting(bool, "1. General Settings", "Allow Disconnect Resume", true, 2)
-    MatchDelayAmount = createWorkshopSetting(int[15:300], "2. Setup Phase", "Setup Time Added", 60, 2)
-    ScoreboardGrouping = createWorkshopSetting(enum["Separate Teams", "Combine Teams"], "5. Spectator Scoreboard", "Grouping", 0, 2)
-    ScoreboardLayout = createWorkshopSetting(enum["Scrimmie / OWL", "ScrimTime Standard"], "5. Spectator Scoreboard", "Layout", 0, 3)
-    ScoreboardSorting = createWorkshopSetting(enum["By Slot", "By Role"], "5. Spectator Scoreboard", "Sorting", 0, 4)
-    DevMode = createWorkshopSetting(bool, "9. Developer Options", "Developer Mode", false, 0)
-    Team1Ready = "Not Ready"
-    Team2Ready = "Not Ready"
-    
-    if createWorkshopSetting(bool, "3. Help HUD", "Show Controls", true, 1) == true:
-        #Change Hero (Defense Only)
-        hudSubheader(getAllPlayers(), "{0} {1}: {2}".format(LanguageArray[1][localPlayer.PlayerLanguage], buttonString(Button.RELOAD), LanguageArray[2][localPlayer.PlayerLanguage]), HudPosition.RIGHT, 26, Color.YELLOW, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
-        #Ready Up
-        hudSubheader(getAllPlayers(), "{0} {1}: {2}".format(LanguageArray[3][localPlayer.PlayerLanguage], "{0} + {1}".format(buttonString(Button.CROUCH), buttonString(Button.INTERACT)), LanguageArray[4][localPlayer.PlayerLanguage]), HudPosition.RIGHT, 23, Color.AQUA, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
-        #Add Time
-        hudSubheader(getAllPlayers(), "{0}: {1}".format("{0} {1}".format(LanguageArray[3][localPlayer.PlayerLanguage], buttonString(Button.ULTIMATE)), "{0} {1} {2}".format(LanguageArray[5][localPlayer.PlayerLanguage], MatchDelayAmount, LanguageArray[6][localPlayer.PlayerLanguage])), HudPosition.RIGHT, 24, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
-        #Defender Teleport
-        hudSubheader(getAllPlayers(), "{0} {1}: {2}".format(LanguageArray[3][localPlayer.PlayerLanguage], buttonString(Button.MELEE), LanguageArray[8][localPlayer.PlayerLanguage]), HudPosition.RIGHT, 26, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
-        #Change Language
-        hudSubheader(getAllPlayers(), "{0} {1}: {2}".format(LanguageArray[3][localPlayer.PlayerLanguage], "{0} + {1}".format(buttonString(Button.INTERACT), buttonString(Button.RELOAD)), LanguageArray[11][localPlayer.PlayerLanguage]), HudPosition.RIGHT, 27, Color.LIME_GREEN, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
-        #Team 1 Ready
-        hudHeader(getAllPlayers(), "{0} {1}".format(Team.1, LanguageArray[10][localPlayer.PlayerLanguage] if Team1Ready == "Ready" else LanguageArray[0][localPlayer.PlayerLanguage]), HudPosition.TOP, 20, Color.GREEN if Team1Ready == "Ready" else Color.RED, HudReeval.VISIBILITY_STRING_AND_COLOR, SpecVisibility.ALWAYS)
-        #Team 2 Ready
-        hudHeader(getAllPlayers(), "{0} {1}".format(Team.2, LanguageArray[10][localPlayer.PlayerLanguage] if Team2Ready == "Ready" else LanguageArray[0][localPlayer.PlayerLanguage]), HudPosition.TOP, 21, Color.GREEN if Team2Ready == "Ready" else Color.RED, HudReeval.VISIBILITY_STRING_AND_COLOR, SpecVisibility.ALWAYS)
-    if createWorkshopSetting(bool, "3. Help HUD", "Show Current Language", true, 2) == true:
-        #Current Language in Default Language
-        hudSubheader(getAllPlayers(), CurrentLanguageArray[DefaultLanguage][localPlayer.PlayerLanguage], HudPosition.TOP, 24, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
-    
-    #Scrimmie! Banner
-    if createWorkshopSetting(bool, "3. Help HUD", "Show Scrimmie Banner", true, 0) == true:
-        hudSubheader(getAllPlayers(), LanguageArray[7][localPlayer.PlayerLanguage], HudPosition.LEFT, 0, Color.SKY_BLUE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
-        hudSubheader(getAllPlayers(), "workshop.codes/scrimmie", HudPosition.LEFT, 0.1, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
-        hudSubheader(getAllPlayers(), "{0}: Y2TXE".format(LanguageArray[12][localPlayer.PlayerLanguage]), HudPosition.LEFT, 0.2, Color.TURQUOISE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
-    if DevMode == true:
-        #Developer Mode
-        hudSubtext(getAllPlayers(), "DEVELOPER MODE ENABLED", HudPosition.TOP, 25, Color.LIME_GREEN, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
-        #DEBUG - Set Timer to 10s
-        hudSubheader(getAllPlayers(), "Press {0}: Set timer to 10 seconds".format(buttonString(Button.INTERACT)), HudPosition.RIGHT, 28, Color.GRAY, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
-    InfoDrawn = true
+# Adding Help HUD
+#!include "help_hud.opy"
 
 
-rule "Game in Progress: Remove HUD, Reset variables":
+rule "[main.opy] Game in Progress: Remove HUD, Reset variables":
     @Condition InfoDrawn == true
     @Condition isGameInProgress() == true
     
@@ -92,17 +44,7 @@ rule "Game in Progress: Remove HUD, Reset variables":
     Flashpoint = 5
 
 
-rule "Both Teams Ready: Match starts in 5 sec, Remove HUD, Reset variables":
-    @Condition isGameInProgress() == false
-    @Condition getMatchTime() > 5
-    @Condition Team1Ready == "Ready"
-    @Condition Team2Ready == "Ready"
-    
-    setMatchTime(5)
-    wait(1)
-
-
-rule "Ultimate: +Ns match time while in setup":
+rule "[main.opy] Ultimate: +Ns match time while in setup":
     @Event eachPlayer
     @Condition isGameInProgress() == false
     @Condition getMatchTime() >= 0.1
@@ -126,135 +68,7 @@ rule "Ultimate: +Ns match time while in setup":
             Team2Ready = "Not Ready"
 
 
-rule "Ready Up - Ready Confirmation On":
-    @Event eachPlayer
-    @Condition Ready_Up_System == 1
-    @Condition isGameInProgress() == false
-    @Condition eventPlayer.getCurrentHero() == true
-    @Condition eventPlayer.isHoldingButton(Button.CROUCH) == true
-    @Condition eventPlayer.isHoldingButton(Button.INTERACT) == true
-    @Condition eventPlayer.ReadyCD == 0
-    
-    eventPlayer.ReadyCD = 1
-    chase(eventPlayer.ReadyCD, 0, duration=1, ChaseReeval.DESTINATION_AND_DURATION)
-    if eventPlayer.getTeam() == Team.1:
-        if Team1Ready == "Not Ready":
-            if getPlayersInSlot(0, eventPlayer.getTeam()).AFK == true or getPlayersInSlot(1, eventPlayer.getTeam()).AFK == true or getPlayersInSlot(2, eventPlayer.getTeam()).AFK == true or getPlayersInSlot(3, eventPlayer.getTeam()).AFK == true or getPlayersInSlot(4, eventPlayer.getTeam()).AFK == true:
-                if eventPlayer.Has_Readied == false:
-                    smallMessage(eventPlayer, "  {0}".format(LanguageArray[31][localPlayer.PlayerLanguage]))
-                    hudHeader(eventPlayer, LanguageArray[33][eventPlayer.PlayerLanguage], HudPosition.TOP, 22, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
-                    eventPlayer.Confirm_Ready_TextID = getLastCreatedText()
-                    eventPlayer.Has_Readied = true
-                else:
-                    Team1Ready = "Ready"
-                    destroyHudText(eventPlayer.Confirm_Ready_TextID)
-                    eventPlayer.communicate(Comms.READY)
-                    smallMessage(getAllPlayers(), "  {0} {1}".format(eventPlayer, LanguageArray[14][localPlayer.PlayerLanguage]))
-                    eventPlayer.Has_Readied = false
-            else:
-                Team1Ready = "Ready"
-                eventPlayer.communicate(Comms.READY)
-                smallMessage(getAllPlayers(), "  {0} {1}".format(eventPlayer, LanguageArray[14][localPlayer.PlayerLanguage]))
-        else:
-            Team1Ready = "Not Ready"
-            smallMessage(getAllPlayers(), "  {0} {1}".format(eventPlayer, LanguageArray[15][localPlayer.PlayerLanguage]))
-    elif eventPlayer.getTeam() == Team.2:
-        if Team2Ready == "Not Ready":
-            if getPlayersInSlot(0, eventPlayer.getTeam()).AFK == true or getPlayersInSlot(1, eventPlayer.getTeam()).AFK == true or getPlayersInSlot(2, eventPlayer.getTeam()).AFK == true or getPlayersInSlot(3, eventPlayer.getTeam()).AFK == true or getPlayersInSlot(4, eventPlayer.getTeam()).AFK == true:
-                if eventPlayer.Has_Readied == false:
-                    smallMessage(eventPlayer, "  {0}".format(LanguageArray[31][localPlayer.PlayerLanguage]))
-                    hudHeader(eventPlayer, LanguageArray[33][eventPlayer.PlayerLanguage], HudPosition.TOP, 22, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
-                    eventPlayer.Confirm_Ready_TextID = getLastCreatedText()
-                    eventPlayer.Has_Readied = true
-                else:
-                    Team2Ready = "Ready"
-                    destroyHudText(eventPlayer.Confirm_Ready_TextID)
-                    eventPlayer.communicate(Comms.READY)
-                    smallMessage(getAllPlayers(), "  {0} {1}".format(eventPlayer, LanguageArray[14][localPlayer.PlayerLanguage]))
-                    eventPlayer.Has_Readied = false
-            else:
-                Team2Ready = "Ready"
-                eventPlayer.communicate(Comms.READY)
-                smallMessage(getAllPlayers(), "  {0} {1}".format(eventPlayer, LanguageArray[14][localPlayer.PlayerLanguage]))
-        else:
-            Team2Ready = "Not Ready"
-            smallMessage(getAllPlayers(), "  {0} {1}".format(eventPlayer, LanguageArray[15][localPlayer.PlayerLanguage]))
-
-
-rule "Ready Up - Ready Confirmation Off":
-    @Event eachPlayer
-    @Condition Ready_Up_System == false
-    @Condition isGameInProgress() == false
-    @Condition eventPlayer.getCurrentHero() == true
-    @Condition eventPlayer.isHoldingButton(Button.CROUCH) == true
-    @Condition eventPlayer.isHoldingButton(Button.INTERACT) == true
-    @Condition eventPlayer.ReadyCD == 0
-    
-    eventPlayer.ReadyCD = 1
-    chase(eventPlayer.ReadyCD, 0, duration=1, ChaseReeval.DESTINATION_AND_DURATION)
-    if eventPlayer.getTeam() == Team.1:
-        if Team1Ready == "Not Ready":
-            Team1Ready = "Ready"
-            eventPlayer.communicate(Comms.READY)
-            smallMessage(getAllPlayers(), "  {0} {1}".format(eventPlayer, LanguageArray[14][localPlayer.PlayerLanguage]))
-        else:
-            Team1Ready = "Not Ready"
-            smallMessage(getAllPlayers(), "  {0} {1}".format(eventPlayer, LanguageArray[15][localPlayer.PlayerLanguage]))
-    elif eventPlayer.getTeam() == Team.2:
-        if Team2Ready == "Not Ready":
-            Team2Ready = "Ready"
-            eventPlayer.communicate(Comms.READY)
-            smallMessage(getAllPlayers(), "  {0} {1}".format(eventPlayer, LanguageArray[14][localPlayer.PlayerLanguage]))
-        else:
-            Team2Ready = "Not Ready"
-            smallMessage(getAllPlayers(), "  {0} {1}".format(eventPlayer, LanguageArray[15][localPlayer.PlayerLanguage]))
-
-
-rule "Force Map Completion":
-    @Condition createWorkshopSetting(bool, "4. Map Completion", "Force Map Completion", true, 0)
-    @Condition isMatchBetweenRounds() == true
-    @Condition isTeamOnOffense(Team.2) == true
-    @Condition ScoreModified == 0
-    
-    wait(10)
-    ScoreModified = 1
-    if getCurrentGamemode() == Gamemode.ESCORT or getCurrentGamemode() == Gamemode.HYBRID:
-        setTeamScore(Team.2, 3)
-    elif getCurrentGamemode() == Gamemode.ASSAULT:
-        setTeamScore(Team.2, 2)
-
-
-rule "End Control after 3 rounds":
-    @Condition getCurrentGamemode() == Gamemode.CONTROL
-    @Condition teamScore(Team.1) + teamScore(Team.2) == 3
-    @Condition createWorkshopSetting(bool, "4. Map Completion", "End Control After 3 Rounds", true, 1)
-    
-    declareTeamVictory(Team.1 if teamScore(Team.1) > teamScore(Team.2) else Team.2)
-
-
-rule "End Hybrid/Escort if teams tie":
-    @Condition (getCurrentGamemode() == Gamemode.ESCORT or getCurrentGamemode() == Gamemode.HYBRID) == true
-    @Condition teamScore(Team.1) == 3
-    @Condition teamScore(Team.2) == 3
-    @Condition createWorkshopSetting(bool, "4. Map Completion", "End Hybrid/Escort if Both Teams Complete", true, 2)
-
-    declareDraw()
-
-
-rule "End Flashpoint once all points have been played":
-    @Condition isGameInProgress() == true
-    @Condition getCurrentGamemode() == Gamemode.FLASHPOINT
-    #There are 5 Flashpoints, so this condition is met once all Flashpoints have been played
-    @Condition teamScore(Team.1) + teamScore(Team.2) == createWorkshopSetting(int[1:10], "4. Map Completion", "Total Score to End Flashpoint", 5, 3)
-    
-    declareTeamVictory(Team.1 if teamScore(Team.1) > teamScore(Team.2) else Team.2)
-    #Flashpoint is bugged currently and you cannot manually declare a winner
-    smallMessage(getAllPlayers(), "  {0}".format(InfoDrawn[28][localPlayer.PlayerLanguage]))
-    wait(4.5)
-    returnToLobby()
-
-
-rule "Defense Map Change Hero":
+rule "[main.opy] Defenders Easy Change Hero":
     @Event eachPlayer
     @Condition isInSetup() == true
     @Condition eventPlayer.isHoldingButton(Button.RELOAD) == true
@@ -264,7 +78,7 @@ rule "Defense Map Change Hero":
     @Condition eventPlayer.getCurrentHero() == true
     @Condition getMatchTime() >= 1
     @Condition createWorkshopSetting(bool, "2. Setup Phase", "Defenders Easy Change Hero", true, 4)
-    
+                
     wait(0.2, Wait.ABORT_WHEN_FALSE)
     smallMessage(eventPlayer, "  {0} {1} {2}".format(LanguageArray[9][localPlayer.PlayerLanguage], buttonString(Button.RELOAD), LanguageArray[24][localPlayer.PlayerLanguage]))
     wait(0.7, Wait.ABORT_WHEN_FALSE)
@@ -273,10 +87,18 @@ rule "Defense Map Change Hero":
     eventPlayer.setAllowedHeroes(eventPlayer.HeroList)
     wait(0.1)
     eventPlayer.setAllowedHeroes(getAllHeroes())
-
-
+            
+            
 # Adding Defender Teleports
 #!include "features/teleports.opy"
+
+
+# Adding Readying System
+#!include "features/ready_up.opy"
+
+
+# Adding Force Map Completion and Autocompletion Rules
+#!include "features/map_completion.opy"
 
 
 # Adding Disconnect Resume
@@ -288,7 +110,7 @@ rule "Defense Map Change Hero":
 
 
 # Multi-Language Support
-rule "Multi-Language: Set Default Language":
+rule "[main.opy] Multi-Language: Set Default Language":
     @Event eachPlayer
     @Condition isInSetup() == true
     @Condition getMatchRound() == 1
@@ -297,7 +119,7 @@ rule "Multi-Language: Set Default Language":
     getAllPlayers().PlayerLanguage = DefaultLanguage
 
 
-rule "Multi-Language: Choose Language":
+rule "[main.opy] Multi-Language: Choose Language":
     @Event eachPlayer
     @Condition isInSetup() == true
     @Condition eventPlayer.isHoldingButton(Button.INTERACT) == true
@@ -308,30 +130,21 @@ rule "Multi-Language: Choose Language":
     smallMessage(eventPlayer, "  {0}".format(LanguageArray[13][eventPlayer.PlayerLanguage]))
 
 
+# Adding Spectator Scoreboard
+#!include "features/scoreboard.opy"
+
+
 # Adding Player Status
 #!include "player_status/status_check.opy"
 #!include "player_status/hud.opy"
 
 
-# Resetting Conditions
-rule "Player Status - Reset Conditions as game starts":
-    @Condition isGameInProgress() == false
-    @Condition isInSetup() == true
-    @Condition (Team1Ready == "ready" and Team2Ready == "ready" or getMatchTime() < 0.1) == true
-    
-    getAllPlayers().stopForcingOutlineFor(getAllPlayers())
-    getAllPlayers().AFK = false
-
-
-rule "Player Status - Reset Outlines when a Player joins (Swaps Teams)":
-    @Event playerJoined
-    @Condition isInSetup() == true
-    
-    getAllPlayers().stopForcingOutlineFor(eventPlayer)
+# Adding Player Status - Resetting Conditions
+#!include "player_status/reset_conditions.opy"
 
 
 # Next Flashpoint
-rule "Display Next Flashpoint to Spectators":
+rule "[main.opy] Display Next Flashpoint to Spectators":
     @Condition getCurrentGamemode() == Gamemode.FLASHPOINT
     @Condition isGameInProgress() == true
     @Condition Flashpoint != getCurrentObjective()

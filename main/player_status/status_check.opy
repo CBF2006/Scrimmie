@@ -1,6 +1,6 @@
 #!mainFile "../main.opy"
 
-rule "Player Status - Check if a player is inactive (AFK)":
+rule "[player_status/status_check.opy] Player Status - Check if a player is inactive (AFK)":
     @Event eachPlayer
     @Condition Player_Status == true
     @Condition isInSetup() == true
@@ -28,7 +28,7 @@ rule "Player Status - Check if a player is inactive (AFK)":
     Display_StatusHUD = false
 
 
-rule "Player Status - Clear Text if a player returns (AFK)":
+rule "[player_status/status_check.opy] Player Status - Clear Text if a player returns (AFK)":
     @Event eachPlayer
     @Condition Player_Status == true
     @Condition isInSetup() == true
