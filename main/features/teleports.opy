@@ -9,7 +9,7 @@ rule "[features/teleports.opy] Defense Map Teleport":
     @Condition eventPlayer.hasSpawned() == true
     @Condition eventPlayer.isAlive() == true
     @Condition eventPlayer.getCurrentHero() == true
-    @Condition createWorkshopSetting(bool, "2. Setup Phase", "Allow Defenders to Teleport to Objective", true, 3)
+    @Condition createWorkshopSetting(bool, "2. Setup Phase", "Allow Defenders to Teleport to Objective", true, 4)
     
     switch getCurrentMap():
         case Map.BLIZZ_WORLD:

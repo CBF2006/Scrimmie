@@ -14,7 +14,7 @@ rule "[main.opy] Remove Assembling Heroes":
     
     setMatchTime(0)
     wait(5)
-    setMatchTime(50)
+    setMatchTime(createWorkshopSetting(int[10:300], "2. Setup Phase", "Default Setup Time", 60, 1))
 
 
 # Adding Help HUD
@@ -53,7 +53,7 @@ rule "[main.opy] Ultimate: +Ns match time while in setup":
     @Condition eventPlayer.isHoldingButton(Button.INTERACT) == false
     @Condition eventPlayer.AddTimeCD == 0
     
-    MaxSetupTime = createWorkshopSetting(int[60:600], "2. Setup Phase", "Maximum Setup Time", 120, 1)
+    MaxSetupTime = createWorkshopSetting(int[60:600], "2. Setup Phase", "Maximum Setup Time", 120, 3)
     if getMatchTime() + MatchDelayAmount >= MaxSetupTime:
         setMatchTime(MaxSetupTime)
         smallMessage(eventPlayer, "  {0}".format(LanguageArray[25][localPlayer.PlayerLanguage]))
@@ -77,7 +77,7 @@ rule "[main.opy] Defenders Easy Change Hero":
     @Condition eventPlayer.isAlive() == true
     @Condition eventPlayer.getCurrentHero() == true
     @Condition getMatchTime() >= 1
-    @Condition createWorkshopSetting(bool, "2. Setup Phase", "Defenders Easy Change Hero", true, 4)
+    @Condition createWorkshopSetting(bool, "2. Setup Phase", "Defenders Easy Change Hero", true, 5)
                 
     wait(0.2, Wait.ABORT_WHEN_FALSE)
     smallMessage(eventPlayer, "  {0} {1} {2}".format(LanguageArray[9][localPlayer.PlayerLanguage], buttonString(Button.RELOAD), LanguageArray[24][localPlayer.PlayerLanguage]))
