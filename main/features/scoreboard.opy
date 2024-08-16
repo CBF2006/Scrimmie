@@ -247,7 +247,7 @@ rule "[features/scoreboard.opy] Scoreboard: Host Player Toggle Scoreboard":
 
     if Scoreboard_HideScoreboardID == null:
         #Host Toggled Scoreboard Off
-        smallMessage(getAllPlayers(), LanguageArray[35][localPlayer.PlayerLanguage])
+        smallMessage(getAllPlayers(), "  {0}".format(LanguageArray[35][localPlayer.PlayerLanguage]))
         hudSubtext(null, " \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", HudPosition.LEFT, 0, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
         Scoreboard_HideScoreboardID[0] = getLastCreatedText()
         hudSubtext(null, " \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", HudPosition.RIGHT, -20, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
