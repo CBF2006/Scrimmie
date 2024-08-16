@@ -254,7 +254,7 @@ rule "[features/scoreboard.opy] Scoreboard: Host Player Toggle Scoreboard":
         Scoreboard_HideScoreboardID[1] = getLastCreatedText()
     else:
         #Host Toggled Scoreboard On
-        smallMessage(getAllPlayers(), LanguageArray[34][localPlayer.PlayerLanguage])
+        smallMessage(getAllPlayers(),"  {0}".format(LanguageArray[34][localPlayer.PlayerLanguage]))
         destroyHudText(Scoreboard_HideScoreboardID[0])
         destroyHudText(Scoreboard_HideScoreboardID[1])
         Scoreboard_HideScoreboardID = null
