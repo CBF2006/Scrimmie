@@ -185,15 +185,15 @@ rule "[features/scoreboard.opy] Scoreboard: ScrimTime A - Create Legend":
 
         # Large Scoreboard
         if Scoreboard_Size == 0:
-            hudSubtext(null, "{0} {1}".format(abilityIconString(Hero.GENJI, Button.ULTIMATE), "K • D • DD • DT • ACC • UU"), HudPosition.LEFT, 1, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
-            hudSubtext(null, "{0} {1}".format(abilityIconString(Hero.REINHARDT, Button.SECONDARY_FIRE), "K • D • DD • DT • DB • UU"), HudPosition.LEFT, 2, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
-            hudSubtext(null, "{0} {1}".format(abilityIconString(Hero.BAPTISTE, Button.ABILITY_1), "K • D • DD • DT • HD • UU"), HudPosition.LEFT, 3, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
+            hudSubtext(null, "{0} {1}".format(abilityIconString(Hero.GENJI, Button.ULTIMATE), "K • D • DD • DT • ACC • UU"), HudPosition.LEFT, 1 if ScoreboardSorting == 1 else 1.1, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
+            hudSubtext(null, "{0} {1}".format(abilityIconString(Hero.REINHARDT, Button.SECONDARY_FIRE), "K • D • DD • DT • DB • UU"), HudPosition.LEFT, 2 if ScoreboardSorting == 1 else 1.2, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
+            hudSubtext(null, "{0} {1}".format(abilityIconString(Hero.BAPTISTE, Button.ABILITY_1), "K • D • DD • DT • HD • UU"), HudPosition.LEFT, 3 if ScoreboardSorting == 1 else 1.3, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
         
         # Small Scoreboard
         elif Scoreboard_Size == 1:
-            hudSubheader(null, "{0} {1}".format(abilityIconString(Hero.GENJI, Button.ULTIMATE), "K • D • DD • DT • ACC • UU"), HudPosition.LEFT, 1, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
-            hudSubheader(null, "{0} {1}".format(abilityIconString(Hero.REINHARDT, Button.SECONDARY_FIRE), "K • D • DD • DT • DB • UU"), HudPosition.LEFT, 2, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
-            hudSubheader(null, "{0} {1}".format(abilityIconString(Hero.BAPTISTE, Button.ABILITY_1), "K • D • DD • DT • HD • UU"), HudPosition.LEFT, 3, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
+            hudSubheader(null, "{0} {1}".format(abilityIconString(Hero.GENJI, Button.ULTIMATE), "K • D • DD • DT • ACC • UU"), HudPosition.LEFT, 1 if ScoreboardSorting == 1 else 1.1, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
+            hudSubheader(null, "{0} {1}".format(abilityIconString(Hero.REINHARDT, Button.SECONDARY_FIRE), "K • D • DD • DT • DB • UU"), HudPosition.LEFT, 2 if ScoreboardSorting == 1 else 1.2, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
+            hudSubheader(null, "{0} {1}".format(abilityIconString(Hero.BAPTISTE, Button.ABILITY_1), "K • D • DD • DT • HD • UU"), HudPosition.LEFT, 3 if ScoreboardSorting == 1 else 1.3, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
 
 
 rule "[features/scoreboard.opy] Scoreboard: ScrimTime A (Large)":
@@ -237,9 +237,23 @@ rule "[features/scoreboard.opy] Scoreboard: ScrimTime A (Small)":
     elif ScoreboardGrouping == 1:
         hudSubheader(null, "{0} {1} • {2}".format(heroIcon(eventPlayer.getCurrentHero()), "{0} • {1} • {2}".format(eventPlayer.getStatistic(Stat.FINAL_BLOWS), eventPlayer.getStatistic(Stat.DEATHS), round(eventPlayer.getStatistic(Stat.HERO_DAMAGE_DEALT))), "{0} • {1} • {2}".format(round(eventPlayer.getStatistic(Stat.DAMAGE_TAKEN)), round(eventPlayer.getStatistic(Stat.DAMAGE_BLOCKED)) if eventPlayer.getCurrentHero() in getTankHeroes() else round(eventPlayer.getStatistic(Stat.HEALING_DEALT)) if eventPlayer.getCurrentHero() in getSupportHeroes() else "{0}%".format(round(eventPlayer.getHeroStatistic(eventPlayer.getCurrentHero(), HeroStat.WEAPON_ACCURACY) * 100)), eventPlayer.getStatistic(Stat.ULTIMATES_USED))), HudPosition.LEFT, (1 if eventPlayer.getCurrentHero() in getDamageHeroes() else 2 if eventPlayer.getCurrentHero() in getTankHeroes() else 3) + (0.1 if eventPlayer.getTeam() == Team.1 else 0.2), Color.TEAM_1 if eventPlayer.getTeam() == Team.1 else Color.TEAM_2, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.ALWAYS)
 
+
+/*
+rule "[features/scoreboard.opy] Scoreboard: Display Match Time":
+    @Event global
+    @Condition createWorkshopSetting(bool, "5. Spectator Scoreboard", "Display Match Time", false, 5)
+    @Condition isGameInProgress() == true
+
+    wait(0.016, Wait.IGNORE_CONDITION)
+    if Scoreboard_Size == 0:
+        hudSubtext(null, "{0} Match Time: {1}", abilityIconString(hero: Hero.LUCIO, Button.ABILITY_2))
+    else:
+        hudSubheader()
+*/
+
 rule "[features/scoreboard.opy] Scoreboard: Host Player Toggle Scoreboard":
     @Event global
-    @Condition createWorkshopSetting(bool, "5. Spectator Scoreboard", "Allow Host Spectator to Toggle Scoreboard", false, 5) == true
+    @Condition createWorkshopSetting(bool, "5. Spectator Scoreboard", "Allow Host Spectator to Toggle Scoreboard", false, 6) == true
     @Condition DrawScoreboard == true
     @Condition hostPlayer.isHoldingButton(Button.ULTIMATE) == true
     @Condition hostPlayer.isHoldingButton(Button.ABILITY_1) == true
@@ -258,6 +272,6 @@ rule "[features/scoreboard.opy] Scoreboard: Host Player Toggle Scoreboard":
         destroyHudText(Scoreboard_HideScoreboardID[0])
         destroyHudText(Scoreboard_HideScoreboardID[1])
         Scoreboard_HideScoreboardID = null
-    
+
 
 
