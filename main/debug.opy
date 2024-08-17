@@ -4,6 +4,7 @@ rule "[debug.opy] DEBUG: Performance Stats":
     @Condition DrawScoreboard == true
     @Condition createWorkshopSetting(bool, "9. Developer Options", "Display Performance Stats", false, 1)
     
+    hudSubheader(getAllPlayers(), "{0}: {1}%".format("Server Load", getServerLoad()), HudPosition.RIGHT, 19, Color.LIME_GREEN, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
     hudSubheader(getAllPlayers(), "{0}: {1}%".format("Server Load Average", getAverageServerLoad()), HudPosition.RIGHT, 20, Color.AQUA, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
     hudSubheader(getAllPlayers(), "{0}: {1}%".format("Server Load Peak", getPeakServerLoad()), HudPosition.RIGHT, 21, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
 
