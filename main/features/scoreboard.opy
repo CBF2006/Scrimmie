@@ -166,7 +166,7 @@ rule "[features/scoreboard.opy] Scoreboard: ScrimTime A - Create Legend":
             hudSubtext(null, "{0} {1}".format(abilityIconString(Hero.BAPTISTE, Button.ABILITY_1), "K • D • DD • DT • HD • UU"), HudPosition.LEFT, 2.5, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
             # Right Side
             hudSubtext(null, "{0} {1}".format(abilityIconString(Hero.GENJI, Button.ULTIMATE), "K • D • DD • DT • ACC • UU"), HudPosition.RIGHT, -3.5, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
-            hudSubtext(null, "{0} {1}".format(abilityIconString(Hero.REINHARDT, Button.SECONDARY_FIRE), "K • D • DD • DT • DB • UU"), HudPosition.LEFT, -2.5, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
+            hudSubtext(null, "{0} {1}".format(abilityIconString(Hero.REINHARDT, Button.SECONDARY_FIRE), "K • D • DD • DT • DB • UU"), HudPosition.RIGHT, -2.5, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
             hudSubtext(null, "{0} {1}".format(abilityIconString(Hero.BAPTISTE, Button.ABILITY_1), "K • D • DD • DT • HD • UU"), HudPosition.RIGHT, -1.5, Color.WHITE, HudReeval.NONE, SpecVisibility.ALWAYS)
         
         # Small Scoreboard
