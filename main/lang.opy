@@ -30,8 +30,8 @@ rule "[lang.opy] Multi-Language: Language Strings":
     LanguageArray[31] = ["One of your teammates is AFK. Confirm ready?", "Uno de sus compañeros está AFK. ¿Confirmar listo?", "당신의 팀원 한명이 잠수 상태입니다. 준비 하시겠습니까?", "Un de vos coéquipiers est AFK. Confirmer prêt?", "あなたのチームメイト一人が離席中です。準備糺しますか?", "您的一名团队成员离开了。确定要准备吗？", "您的一名團隊成員離開了。確定要準備嗎？"]
     LanguageArray[32] = ["You are inactive, press any button to become active", "Está inactivo, presiona cualquier botón para activarte.", "당신은 잠수 상태입니다. 아무키를 눌러 잠수 상태를 해제하세요.", "Vous êtes inactif, appuyez sur n'importe quel bouton pour devenir actif.", "あなたは離席中です。在席すできるためにキーを何でも押してください。", "您处于非活跃状态，按任意键以解除", "您處於閒置狀態，按任意鍵以解除"]
     LanguageArray[33] = ["Confirm Ready?", "¿Confirmar listo?", "준비 하시겠습니까?", "Confirmer prêt?", "準備糺しますか?", "准备好了吗？", "準備好了嗎？"]
-    LanguageArray[34] = ["Host Enabled Scoreboard", "El anfitrión activó el marcador", "호스트가 스코어보드를 켰습니다", "L'hôte a activé le tableau des scores", "ホストがスコアボードをオンにしました", "", ""]
-    LanguageArray[35] = ["Host Disabled Scoreboard", "El anfitrión desactivó el marcador", "호스트가 스코어보드를 껐습니다", "L'hôte a désactivé le tableau des scores", "ホストがスコアボードをオフにしました", "", ""]
+    LanguageArray[34] = ["Host Enabled Scoreboard", "El anfitrión activó el marcador", "호스트가 스코어보드를 켰습니다", "L'hôte a activé le tableau des scores", "ホストがスコアボードをオンにしました", "管理员开启了得分面版", "主持人開啟了得分面板"]
+    LanguageArray[35] = ["Host Disabled Scoreboard", "El anfitrión desactivó el marcador", "호스트가 스코어보드를 껐습니다", "L'hôte a désactivé le tableau des scores", "ホストがスコアボードをオフにしました", "管理员关闭了得分面版", "主持人關閉了得分面板"]
     #Current Language
     CurrentLanguageArray[0] = ["Current Language: English", "Current Language: Spanish", "Current Language: Korean", "Current Language: French", "Current Language: Japanese", "Current Language: Chinese (Simplified)", "Current Language: Chinese (Traditional)"]
     CurrentLanguageArray[1] = ["Idioma actual: inglés", "Idioma actual: español", "Idioma actual: coreano", "Idioma actual: francés", "Idioma actual: japonés", "Idioma actual: chino simplificado", "Idioma actual: chino tradicionales"]
