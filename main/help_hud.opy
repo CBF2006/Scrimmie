@@ -30,7 +30,7 @@ rule "[help_hud.opy] Help HUD":
         hudSubheader(getAllPlayers(), "{0}: Y2TXE".format(LanguageArray[12][localPlayer.PlayerLanguage]), HudPosition.LEFT, 0.2, Color.TURQUOISE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
     if DevMode == true:
         #Developer Mode
-        hudSubtext(getAllPlayers(), "DEVELOPER MODE ENABLED", HudPosition.TOP, 25, Color.LIME_GREEN, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
+        hudSubtext(getAllPlayers(), "{0} DEVELOPER MODE ENABLED {1}".format(iconString(Icon.WARNING), iconString(Icon.WARNING)), HudPosition.TOP, 25, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
         #DEBUG - Set Timer to 10s
         hudSubheader(getAllPlayers(), "Press {0}: Set timer to 10 seconds".format(buttonString(Button.INTERACT)), HudPosition.RIGHT, 28, Color.GRAY, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
     InfoDrawn = true
