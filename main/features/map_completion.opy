@@ -17,7 +17,7 @@ rule "[features/map_completion.opy] Force Map Completion":
 rule "[features/map_completion.opy] End Control after 3 rounds":
     @Condition getCurrentGamemode() == Gamemode.CONTROL
     @Condition teamScore(Team.1) + teamScore(Team.2) == 3
-    @Condition createWorkshopSetting(enum["After 3 Rounds", "Don't End Map"], "4. Map Completion", "End Control", 1, 1) == 1
+    @Condition createWorkshopSetting(enum["After 3 Rounds", "Don't End Map"], "4. Map Completion", "End Control", 0, 1) == 1
     
     declareTeamVictory(Team.1 if teamScore(Team.1) > teamScore(Team.2) else Team.2)
 
@@ -26,7 +26,7 @@ rule "[features/map_completion.opy] End Hybrid/Escort if teams tie":
     @Condition (getCurrentGamemode() == Gamemode.ESCORT or getCurrentGamemode() == Gamemode.HYBRID) == true
     @Condition teamScore(Team.1) == 3
     @Condition teamScore(Team.2) == 3
-    @Condition createWorkshopSetting(enum["After 2 Rounds", "Don't End Map"], "4. Map Completion", "End Hybrid/Escort", 1, 2) == 1
+    @Condition createWorkshopSetting(enum["After 2 Rounds", "Don't End Map"], "4. Map Completion", "End Hybrid/Escort", 0, 2) == 1
 
     declareDraw()
 
