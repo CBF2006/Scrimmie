@@ -41,7 +41,7 @@ rule "[debug.opy] DEBUG: Autostart the Game":
 rule "[debug.opy] DEBUG: Ready Up Both Teams":
     @Event global
     @Condition DevMode == true
-    @Condition createWorkshopSetting(bool, "9. Developer Options", "DEBUG - Ready Up Both Teams by Pressing Ctrl + Melee", false, 5)
+    @Condition createWorkshopSetting(bool, "9. Developer Options", "DEBUG - Ready Up Both Teams by Pressing Ctrl + Melee", false, 5) == true
     @Condition hostPlayer.isHoldingButton(Button.CROUCH) == true
     @Condition hostPlayer.isHoldingButton(Button.MELEE) == true
 
@@ -51,3 +51,12 @@ rule "[debug.opy] DEBUG: Ready Up Both Teams":
     else:
         Team1Ready = "Not Ready"
         Team2Ready = "Not Ready"
+
+rule "[debug.opy] DEBUG: Show Coordinates":
+    @Event global
+    @Condition DevMode == true
+    @Condition createWorkshopSetting(bool, "9. Developer Options", "DEBUG - Show Coordinates", false, 6) == true
+    @Condition isInSetup() == true
+
+    wait(5)
+    hudSubheader(getAllPlayers(), "{0}".format(localPlayer.getPosition()), HudPosition.TOP, 5, Color.YELLOW, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.DEFAULT)
