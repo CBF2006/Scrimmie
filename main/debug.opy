@@ -59,4 +59,13 @@ rule "[debug.opy] DEBUG: Show Coordinates":
     @Condition isInSetup() == true
 
     wait(5)
-    hudSubheader(getAllPlayers(), "X, Y, Z {0}".format(localPlayer.getPosition()), HudPosition.TOP, 26, Color.YELLOW, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.DEFAULT)
+    hudSubheader(getAllPlayers(), "X, Y, Z {0}".format(localPlayer.getPosition()), HudPosition.TOP, 26, Color.YELLOW, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.NEVER)
+
+rule "[debug.opy] DEBUG: Show GitHub Build":
+    @Event global
+    @Condition DevMode == true
+    @Condition createWorkshopSetting(bool, "9. Developer Options", "DEBUG - Display Exact Build Version", false, 7) == true
+    @Condition isInSetup() == true
+
+    wait(5)
+    hudSubheader(getAllPlayers(), "Build {0}".format("4.0.0.ca2da64"), HudPosition.LEFT, 0.05, Color.GRAY, HudReeval.NONE, SpecVisibility.ALWAYS)
