@@ -59,4 +59,4 @@ rule "[debug.opy] DEBUG: Show Coordinates":
     @Condition isInSetup() == true
 
     wait(5)
-    hudSubheader(getAllPlayers(), "{0}".format(localPlayer.getPosition()), HudPosition.TOP, 5, Color.YELLOW, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.DEFAULT)
+    hudSubheader(getAllPlayers(), "XYZ: {0}".format(localPlayer.getPosition()), HudPosition.TOP, 26, Color.YELLOW, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.DEFAULT)
