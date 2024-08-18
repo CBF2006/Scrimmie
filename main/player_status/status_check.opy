@@ -14,6 +14,8 @@ rule "[player_status/status_check.opy] Player Status - Check if a player is inac
     @Condition eventPlayer.isHoldingButton(Button.ULTIMATE) == false
     @Condition eventPlayer.isJumping() == false
     @Condition eventPlayer.isCrouching() == false
+    @Condition eventPlayer.isHoldingButton(Button.INTERACT) == false
+    @Condition eventPlayer.isHoldingButton(Button.MELEE) == false
     
     wait(25, Wait.ABORT_WHEN_FALSE)
     eventPlayer.AFK = true
