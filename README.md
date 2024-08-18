@@ -13,3 +13,7 @@ Rights to the Custom Game itself **belong to Blizzard** as stated in their [Cust
 ### [Workshop.codes](https://workshop.codes/scrimmie)
 ### [Discord](https://discord.gg/TNtbWP4aAg)
 ### [CBF's Twitter](https://x.com/cbfow)
+
+## Documentation:
+[Workshop.codes](https://workshop.codes/scrimmie)
+[Wiki](https://github.com/cbf2006/scrimmie/wiki)
