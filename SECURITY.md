@@ -4,11 +4,11 @@
 
 | Version | Latest Build | Import Code | Stability          |
 | ------- | ------- | ----------- | ------------------ |
-| **5v5 Standard** | 3.6.3   | Y2TXE | :white_check_mark: |
-| 5v5 Professional | 3.6.3   | A8XVJ | :white_check_mark: |
+| **5v5 Standard** | 3.6.4   | Y2TXE | :white_check_mark: |
+| 5v5 Professional | 3.6.4   | A8XVJ | :white_check_mark: |
 | 6v6 Standard | 3.4.1   | D3V4V | ❌ 🔄 |
 | 6v6 OW1 | 3.4.1   | 503ST | ❌                |
-| Development | 4.0e | BD0NY | ⚠️ |
+| Development | ------ | BD0NY | ⚠️ |
 
 ❌ Currently Scrimmie! 6v6 has not been updated for Season 10/11, which will come at a later date. Due to the April Fools bug, this may impact your experience with it until the code is updated.
 
