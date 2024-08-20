@@ -1,6 +1,6 @@
 {
     "main": {
-        "description": "Scrimmie! v3.6.4\nCreated by CBF\r\n\r\nStandard Version\r\nLast tested on Patch 2.11.1.1 - 128150\r\n\r\nImport Code: Y2TXE\r\nworkshop.codes/scrimmie\r\ndiscord.gg/TNtbWP4aAg",
+        "description": "Scrimmie! v3.6.5\nCreated by CBF\r\n\r\nStandard Version\r\nLast tested on Patch 2.12.0.0 - 128702\r\n\r\nImport Code: Y2TXE\r\nworkshop.codes/scrimmie\r\ndiscord.gg/TNtbWP4aAg",
         "modeName": "Scrimmie!"
     },
     "lobby": {
@@ -9,6 +9,9 @@
         "pauseGameOnDisconnect": true
     },
     "gamemodes": {
+        "clash": {
+            "captureSpeed%": 45
+        },
         "control": {
             "enabled": false,
             "scoreToWin": 3
@@ -19,9 +22,7 @@
             "scoreToWin": 5
         },
         "hybrid": {},
-        "push": {
-            "ts1PushSpeedModifier%": 100
-        },
+        "push": {},
         "general": {
             "enableCompetitiveRules": true,
             "gamemodeStartTrigger": "immediately",
