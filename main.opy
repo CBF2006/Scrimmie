@@ -125,7 +125,7 @@ rule "Help HUD":
     #Team 2 Ready
     hudHeader(getAllPlayers(), "{0} {1}".format(Team.2, LanguageArray[10][localPlayer.PlayerLanguage] if Team2Ready == "Ready" else LanguageArray[0][localPlayer.PlayerLanguage]), HudPosition.TOP, 21, Color.GREEN if Team2Ready == "Ready" else Color.RED, HudReeval.VISIBILITY_STRING_AND_COLOR, SpecVisibility.ALWAYS)
     #Scrimmie! Banner
-    hudSubheader(getAllPlayers(), LanguageArray[7][localPlayer.PlayerLanguage], HudPosition.LEFT, 0, Color.SKY_BLUE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
+    hudSubheader(getAllPlayers(), LanguageArray[7][localPlayer.PlayerLanguage], HudPosition.LEFT, 0, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
     #Current Language in Default Language
     hudSubheader(getAllPlayers(), CurrentLanguageArray[DefaultLanguage][localPlayer.PlayerLanguage], HudPosition.TOP, 24, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
     hudSubheader(getAllPlayers(), "workshop.codes/scrimmie", HudPosition.LEFT, 0.1, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
@@ -393,17 +393,17 @@ def PlayerDCInfoTeam1():
     @Name "DC Value Tracking - Team 1 Subroutine"
     
     if eventPlayer.hasSpawned():
-        if ShouldRestore[eventPlayer.getSlot()] >= 0:
+        if ShouldRestore[0 + eventPlayer.getSlot()] >= 0:
             if eventPlayer.isAlive():
-                UltCharges[eventPlayer.getSlot()] = eventPlayer.getUltCharge()
-                Heroes[eventPlayer.getSlot()] = eventPlayer.getCurrentHero()
-                Positions[eventPlayer.getSlot()] = eventPlayer.getPosition()
-                Cooldowns1[eventPlayer.getSlot()] = eventPlayer.getAbilityCooldown(Button.ABILITY_1)
-                Cooldowns2[eventPlayer.getSlot()] = eventPlayer.getAbilityCooldown(Button.ABILITY_2)
-                DVaRestore[eventPlayer.getSlot()] = (eventPlayer.getUltCharge() if eventPlayer.getMaxHealth() > 200 else DVaRestore[eventPlayer.getSlot()]) if eventPlayer.getCurrentHero() == Hero.DVA else -1
-                ShouldRestore[eventPlayer.getSlot()] = eventPlayer.getNormalizedHealth()
+                UltCharges[0 + eventPlayer.getSlot()] = eventPlayer.getUltCharge()
+                Heroes[0 + eventPlayer.getSlot()] = eventPlayer.getCurrentHero()
+                Positions[0 + eventPlayer.getSlot()] = eventPlayer.getPosition()
+                Cooldowns1[0 + eventPlayer.getSlot()] = eventPlayer.getAbilityCooldown(Button.ABILITY_1)
+                Cooldowns2[0 + eventPlayer.getSlot()] = eventPlayer.getAbilityCooldown(Button.ABILITY_2)
+                DVaRestore[0 + eventPlayer.getSlot()] = (eventPlayer.getUltCharge() if eventPlayer.getMaxHealth() > 200 else DVaRestore[0 + eventPlayer.getSlot()]) if eventPlayer.getCurrentHero() == Hero.DVA else -1
+                ShouldRestore[0 + eventPlayer.getSlot()] = eventPlayer.getNormalizedHealth()
             else:
-                ShouldRestore[eventPlayer.getSlot()] = 0
+                ShouldRestore[0 + eventPlayer.getSlot()] = 0
 
 
 rule "DC Value Tracking - Team 2":
@@ -423,18 +423,18 @@ def PlayerDCInfoTeam2():
     @Name "DC Value Tracking - Team 2 Subroutine"
     
     if eventPlayer.hasSpawned():
-        if ShouldRestore[5 + eventPlayer.getSlot()] >= 0:
+        if ShouldRestore[6 + eventPlayer.getSlot()] >= 0:
             if eventPlayer.isAlive():
-                UltCharges[5 + eventPlayer.getSlot()] = eventPlayer.getUltCharge()
-                Heroes[5 + eventPlayer.getSlot()] = eventPlayer.getCurrentHero()
-                Positions[5 + eventPlayer.getSlot()] = eventPlayer.getPosition()
-                Cooldowns1[5 + eventPlayer.getSlot()] = eventPlayer.getAbilityCooldown(Button.ABILITY_1)
-                Cooldowns2[5 + eventPlayer.getSlot()] = eventPlayer.getAbilityCooldown(Button.ABILITY_2)
-                DVaRestore[5 + eventPlayer.getSlot()] = eventPlayer.getMaxHealth()
-                DVaRestore[5 + eventPlayer.getSlot()] = (eventPlayer.getUltCharge() if eventPlayer.getMaxHealth() > 200 else DVaRestore[5 + eventPlayer.getSlot()]) if eventPlayer.getCurrentHero() == Hero.DVA else -1
-                ShouldRestore[5 + eventPlayer.getSlot()] = eventPlayer.getNormalizedHealth()
+                UltCharges[6 + eventPlayer.getSlot()] = eventPlayer.getUltCharge()
+                Heroes[6 + eventPlayer.getSlot()] = eventPlayer.getCurrentHero()
+                Positions[6 + eventPlayer.getSlot()] = eventPlayer.getPosition()
+                Cooldowns1[6 + eventPlayer.getSlot()] = eventPlayer.getAbilityCooldown(Button.ABILITY_1)
+                Cooldowns2[6 + eventPlayer.getSlot()] = eventPlayer.getAbilityCooldown(Button.ABILITY_2)
+                DVaRestore[6 + eventPlayer.getSlot()] = eventPlayer.getMaxHealth()
+                DVaRestore[6 + eventPlayer.getSlot()] = (eventPlayer.getUltCharge() if eventPlayer.getMaxHealth() > 200 else DVaRestore[6 + eventPlayer.getSlot()]) if eventPlayer.getCurrentHero() == Hero.DVA else -1
+                ShouldRestore[6 + eventPlayer.getSlot()] = eventPlayer.getNormalizedHealth()
             else:
-                ShouldRestore[5 + eventPlayer.getSlot()] = 0
+                ShouldRestore[6 + eventPlayer.getSlot()] = 0
 
 
 rule "Player Reconnected - Team 1":
@@ -445,18 +445,18 @@ rule "Player Reconnected - Team 1":
     
     waitUntil(eventPlayer.hasSpawned(), 10)
     wait(0.1)
-    if eventPlayer.getCurrentHero() == Heroes[eventPlayer.getSlot()]:
-        eventPlayer.setUltCharge(UltCharges[eventPlayer.getSlot()])
-        if ShouldRestore[eventPlayer.getSlot()] > 0:
-            ShouldRestore[eventPlayer.getSlot()] = 0 - ShouldRestore[eventPlayer.getSlot()]
-            eventPlayer.startForcingPosition(Positions[eventPlayer.getSlot()], false)
+    if eventPlayer.getCurrentHero() == Heroes[0 + eventPlayer.getSlot()]:
+        eventPlayer.setUltCharge(UltCharges[0 + eventPlayer.getSlot()])
+        if ShouldRestore[0 + eventPlayer.getSlot()] > 0:
+            ShouldRestore[0 + eventPlayer.getSlot()] = 0 - (ShouldRestore[0 + eventPlayer.getSlot()])
+            eventPlayer.startForcingPosition(Positions[0 + eventPlayer.getSlot()], false)
             wait(0.1)
             eventPlayer.stopForcingPosition()
             PlayerDCDvaTeam1()
-            eventPlayer.setHealth((0 - ShouldRestore[eventPlayer.getSlot()]) * eventPlayer.getMaxHealth())
-            eventPlayer.setAbilityCooldown(Button.ABILITY_1, Cooldowns1[eventPlayer.getSlot()])
-            eventPlayer.setAbilityCooldown(Button.ABILITY_2, Cooldowns2[eventPlayer.getSlot()])
-            ShouldRestore[eventPlayer.getSlot()] = 0 - ShouldRestore[eventPlayer.getSlot()]
+            eventPlayer.setHealth((0 - (ShouldRestore[0 + eventPlayer.getSlot()])) * eventPlayer.getMaxHealth())
+            eventPlayer.setAbilityCooldown(Button.ABILITY_1, Cooldowns1[0 + eventPlayer.getSlot()])
+            eventPlayer.setAbilityCooldown(Button.ABILITY_2, Cooldowns2[0 + eventPlayer.getSlot()])
+            ShouldRestore[0 + eventPlayer.getSlot()] = 0 - (ShouldRestore[0 + eventPlayer.getSlot()])
 
 
 rule "Player Reconnected - Team 2":
@@ -467,42 +467,45 @@ rule "Player Reconnected - Team 2":
     
     waitUntil(eventPlayer.hasSpawned(), 10)
     wait(0.1)
-    if eventPlayer.getCurrentHero() == Heroes[5 + eventPlayer.getSlot()]:
-        eventPlayer.setUltCharge(UltCharges[5 + eventPlayer.getSlot()])
-        if ShouldRestore[5 + eventPlayer.getSlot()] > 0:
-            ShouldRestore[5 + eventPlayer.getSlot()] = 0 - (ShouldRestore[5 + eventPlayer.getSlot()])
-            eventPlayer.startForcingPosition(Positions[5 + eventPlayer.getSlot()], false)
+    if eventPlayer.getCurrentHero() == Heroes[6 + eventPlayer.getSlot()]:
+        eventPlayer.setUltCharge(UltCharges[6 + eventPlayer.getSlot()])
+        if ShouldRestore[6 + eventPlayer.getSlot()] > 0:
+            ShouldRestore[6 + eventPlayer.getSlot()] = 0 - (ShouldRestore[6 + eventPlayer.getSlot()])
+            eventPlayer.startForcingPosition(Positions[6 + eventPlayer.getSlot()], false)
             wait(0.1)
             eventPlayer.stopForcingPosition()
             PlayerDCDvaTeam2()
-            eventPlayer.setHealth((0 - (ShouldRestore[5 + eventPlayer.getSlot()])) * eventPlayer.getMaxHealth())
-            eventPlayer.setAbilityCooldown(Button.ABILITY_1, Cooldowns1[5 + eventPlayer.getSlot()])
-            eventPlayer.setAbilityCooldown(Button.ABILITY_2, Cooldowns2[5 + eventPlayer.getSlot()])
-            ShouldRestore[5 + eventPlayer.getSlot()] = 0 - (ShouldRestore[5 + eventPlayer.getSlot()])
+            eventPlayer.setHealth((0 - (ShouldRestore[6 + eventPlayer.getSlot()])) * eventPlayer.getMaxHealth())
+            eventPlayer.setAbilityCooldown(Button.ABILITY_1, Cooldowns1[6 + eventPlayer.getSlot()])
+            eventPlayer.setAbilityCooldown(Button.ABILITY_2, Cooldowns2[6 + eventPlayer.getSlot()])
+            ShouldRestore[6 + eventPlayer.getSlot()] = 0 - (ShouldRestore[6 + eventPlayer.getSlot()])
 
 
 def PlayerDCDvaTeam1():
     @Name "Player Reconnected - Team 1 DVa"
     
     if eventPlayer.getCurrentHero() == Hero.DVA:
-        if DVaRestore[eventPlayer.getSlot()] >= 0:
-            eventPlayer.setUltCharge(DVaRestore[eventPlayer.getSlot()])
+        if DVaRestore[0 + eventPlayer.getSlot()] >= 0:
+            eventPlayer.setUltCharge(DVaRestore[0 + eventPlayer.getSlot()])
             wait(0.1)
             damage(eventPlayer, null, 1000)
             wait(1.6)
-            eventPlayer.setUltCharge(UltCharges[eventPlayer.getSlot()])
+            eventPlayer.setUltCharge(UltCharges[0 + eventPlayer.getSlot()])
 
 
 def PlayerDCDvaTeam2():
     @Name "Player Reconnected - Team 2 DVa"
     
     if eventPlayer.getCurrentHero() == Hero.DVA:
-        if DVaRestore[5 + eventPlayer.getSlot()] >= 0:
+        if DVaRestore[6 + eventPlayer.getSlot()] >= 0:
             eventPlayer.setUltCharge(DVaRestore[6 + eventPlayer.getSlot()])
             wait(0.1)
             damage(eventPlayer, null, 1000)
             wait(1.6)
             eventPlayer.setUltCharge(UltCharges[6 + eventPlayer.getSlot()])
+
+
+
 
 
 # Adding Multi-Language Support
