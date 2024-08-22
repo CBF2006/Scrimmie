@@ -114,7 +114,7 @@ rule "[variables.opy] Set Global Variables":
     ScoreboardSorting = createWorkshopSetting(enum["By Slot", "By Role"], "5. Spectator Scoreboard", "Sorting", 0, 4)
     Ready_Up_System = createWorkshopSetting(bool, "6. Player Status", "Toggle Ready Confirmation", true, 1)
     Player_Status = createWorkshopSetting(bool, "6. Player Status", "Toggle Player Status", true, 0)
-    DevMode = createWorkshopSetting(bool, "9. Developer Options", "Developer Mode", false, 0)
+    DevMode = createWorkshopSetting(bool, "8. Developer Options", "Developer Mode", false, 0)
     # Set Teams to "Not Ready"
     Team1Ready = "Not Ready"
     Team2Ready = "Not Ready"
