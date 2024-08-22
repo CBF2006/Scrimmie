@@ -14,7 +14,7 @@ rule "[lang.opy] Multi-Language: Language Strings":
     LanguageArray[9] = ["Keep holding", "Mantén presionado", "영웅 변경하기 위해", "Continuez à maintenir", "ヒーローを変更するために", "继续按住", "繼續按住"]
     LanguageArray[10] = ["is Ready", "está Listo", "이 준비되었습니다", "est prête", "は準備完了です", "已准备", "已準備"]
     LanguageArray[11] = ["Change Language", "Cambiar Idioma", "언어 변경", "Changer la langue", "言語の変更", "更改语言", "更改語言"]
-    LanguageArray[12] = ["Import Code", "Importar Código", "워크샵 코드", "Importer le code", "ロード", "导入代码", "匯入代碼"]
+    LanguageArray[12] = ["Import Code", "Importar Código", "워크샵 코드", "Importer Code", "ロード", "导入代码", "匯入代碼"]
     LanguageArray[13] = ["Changed Language to English", "Cambió el idioma a español", "언어를 변경하였습니다: 한국어", "La langue est changée à français", "言語を日本語に変更しました", "已将语言更改为简体中文", "已將語言更改為繁體中文"]
     LanguageArray[14] = ["readied their team", "se despreparó su equipo", "가 준비를 완료했습니다", "a préparé son équipe", "はチームを準備しました", "方团队已准备", "方團隊已準備"]
     LanguageArray[15] = ["unreadied their team", "se no despreparó su equipo", "가 준비를 해제했습니다", "n’a pas préparé son équipe", "はチームを準備しませんでした", "方团队尚未准备", "方團隊尚未準備"]

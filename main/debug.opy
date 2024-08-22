@@ -76,4 +76,4 @@ rule "[debug.opy] DEBUG: Show GitHub Build":
     @Condition isInSetup() == true
     
     wait(5)
-    hudSubheader(getAllPlayers(), "Build {0}".format("4.0.0.c70fc31"), HudPosition.LEFT, 0.05, Color.ORANGE, HudReeval.NONE, SpecVisibility.ALWAYS)
+    hudSubheader(getAllPlayers(), "Build {0}".format("4.0.0.066053d"), HudPosition.LEFT, 0.05, Color.ORANGE, HudReeval.NONE, SpecVisibility.ALWAYS)
