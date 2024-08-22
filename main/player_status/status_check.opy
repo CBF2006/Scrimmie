@@ -1,10 +1,11 @@
 #!mainFile "../main.opy"
 
+
 rule "[player_status/status_check.opy] Player Status - Check if a player is inactive (AFK)":
     @Event eachPlayer
-    @Condition Player_Status == true
-    @Condition isInSetup() == true
-    @Condition eventPlayer.getCurrentHero() == true
+    @Condition Player_Status
+    @Condition isInSetup()
+    @Condition eventPlayer.getCurrentHero() != null
     @Condition eventPlayer.isMoving() == false
     @Condition eventPlayer.isHoldingButton(Button.RELOAD) == false
     @Condition eventPlayer.isFiringPrimaryFire() == false
@@ -17,7 +18,15 @@ rule "[player_status/status_check.opy] Player Status - Check if a player is inac
     @Condition eventPlayer.isHoldingButton(Button.INTERACT) == false
     @Condition eventPlayer.isHoldingButton(Button.MELEE) == false
     
-    wait(25, Wait.ABORT_WHEN_FALSE)
+    # Saving Player Facing Direction
+    eventPlayer.FacingPosition = eventPlayer.getFacingDirection()
+
+    while eventPlayer.FacingPosition == eventPlayer.getFacingDirection():
+        # Wait 25 seconds
+        wait(createWorkshopSetting(int[10:120], "6. Player Status", "Time Away to be Marked Inactive", 25, 2), Wait.ABORT_WHEN_FALSE)
+        break
+
+    # Player is AFK, Initialize
     eventPlayer.AFK = true
     eventPlayer.communicate(Comms.GOODBYE)
     Display_StatusHUD = true
@@ -32,10 +41,22 @@ rule "[player_status/status_check.opy] Player Status - Check if a player is inac
 
 rule "[player_status/status_check.opy] Player Status - Clear Text if a player returns (AFK)":
     @Event eachPlayer
-    @Condition Player_Status == true
-    @Condition isInSetup() == true
-    @Condition eventPlayer.getCurrentHero() == true
-    @Condition (eventPlayer.isMoving() or eventPlayer.isHoldingButton(Button.RELOAD) or eventPlayer.isFiringPrimaryFire() or eventPlayer.isFiringSecondaryFire() or eventPlayer.isUsingAbility1() or eventPlayer.isUsingAbility2() or eventPlayer.isHoldingButton(Button.ULTIMATE) or eventPlayer.isJumping() or eventPlayer.isCrouching()) == true
+    @Condition Player_Status
+    @Condition isInSetup()
+    @Condition eventPlayer.getCurrentHero() != null
+    @Condition (
+        eventPlayer.isMoving() or 
+        eventPlayer.isHoldingButton(Button.RELOAD) or 
+        eventPlayer.isFiringPrimaryFire() or 
+        eventPlayer.isFiringSecondaryFire() or 
+        eventPlayer.isUsingAbility1() or 
+        eventPlayer.isUsingAbility2() or 
+        eventPlayer.isHoldingButton(Button.ULTIMATE) or 
+        eventPlayer.isJumping() or eventPlayer.isCrouching() or 
+        eventPlayer.isHoldingButton(Button.INTERACT) or 
+        eventPlayer.isHoldingButton(Button.MELEE) or 
+        eventPlayer.FacingPosition != eventPlayer.getFacingDirection()
+    )
     @Condition eventPlayer.AFK == true
     
     eventPlayer.AFK = false
@@ -45,3 +66,8 @@ rule "[player_status/status_check.opy] Player Status - Clear Text if a player re
     destroyHudText(eventPlayer.AFK_TextID)
     wait(0.1)
     eventPlayer.ChangeStatusHUD = false
+
+
+    
+    
+    

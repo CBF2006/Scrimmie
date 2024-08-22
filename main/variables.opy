@@ -64,6 +64,10 @@ globalvar Logs_TrackMatchStartEnd 56
 globalvar Logs_PlayerSummaryFrequency 57
 globalvar Logs_PlayerSummaryCount 58
 
+# More Global Variables
+globalvar Teleport_Coordinate 59
+globalvar MapIndex 60
+
 
 # Player Variables
 # Scrimmie
@@ -91,6 +95,8 @@ playervar Logs_CurrentHeroIterated 18
 playervar Logs_UltimateID 19
 playervar Logs_DuplicateID 20
 
+# Additional Player Variables
+playervar FacingPosition 21
 
 # Subroutines
 # Scrimmie

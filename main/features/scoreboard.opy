@@ -4,6 +4,8 @@ rule "[features/scoreboard.opy] Scoreboard: Scrimmie / OWL - Create Legend":
     @Condition DrawScoreboard == true
     @Condition ScoreboardLayout == 0
     
+    wait()
+
     # Sort by Slot
     if ScoreboardSorting == 0:
         #Separate Teams
@@ -72,6 +74,8 @@ rule "[features/scoreboard.opy] Scoreboard: Scrimmie / OWL - Separate Teams (Lar
     @Condition ScoreboardGrouping == 0
     @Condition Scoreboard_Size == 0
 
+    wait()
+
     # Sort by Slot
     if ScoreboardSorting == 0:
         if eventPlayer.getTeam() == Team.1:
@@ -92,6 +96,8 @@ rule "[features/scoreboard.opy] Scoreboard: Scrimmie / OWL - Separate Teams (Sma
     @Condition ScoreboardLayout == 0
     @Condition ScoreboardGrouping == 0
     @Condition Scoreboard_Size == 1
+
+    wait()
 
     # Sort by Slot
     if ScoreboardSorting == 0:            
@@ -117,6 +123,8 @@ rule "[features/scoreboard.opy] Scoreboard: Scrimmie / OWL - Combine Teams (Larg
     @Condition ScoreboardGrouping == 1
     @Condition Scoreboard_Size == 0
     
+    wait()
+
     # Sort by Slot
     if ScoreboardSorting == 0:
         if eventPlayer.getTeam() == Team.1:
@@ -134,6 +142,8 @@ rule "[features/scoreboard.opy] Scoreboard: Scrimmie / OWL - Combine Teams (Smal
     @Condition ScoreboardLayout == 0
     @Condition ScoreboardGrouping == 1
     @Condition Scoreboard_Size == 1      
+
+    wait()
 
     # Sort by Slot
     if ScoreboardSorting == 0:    

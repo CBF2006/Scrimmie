@@ -69,3 +69,11 @@ rule "[debug.opy] DEBUG: Show GitHub Build":
 
     wait(5)
     hudSubheader(getAllPlayers(), "Build {0}".format("4.0.0.c70fc31"), HudPosition.LEFT, 0.05, Color.ORANGE, HudReeval.NONE, SpecVisibility.ALWAYS)
+
+rule "[debug.opy] DEBUG: Show Facing Direction":
+    @Event global
+    @Condition DevMode == true
+    @Condition createWorkshopSetting(bool, "8. Developer Options", "DEBUG - Display Facing Direction", false, 8) == true
+
+    wait(5)
+    hudSubheader(getAllPlayers(), "Facing Direction: {0}".format(localPlayer.getFacingDirection()), HudPosition.TOP, 27, Color.ORANGE, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.NEVER)
