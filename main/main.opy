@@ -7,6 +7,12 @@
 # Variables & Subroutines
 #!include "variables.opy"
 
+rule "You are running Scrimmie! v4.0.0 - 7098d25, see https://github.com/CBF2006/Scrimmie for Source Code & License":
+    /* @Event global
+    @Condition isGameInProgress() == false
+
+    setMatchTime(1) */
+    # Uncomment Above so it will compile, then delete rules & conditions
 
 rule "[main.opy] Remove Assembling Heroes":
     @Condition isAssemblingHeroes() == true

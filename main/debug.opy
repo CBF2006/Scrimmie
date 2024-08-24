@@ -64,16 +64,7 @@ rule "[debug.opy] DEBUG: Show Coordinates":
 rule "[debug.opy] DEBUG: Show Facing Direction":
     @Event global
     @Condition DevMode == true
-    @Condition createWorkshopSetting(bool, "8. Developer Options", "DEBUG - Show Facing Direction", false, 8) == true
+    @Condition createWorkshopSetting(bool, "8. Developer Options", "DEBUG - Show Facing Direction", false, 7) == true
 
     wait(5)
     hudSubheader(getAllPlayers(), "Facing Direction: {0}".format(localPlayer.getFacingDirection()), HudPosition.TOP, 27, Color.ORANGE, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.NEVER)
-
-rule "[debug.opy] DEBUG: Show GitHub Build":
-    @Event global
-    @Condition DevMode == true
-    @Condition createWorkshopSetting(bool, "8. Developer Options", "DEBUG - Show Exact Build Version", false, 7) == true
-    @Condition isInSetup() == true
-    
-    wait(5)
-    hudSubheader(getAllPlayers(), "Build {0}".format("4.0.0.066053d"), HudPosition.LEFT, 0.05, Color.ORANGE, HudReeval.NONE, SpecVisibility.ALWAYS)
