@@ -283,15 +283,9 @@ rule "[features/scoreboard.opy] Scoreboard: Display Match Time":
 
     wait(0.016, Wait.IGNORE_CONDITION)
     if Scoreboard_Size == 0:
-        if ScoreboardGrouping == 0:
-            hudSubtext(null, "{0} Match Time: {1}".format(abilityIconString(Hero.LUCIO, Button.ABILITY_2), Match_CurrentMatchTime), HudPosition.TOP, 26, Color.WHITE, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.ALWAYS)
-        else:
-            hudSubtext(null, "{0} Match Time: {1}".format(abilityIconString(Hero.LUCIO, Button.ABILITY_2), Match_CurrentMatchTime), HudPosition.LEFT, 5, Color.WHITE, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.ALWAYS)
+        hudSubtext(null, "{0} Match Time: {1}".format(abilityIconString(Hero.LUCIO, Button.ABILITY_2), round(Match_CurrentMatchTime)), HudPosition.LEFT, 26 if ScoreboardGrouping == 0 else 5, Color.WHITE, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.ALWAYS)
     else:
-        if ScoreboardGrouping == 0:
-            hudSubheader(null, "{0} Match Time: {1}".format(abilityIconString(Hero.LUCIO, Button.ABILITY_2), Match_CurrentMatchTime), HudPosition.TOP, 26, Color.WHITE, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.ALWAYS)
-        else:
-            hudSubtext(null, "{0} Match Time: {1}".format(abilityIconString(Hero.LUCIO, Button.ABILITY_2), Match_CurrentMatchTime), HudPosition.LEFT, 5, Color.WHITE, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.ALWAYS)
+        hudSubheader(null, "{0} Match Time: {1}".format(abilityIconString(Hero.LUCIO, Button.ABILITY_2), round(Match_CurrentMatchTime)), HudPosition.LEFT, 26 if ScoreboardGrouping == 0 else 5, Color.WHITE, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.ALWAYS)
 
 rule "[features/scoreboard.opy] Scoreboard: Host Player Toggle Scoreboard":
     @Event global
