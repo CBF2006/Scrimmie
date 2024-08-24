@@ -276,18 +276,22 @@ rule "[features/scoreboard.opy] Scoreboard: ScrimTime A (Small)":
             hudSubheader(null, "{0} {1} • {2}".format(heroIcon(eventPlayer.getCurrentHero()), "{0} • {1} • {2}".format(eventPlayer.getStatistic(Stat.FINAL_BLOWS), eventPlayer.getStatistic(Stat.DEATHS), round(eventPlayer.getStatistic(Stat.HERO_DAMAGE_DEALT))), "{0} • {1} • {2}".format(round(eventPlayer.getStatistic(Stat.DAMAGE_TAKEN)), round(eventPlayer.getStatistic(Stat.DAMAGE_BLOCKED)) if eventPlayer.getCurrentHero() in getTankHeroes() else round(eventPlayer.getStatistic(Stat.HEALING_DEALT)) if eventPlayer.getCurrentHero() in getSupportHeroes() else "{0}%".format(round(eventPlayer.getHeroStatistic(eventPlayer.getCurrentHero(), HeroStat.WEAPON_ACCURACY) * 100)), eventPlayer.getStatistic(Stat.ULTIMATES_USED))), HudPosition.LEFT, (1 if eventPlayer.getCurrentHero() in getDamageHeroes() else 2 if eventPlayer.getCurrentHero() in getTankHeroes() else 3) + (0.1 if eventPlayer.getTeam() == Team.1 else 0.2), Color.TEAM_1 if eventPlayer.getTeam() == Team.1 else Color.TEAM_2, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.ALWAYS)
 
 
-/*
 rule "[features/scoreboard.opy] Scoreboard: Display Match Time":
     @Event global
-    @Condition createWorkshopSetting(bool, "5. Spectator Scoreboard", "Display Match Time", false, 5)
+    @Condition createWorkshopSetting(bool, "5. Spectator Scoreboard", "Display Match Time", false, 7)
     @Condition isGameInProgress() == true
 
     wait(0.016, Wait.IGNORE_CONDITION)
     if Scoreboard_Size == 0:
-        hudSubtext(null, "{0} Match Time: {1}", abilityIconString(hero: Hero.LUCIO, Button.ABILITY_2))
+        if ScoreboardGrouping == 0:
+            hudSubtext(null, "{0} Match Time: {1}".format(abilityIconString(Hero.LUCIO, Button.ABILITY_2), Match_CurrentMatchTime), HudPosition.TOP, 26, Color.WHITE, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.ALWAYS)
+        else:
+            hudSubtext(null, "{0} Match Time: {1}".format(abilityIconString(Hero.LUCIO, Button.ABILITY_2), Match_CurrentMatchTime), HudPosition.LEFT, 5, Color.WHITE, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.ALWAYS)
     else:
-        hudSubheader()
-*/
+        if ScoreboardGrouping == 0:
+            hudSubheader(null, "{0} Match Time: {1}".format(abilityIconString(Hero.LUCIO, Button.ABILITY_2), Match_CurrentMatchTime), HudPosition.TOP, 26, Color.WHITE, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.ALWAYS)
+        else:
+            hudSubtext(null, "{0} Match Time: {1}".format(abilityIconString(Hero.LUCIO, Button.ABILITY_2), Match_CurrentMatchTime), HudPosition.LEFT, 5, Color.WHITE, HudReeval.SORT_ORDER_AND_STRING, SpecVisibility.ALWAYS)
 
 rule "[features/scoreboard.opy] Scoreboard: Host Player Toggle Scoreboard":
     @Event global
