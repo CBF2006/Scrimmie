@@ -8,6 +8,8 @@ Rights to the Custom Game itself **belong to Blizzard** as stated in their [Cust
 ## Import Code
 ### Standard - Y2TXE
 ### Professional - A8XVJ
+### 6v6 Standard - D3V4V
+### 6v6 OW1 - 503ST
 
 ## Connect with the Project:
 ### [Workshop.codes](https://workshop.codes/scrimmie)
