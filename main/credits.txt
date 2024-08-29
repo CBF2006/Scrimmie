@@ -1,0 +1,43 @@
+Original Code courtesy of MatrixOW
+
+Scrimmie! is based on Overstat v0.5c
+
+LogTime created by Caldoran
+    Caldoran - https://workshop.codes/u/Caldoran
+    LogTime - https://workshop.codes/F6WTA
+
+ScrimTime used as a reference for:
+    Multi-Lanaugage Support
+    Dynamic Scoreboard (v4.0+)
+        ScrimTime (A) Scoreboard
+        By Role Sorting
+        Combine Teams
+        Match Time
+        Host Spectator Toggle Scoreboard
+    
+    https://workshop.codes/R0MNN
+    
+OverPy created by Zezombye
+    GitHub - https://github.com/Zezombye/overpy
+
+Translation Team
+    CBF - English, Spanish, Japanese
+    ofmoonlite - Spanish, French
+    Brickwall - Spanish
+    Zerowon (롤링) - Korean
+    Unrequired - Chinese (Simplified), Chinese (Traditional)
+
+    Cleanup done by CBF
+
+Programming
+    CBF
+    Brickwall (Consultant)
+
+Marketing/Graphics
+    CBF
+
+Testing
+    CBF
+    Bobzzzzzz6
+    Brickwall
+    Paradise Lost
