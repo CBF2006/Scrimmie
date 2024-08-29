@@ -4,15 +4,14 @@
 
 | Version | Latest Build | Import Code | Stability          |
 | ------- | ------- | ----------- | ------------------ |
-| **5v5 Standard** | 3.6.4   | Y2TXE | :white_check_mark: |
-| 5v5 Professional | 3.6.4   | A8XVJ | :white_check_mark: |
-| 6v6 Standard | 3.4.1   | D3V4V | ❌ 🔄 |
-| 6v6 OW1 | 3.4.1   | 503ST | ❌                |
-| Development | ------ | BD0NY | ⚠️ |
+| **5v5 Standard** | 3.6.5   | Y2TXE | :white_check_mark: |
+| 5v5 Professional | 3.6.5   | A8XVJ | :white_check_mark: |
+| 6v6 Standard | 3.6.5   | D3V4V | :white_check_mark: 🔄  |
+| 6v6 OW1 | 3.6.5   | 503ST | :white_check_mark: |
+| Development | v4.0 | EE0X8 | ⚠️ |
 
-❌ Currently Scrimmie! 6v6 has not been updated for Season 10/11, which will come at a later date. Due to the April Fools bug, this may impact your experience with it until the code is updated.
-
-⚠️ The Development builds will be published for testing if you wish, **however you may encounter bugs while using them**. They are also **NOT COMPLETED** and *are for those who wish to try new versions before they release*
+⚠️ The Develoment Version **recieves updates quicker, but is less stable than the Live version**
+  - Currently **v4.0 has some issues with Player Status triggering,** which I am currently looking into. It **does not** affect gameplay
 
 🔄 6v6 Support is being introduced into the standard Scrimmie! preset with v4.0. Join the Discord or follow me on Twitter @cbfow for the latest updates.
 **This will NOT include the OW1 version of Scrimmie! 6v6, which will remain its own separate version.**
@@ -21,7 +20,7 @@
 
 | Update | Compatible Versions | Status |
 | ------- | ------- | ------ |
-| v4.0 | 5v5, 6v6 Standard | 🚧 |
+| v4.0 | All | ⚙️ |
 
 🚧 In Active Development
 
