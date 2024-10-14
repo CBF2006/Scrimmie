@@ -5,7 +5,10 @@ rule "[player_status/status_check.opy] Player Status - Check if a player is inac
     @Event eachPlayer
     @Condition Player_Status
     @Condition isInSetup()
+
     @Condition eventPlayer.getCurrentHero() != null
+    @Condition eventPlayer.AFK != true
+
     @Condition eventPlayer.isMoving() == false
     @Condition eventPlayer.isHoldingButton(Button.RELOAD) == false
     @Condition eventPlayer.isFiringPrimaryFire() == false
@@ -23,27 +26,31 @@ rule "[player_status/status_check.opy] Player Status - Check if a player is inac
 
     while eventPlayer.FacingPosition == eventPlayer.getFacingDirection():
         # Wait 25 seconds
-        wait(createWorkshopSetting(int[10:120], "6. Player Status", "Time Away to be Marked Inactive", 25, 2), Wait.ABORT_WHEN_FALSE)
+        wait(AFK_Trigger_Time, Wait.ABORT_WHEN_FALSE)
         break
 
-    # Player is AFK, Initialize
-    eventPlayer.AFK = true
-    eventPlayer.communicate(Comms.GOODBYE)
-    Display_StatusHUD = true
-    eventPlayer.startForcingOutlineFor(getPlayers(eventPlayer.getTeam()), true, Color.YELLOW, OutlineVisibility.ALWAYS)
-    hudSubheader(getPlayers(Team.1 if eventPlayer.getTeam() == Team.1 else Team.2), "{0} {1} - {2}".format(heroIcon(eventPlayer.getCurrentHero()), eventPlayer, "{0}{1}".format(eventPlayer.AFK_Timer, LanguageArray[17][localPlayer.PlayerLanguage])), HudPosition.LEFT, 0.4, Color.YELLOW, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
-    eventPlayer.Status_TextID = getLastCreatedText()
-    hudSubtext(eventPlayer, LanguageArray[32][eventPlayer.PlayerLanguage], HudPosition.TOP, 26, Color.YELLOW, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
-    eventPlayer.AFK_TextID = getLastCreatedText()
-    wait(1)
-    Display_StatusHUD = false
+    if eventPlayer.FacingPosition == eventPlayer.getFacingDirection():
+        # Player is AFK, Initialize
+        eventPlayer.AFK = true
+        eventPlayer.communicate(Comms.GOODBYE)
+        Display_StatusHUD = true
+        eventPlayer.startForcingOutlineFor(getPlayers(eventPlayer.getTeam()), true, Color.YELLOW, OutlineVisibility.ALWAYS)
+        hudSubheader(getPlayers(Team.1 if eventPlayer.getTeam() == Team.1 else Team.2), "{0} {1} - {2}".format(heroIcon(eventPlayer.getCurrentHero()), eventPlayer, "{0}{1}".format(eventPlayer.AFK_Timer, LanguageArray[17][localPlayer.PlayerLanguage])), HudPosition.LEFT, 0.4, Color.YELLOW, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
+        eventPlayer.Status_TextID = getLastCreatedText()
+        hudSubtext(eventPlayer, LanguageArray[32][eventPlayer.PlayerLanguage], HudPosition.TOP, 26, Color.YELLOW, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
+        eventPlayer.AFK_TextID = getLastCreatedText()
+        wait(1)
+        Display_StatusHUD = false
 
 
 rule "[player_status/status_check.opy] Player Status - Clear Text if a player returns (AFK)":
     @Event eachPlayer
     @Condition Player_Status
     @Condition isInSetup()
+
     @Condition eventPlayer.getCurrentHero() != null
+    @Condition eventPlayer.AFK == true
+    
     @Condition (
         eventPlayer.isMoving() or 
         eventPlayer.isHoldingButton(Button.RELOAD) or 
@@ -57,7 +64,6 @@ rule "[player_status/status_check.opy] Player Status - Clear Text if a player re
         eventPlayer.isHoldingButton(Button.MELEE) or 
         eventPlayer.FacingPosition != eventPlayer.getFacingDirection()
     )
-    @Condition eventPlayer.AFK == true
     
     eventPlayer.AFK = false
     eventPlayer.ChangeStatusHUD = true

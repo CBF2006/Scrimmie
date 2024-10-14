@@ -44,9 +44,9 @@ rule "[player_status/hud.opy] Player Status - Track how long a player has been A
     @Event eachPlayer
     @Condition eventPlayer.AFK == true
     
-    eventPlayer.AFK_Timer = 25
+    eventPlayer.AFK_Timer = AFK_Trigger_Time
     while eventPlayer.AFK == true:
         eventPlayer.AFK_Timer += 1
         wait(1)
     if eventPlayer.AFK == false:
-        eventPlayer.AFK_Timer = 25
+        eventPlayer.AFK_Timer = AFK_Trigger_Time

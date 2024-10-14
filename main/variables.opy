@@ -66,7 +66,7 @@ globalvar Logs_PlayerSummaryCount 58
 
 # More Global Variables
 globalvar Teleport_Coordinate 59
-globalvar MapIndex 60
+globalvar AFK_Trigger_Time 60
 
 
 # Player Variables
@@ -124,3 +124,4 @@ rule "[variables.opy] Set Global Variables":
     # Set Teams to "Not Ready"
     Team1Ready = "Not Ready"
     Team2Ready = "Not Ready"
+    AFK_Trigger_Time = createWorkshopSetting(int[10:120], "6. Player Status", "Time Away to be Marked Inactive", 25, 2)
