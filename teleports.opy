@@ -24,7 +24,7 @@ rule "Defense Map Teleport":
             eventPlayer.teleport(vect(-37.185, 10.346, -15.058))
             break
         case Map.NUMBANI:
-            eventPlayer.teleport(vect(93.044, 5.53, -22.723))
+            eventPlayer.teleport(vect(105.45, -0.51, -13.17))
             break
         case Map.HANAMURA:
             eventPlayer.teleport(vect(13.079, 1.346, -24.267))
